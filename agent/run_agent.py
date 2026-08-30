@@ -101,7 +101,7 @@ def run_scripted(tools: ForgeTools, log: TrajectoryLogger, briefs: list[str]) ->
             f"Governing check: {outcome['governing_check']} at utilization "
             f"{outcome['governing_utilization']:.2f}."
         )
-        written = call(
+        call(
             "write_report", brief=brief, design=design, verdict=verdict,
             engineer_notes=notes,
         )

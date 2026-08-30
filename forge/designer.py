@@ -12,7 +12,7 @@ from __future__ import annotations
 import math
 from typing import Any
 
-from .building import G, BuildingSpec, Design, IsolationDesign
+from .building import BuildingSpec, Design, IsolationDesign
 
 TARGET_ISOLATION_PERIOD_S = 2.8
 QD_WEIGHT_FRACTION = 0.06

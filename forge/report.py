@@ -29,7 +29,6 @@ def render_report(
 ) -> str:
     if verdict not in VERDICTS:
         raise ValueError(f"verdict must be one of {VERDICTS}")
-    env = assessment["envelope"]
     lines: list[str] = []
     add = lines.append
     add(f"# SeismoForge prototype design report - {spec.name.replace('_', ' ')}")

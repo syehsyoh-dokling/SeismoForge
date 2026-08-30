@@ -10,7 +10,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
 from forge.brief_parser import list_briefs, parse_brief_file
-from forge.building import Design, IsolationDesign
+from forge.building import Design
 from forge.checks import acceptance_report
 from forge.designer import clamp, rule_of_thumb
 from forge.motions import synthesize

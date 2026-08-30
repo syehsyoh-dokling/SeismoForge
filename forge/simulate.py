@@ -24,7 +24,6 @@ from __future__ import annotations
 import math
 from typing import Any
 
-import numpy as np
 import openseespy.opensees as ops
 
 from .building import G, BuildingSpec, Design

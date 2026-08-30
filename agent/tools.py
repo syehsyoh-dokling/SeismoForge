@@ -18,7 +18,7 @@ if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
 from forge.brief_parser import list_briefs, parse_brief_file
-from forge.building import BuildingSpec, Design, design_from_dict
+from forge.building import BuildingSpec, design_from_dict
 from forge.checks import acceptance_report
 from forge.designer import (
     candidate_grid,
