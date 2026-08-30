@@ -87,10 +87,10 @@ be written down once.
 
 The architecture is a deliberate division of labor:
 
-- **The agent decides, the tools compute.** Claude (`claude-opus-5`, manual
-  tool loop) chooses the system, walks the design space, and writes the
-  engineering narrative; every response number comes from the OpenSees
-  simulation tool. Ground motions are synthesized deterministically from the
+- **Whoever decides, the tools compute.** The driver - a model in a tool loop,
+  or the scripted policy - chooses the system, walks the design space, and
+  writes the engineering narrative; every response number comes from the
+  OpenSees simulation tool, and neither driver can produce one any other way. Ground motions are synthesized deterministically from the
   brief file (soil-filtered spectral process, Clough-Penzien high-pass), so
   the entire evidence chain reproduces byte-for-byte from this repository -
   no downloads, no record database, nothing to drift.
@@ -104,9 +104,10 @@ The architecture is a deliberate division of labor:
   `verify_output` then re-checks the written deliverable the way the
   evaluator will.
 - **A design-center GUI** (`gui/`, standard library only - no extra
-  dependencies): type or load a brief, pick the run mode (offline verified
-  engine, or the LLM agent with your own API key - Anthropic active, other
-  providers on the roadmap), watch the live run log, and read one combined
+  dependencies): type or load a brief, pick the run mode (offline needs no
+  key; assisted and agent take your own Anthropic or OpenAI key), watch the
+  live run log - which names the design being tried, the record suite going
+  into OpenSees, and every demand against its limit - and read one combined
   engineering conclusion: verdict banner, the selected system, per-check
   margins, the agent's engineer note, and the evidence basis. Keys stay in
   memory only.
@@ -275,7 +276,8 @@ gui/           local design-center web app (stdlib http server + one page)
 forge/         physics core: building model, motion synthesis, OpenSees RHA,
                acceptance checks, design rules, policy, report renderer
 agent/         session.py (the one entry point), tools.py (the 9 tools),
-               intake.py (free-prose reading), system_prompt.md
+               llm.py (provider layer), intake.py (free-prose reading),
+               system_prompt.md + intake_prompt.md (both agents' instructions)
 baselines/     one-shot unverified baseline
 evaluation/    ground truth + judge harness + committed results
 outputs/       per-brief deliverables (design_report.md + design.json)
