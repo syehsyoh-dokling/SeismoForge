@@ -204,18 +204,20 @@ The final output is a reviewable engineering starting point with a traceable bas
 
 # The most important experiment: Where should the agent actually think?
 
-We initially let the model control both parts of the workflow:
+The deterministic path was built first, and it already scored **10/10** on the
+labeled briefs. So the question was not whether a model could reach that score
+— it was what a model adds that a written policy cannot.
 
-1. interpret the human brief;
-2. drive the engineering design search.
+We split the workflow at its two seams and measured them one at a time.
 
-It worked: **10/10**.
+**First seam — reading the brief.** The model interprets free-form prose; the
+written policy still runs the search. That is the Hybrid Evidence Agent, and
+it scored **10/10** on the prose set the strict parser cannot read at all.
 
-Then we measured it against a hybrid system in which the model handled the ambiguous language but a written engineering policy handled the structured search.
+**Second seam — driving the search.** The model gets the design search as
+well. That is the Full-Agent Experimental Mode, and it also scored **10/10**.
 
-That also scored **10/10**.
-
-But the resource profile was radically different:
+Same score. Radically different resource profile:
 
 | Workflow | Correct cases | Runtime | Model input tokens |
 |---|---:|---:|---:|
@@ -582,7 +584,7 @@ The recommended <=5-minute story is intentionally simple:
 3. **One full run:** coastal hospital from human brief → candidate → OpenSees → iteration → evidence-gated report.
 4. **The result:** 3/10 → 10/10.
 5. **The experiment we removed from the optimal path:** full-agent design search.
-6. **The surprising finding:** same 10/10 result, but 518,386 input tokens vs 8,421.
+6. **The surprising finding:** handing the model the design search too scored the same 10/10, for 518,386 input tokens against 8,421.
 7. **The hot take:** reliable engineering agents need a calibrated verifier and a clear boundary for where agency actually adds value.
 
 An outline is available in `video/README.md`.
