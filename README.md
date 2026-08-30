@@ -8,6 +8,7 @@ verifies it with nonlinear response-history analysis in OpenSees, iterates
 until every performance target holds - and refuses to sign anything the
 physics contradicts.
 
+- Design-center GUI: `python3 gui/server.py` then open http://127.0.0.1:8765
 - Reproduction: [REPRODUCTION.md](REPRODUCTION.md)
 - Measured results: [evaluation/results.md](evaluation/results.md)
 - Agent trajectories: [trajectories/](trajectories/)
@@ -63,6 +64,13 @@ The architecture is a deliberate division of labor:
   design is not writable, and neither is "not buildable" on a passing one.
   `verify_output` then re-checks the written deliverable the way the
   evaluator will.
+- **A design-center GUI** (`gui/`, standard library only - no extra
+  dependencies): type or load a brief, pick the run mode (offline verified
+  engine, or the LLM agent with your own API key - Anthropic active, other
+  providers on the roadmap), watch the live run log, and read one combined
+  engineering conclusion: verdict banner, the selected system, per-check
+  margins, the agent's engineer note, and the evidence basis. Keys stay in
+  memory only.
 - **Two drivers, one tool surface.** `--driver llm` is the product;
   `--driver scripted` drives the identical tools with a fixed policy so
   judges reproduce the headline result offline, with no API key.
@@ -128,6 +136,7 @@ highlight and the removed experiment. Outline in `video/README.md`.
 
 ```
 briefs/        10 natural-language project briefs (the evaluation cases)
+gui/           local design-center web app (stdlib http server + one page)
 forge/         physics core: building model, motion synthesis, OpenSees RHA,
                acceptance checks, design rules, policy, report renderer
 agent/         the agent: tool layer, LLM + scripted drivers, system prompt

@@ -7,7 +7,7 @@ infeasible brief must be flagged, not forced).
 | System | Correct briefs | Wall time (s) |
 |---|---|---|
 | baseline | **3/10** | 0.4 |
-| agent | **10/10** | 38.7 |
+| agent | **10/10** | 39.8 |
 
 ## Per-brief outcomes
 

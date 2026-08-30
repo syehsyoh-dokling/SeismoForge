@@ -25,18 +25,18 @@
   "design": {
     "system": "base_isolated",
     "isolation": {
-      "qd_kn": 1506.816,
-      "kd_kn_m": 7402.203300817018,
-      "dy_m": 0.03
+      "qd_kn": 2071.8720000000003,
+      "kd_kn_m": 4737.410112522892,
+      "dy_m": 0.045
     }
   },
   "verdict": "proceed",
   "envelope": {
-    "peak_isolator_disp_m": 0.4999898392706839,
-    "peak_drift_ratio": 0.004390444706500264,
-    "peak_floor_accel_g": 0.4087543239686855,
-    "base_shear_coeff": 0.27649520252635634,
-    "residual_disp_m": 0.06543509388088382
+    "peak_isolator_disp_m": 0.45064312756645514,
+    "peak_drift_ratio": 0.0038222992168166175,
+    "peak_floor_accel_g": 0.38407448052775195,
+    "base_shear_coeff": 0.2233452954931335,
+    "residual_disp_m": 0.05501174927437066
   },
   "acceptance": {
     "passed": true,
@@ -51,45 +51,45 @@
       },
       {
         "check": "peak_drift_ratio",
-        "value": 0.004390444706500264,
+        "value": 0.0038222992168166175,
         "limit": 0.01,
         "satisfied": true,
-        "utilization": 0.4390444706500264
+        "utilization": 0.38222992168166176
       },
       {
         "check": "peak_floor_accel_g",
-        "value": 0.4087543239686855,
+        "value": 0.38407448052775195,
         "limit": 0.45,
         "satisfied": true,
-        "utilization": 0.9083429421526344
+        "utilization": 0.8534988456172266
       },
       {
         "check": "base_shear_coeff",
-        "value": 0.27649520252635634,
+        "value": 0.2233452954931335,
         "limit": 0.4,
         "satisfied": true,
-        "utilization": 0.6912380063158908
+        "utilization": 0.5583632387328338
       },
       {
         "check": "peak_isolator_disp_m",
-        "value": 0.4999898392706839,
+        "value": 0.45064312756645514,
         "limit": 0.6,
         "satisfied": true,
-        "utilization": 0.8333163987844732,
+        "utilization": 0.7510718792774252,
         "note": "isolator travel must stay inside the moat clearance"
       },
       {
         "check": "residual_disp_m",
-        "value": 0.06543509388088382,
+        "value": 0.05501174927437066,
         "limit": 0.12,
         "satisfied": true,
-        "utilization": 0.5452924490073652,
+        "utilization": 0.4584312439530888,
         "note": "the building must recentre after the event"
       }
     ],
     "failed_checks": [],
     "governing_check": "peak_floor_accel_g",
-    "governing_utilization": 0.9083429421526344
+    "governing_utilization": 0.8534988456172266
   },
   "simulations": 19
 }

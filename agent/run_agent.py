@@ -70,6 +70,7 @@ def run_scripted(tools: ForgeTools, log: TrajectoryLogger, briefs: list[str]) ->
             values = [
                 c["utilization"] for c in entry["checks"]
                 if c["utilization"] is not None
+                and c["check"] != "all_records_converged"
             ]
             return max(values) if values else float("inf")
 

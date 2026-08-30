@@ -92,7 +92,20 @@ typically well under a few dollars for the full portfolio). Trajectory:
 `trajectories/trajectory_llm.{jsonl,md}`. Run a single brief with
 `--briefs brief_01_coastal_hospital`.
 
-## 6. Self-tests
+## 6. Design-center GUI (optional, same engine)
+
+```bash
+$PY gui/server.py --port 8765
+```
+
+Open http://127.0.0.1:8765. Load an example brief (or write your own with the
+labelled datasheet lines), pick "Offline verified engine" (no key) or "LLM
+design agent" (paste your Anthropic API key - it is held in memory only), and
+press "Forge the design". The page shows the live run log, the verdict
+banner, the acceptance table, and the combined engineering conclusion. GUI
+runs write their deliverables under `outputs/gui/<run-id>/`.
+
+## 7. Self-tests
 
 ```bash
 $PY tests/selftest.py

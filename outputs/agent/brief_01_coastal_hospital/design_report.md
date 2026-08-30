@@ -65,7 +65,7 @@ Governing check: **base_shear_coeff** at utilization 0.93.
 | 10 | agent | base_isolated | 2,158 | 10,602 | 30 | fail | 1.13 |
 | 11 | agent | base_isolated | 2,158 | 10,602 | 45 | fail | 1.11 |
 | 12 | agent | base_isolated | 2,158 | 6,785 | 30 | fail | 1.06 |
-| 13 | agent | base_isolated | 2,158 | 6,785 | 45 | pass | 1.00 |
+| 13 | agent | base_isolated | 2,158 | 6,785 | 45 | pass | 0.93 |
 | 14 | agent | base_isolated | 2,968 | 18,848 | 30 | fail | 1.56 |
 | 15 | agent | base_isolated | 2,968 | 18,848 | 45 | fail | 1.55 |
 | 16 | agent | base_isolated | 2,968 | 10,602 | 30 | fail | 1.40 |

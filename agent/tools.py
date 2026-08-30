@@ -36,8 +36,9 @@ BRIEF_DIR = REPO / "briefs"
 
 
 class ForgeTools:
-    def __init__(self, out_root: Path) -> None:
+    def __init__(self, out_root: Path, brief_dir: Path = BRIEF_DIR) -> None:
         self.out_root = Path(out_root)
+        self.brief_dir = Path(brief_dir)
         self._specs: dict[str, BuildingSpec] = {}
         # Evidence ledger: every simulation this session ran, per brief.
         self.history: dict[str, list[dict[str, Any]]] = {}
@@ -45,17 +46,17 @@ class ForgeTools:
 
     # -- brief access ---------------------------------------------------
     def list_briefs(self) -> list[str]:
-        return [path.stem for path in list_briefs(BRIEF_DIR)]
+        return [path.stem for path in list_briefs(self.brief_dir)]
 
     def read_brief(self, brief: str) -> str:
-        path = BRIEF_DIR / f"{brief}.md"
+        path = self.brief_dir / f"{brief}.md"
         if not path.is_file():
             return f"unknown brief {brief!r}; available: {self.list_briefs()}"
         return path.read_text(encoding="utf-8")
 
     def _spec(self, brief: str) -> BuildingSpec:
         if brief not in self._specs:
-            self._specs[brief] = parse_brief_file(BRIEF_DIR / f"{brief}.md")
+            self._specs[brief] = parse_brief_file(self.brief_dir / f"{brief}.md")
         return self._specs[brief]
 
     def parse_brief(self, brief: str) -> dict[str, Any]:

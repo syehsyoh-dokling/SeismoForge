@@ -158,7 +158,7 @@
         "system": "base_isolated",
         "design_passes": true,
         "governing_check": "peak_floor_accel_g",
-        "governing_utilization": 0.9161070704094786,
+        "governing_utilization": 0.7923240391019488,
         "simulations_claimed": 19,
         "outcome": "verified design"
       },
@@ -169,7 +169,7 @@
         "system": "base_isolated",
         "design_passes": true,
         "governing_check": "peak_floor_accel_g",
-        "governing_utilization": 0.9083429421526344,
+        "governing_utilization": 0.8534988456172266,
         "simulations_claimed": 19,
         "outcome": "verified design"
       },
@@ -179,8 +179,8 @@
         "verdict": "proceed",
         "system": "base_isolated",
         "design_passes": true,
-        "governing_check": "peak_drift_ratio",
-        "governing_utilization": 0.9883201586239574,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 0.7918948803050672,
         "simulations_claimed": 19,
         "outcome": "verified design"
       },
@@ -231,6 +231,6 @@
     ],
     "correct": 10,
     "total": 10,
-    "wall_time_sec": 38.7
+    "wall_time_sec": 39.8
   }
 }

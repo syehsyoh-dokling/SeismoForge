@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SeismoForge — Design Center</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b23; --panel2:#1c2330; --line:#2a3446;
+    --text:#e8edf5; --muted:#8b97ab; --accent:#ff7a1a; --accent2:#ffb347;
+    --ok:#2ecc71; --bad:#e74c3c; --mono:ui-monospace,Consolas,monospace;
+  }
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);
+    font:15px/1.55 "Segoe UI",system-ui,sans-serif;display:flex;min-height:100vh}
+  aside{width:270px;background:var(--panel);border-right:1px solid var(--line);
+    padding:22px 18px;flex-shrink:0}
+  .logo{font-size:24px;font-weight:800;letter-spacing:.5px}
+  .logo span{color:var(--accent)}
+  .tag{color:var(--muted);font-size:12.5px;margin:6px 0 26px}
+  .domL{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;
+    color:var(--muted);margin-bottom:10px}
+  .dom{padding:9px 11px;border-radius:8px;margin-bottom:6px;font-size:13.5px;
+    border:1px solid transparent;color:var(--muted);display:flex;
+    justify-content:space-between;align-items:center;gap:8px}
+  .dom.active{background:var(--panel2);border-color:var(--accent);color:var(--text)}
+  .pill{font-size:10px;padding:2px 7px;border-radius:99px;white-space:nowrap}
+  .pill.on{background:rgba(255,122,26,.15);color:var(--accent2)}
+  .pill.off{background:#232b39;color:#5f6b80}
+  main{flex:1;padding:26px 34px;max-width:1050px}
+  h2{font-size:16px;margin:26px 0 10px;color:var(--accent2)}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+  label{display:block;font-size:11.5px;color:var(--muted);margin-bottom:4px;
+    text-transform:uppercase;letter-spacing:.8px}
+  select,input,textarea{background:var(--panel2);color:var(--text);
+    border:1px solid var(--line);border-radius:8px;padding:9px 11px;
+    font-size:14px;outline:none}
+  select:focus,input:focus,textarea:focus{border-color:var(--accent)}
+  textarea{width:100%;min-height:230px;font-family:var(--mono);font-size:13px}
+  button{background:var(--accent);color:#14100b;font-weight:700;border:0;
+    border-radius:8px;padding:11px 26px;font-size:15px;cursor:pointer}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  .hint{color:var(--muted);font-size:12.5px;margin-top:6px}
+  #console{background:#0a0d12;border:1px solid var(--line);border-radius:8px;
+    padding:12px 14px;font-family:var(--mono);font-size:12.5px;min-height:70px;
+    max-height:260px;overflow-y:auto;white-space:pre-wrap;color:#9fd0a5}
+  .banner{border-radius:10px;padding:14px 18px;font-size:17px;font-weight:800;
+    margin-bottom:14px}
+  .banner.ok{background:rgba(46,204,113,.12);border:1px solid var(--ok);color:var(--ok)}
+  .banner.bad{background:rgba(231,76,60,.10);border:1px solid var(--bad);color:var(--bad)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:16px 20px;margin-bottom:14px}
+  .card h3{margin:0 0 8px;font-size:14px;color:var(--accent2)}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left}
+  th{color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.6px}
+  td.ok{color:var(--ok)} td.bad{color:var(--bad);font-weight:700}
+  details pre{background:#0a0d12;border:1px solid var(--line);border-radius:8px;
+    padding:14px;font-size:12px;overflow-x:auto;white-space:pre-wrap}
+  .muted{color:var(--muted)} .narr{font-style:italic;color:#c6d2e4}
+  #err{color:var(--bad);font-weight:600;margin-top:8px;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<aside>
+  <div class="logo">Seismo<span>Forge</span></div>
+  <div class="tag">Prompt in a building.<br>Get out a prototype that survived the simulator.</div>
+  <div class="domL">Engineering domains</div>
+  <div class="dom active">Seismic base-isolation prototyping <span class="pill on">ACTIVE</span></div>
+  <div class="dom">Wind &amp; vibration serviceability <span class="pill off">ROADMAP</span></div>
+  <div class="dom">Bridge seismic retrofit <span class="pill off">ROADMAP</span></div>
+  <div class="dom">Foundation &amp; soil-structure <span class="pill off">ROADMAP</span></div>
+  <div class="dom">Blast &amp; impact protection <span class="pill off">ROADMAP</span></div>
+  <div class="dom">Structural fire resilience <span class="pill off">ROADMAP</span></div>
+  <div class="hint" style="margin-top:22px">Every domain shares one contract:
+    the agent proposes, the physics engine verifies, and the report refuses any
+    verdict the simulation contradicts.</div>
+</aside>
+<main>
+  <h2>1 · Engine &amp; model</h2>
+  <div class="row">
+    <div><label>Run mode</label>
+      <select id="mode">
+        <option value="offline">Offline verified engine (no key needed)</option>
+        <option value="llm">LLM design agent</option>
+      </select></div>
+    <div><label>Provider</label>
+      <select id="provider">
+        <option value="anthropic">Anthropic</option>
+        <option value="openai" disabled>OpenAI (roadmap)</option>
+        <option value="google" disabled>Google (roadmap)</option>
+        <option value="other" disabled>Other (roadmap)</option>
+      </select></div>
+    <div><label>Model</label><select id="model"></select></div>
+    <div style="flex:1;min-width:230px"><label>API key (kept in memory only)</label>
+      <input id="apikey" type="password" placeholder="sk-ant-..." style="width:100%"></div>
+  </div>
+  <div class="hint">Offline mode runs the identical tools with a deterministic
+    policy — judges can reproduce every number with no key.</div>
+
+  <h2>2 · Project brief (your prompt)</h2>
+  <div class="row" style="margin-bottom:8px">
+    <div><label>Load an example brief</label><select id="examples"></select></div>
+  </div>
+  <textarea id="brief" spellcheck="false"></textarea>
+  <div class="hint">Free prose is welcome, but the datasheet lines must be
+    present: building use, stories above grade, seismic floor weight, story
+    lateral stiffness, story height, design PGA, predominant site period,
+    strong-motion duration, moat clearance available.</div>
+
+  <div style="margin-top:16px" class="row">
+    <button id="run">Forge the design</button>
+    <span id="spin" class="muted" style="display:none">running… nonlinear
+      response-history suite in progress</span>
+  </div>
+  <div id="err"></div>
+
+  <h2>3 · Run log</h2>
+  <div id="console">ready.</div>
+
+  <div id="results" style="display:none">
+    <h2>4 · Engineering conclusion</h2>
+    <div id="banner" class="banner"></div>
+    <div class="card"><h3>Conclusion</h3>
+      <div id="cBody"></div>
+      <p id="cNarr" class="narr"></p>
+      <p id="cBasis" class="muted" style="font-size:12.5px"></p>
+    </div>
+    <div class="card"><h3>Selected system</h3><div id="cDesign"></div></div>
+    <div class="card"><h3>Acceptance checks (suite envelope)</h3>
+      <table id="cChecks"><thead><tr><th>Check</th><th>Demand</th><th>Limit</th>
+        <th>Utilization</th><th>Status</th></tr></thead><tbody></tbody></table>
+    </div>
+    <details><summary class="muted">Full design report (client deliverable)</summary>
+      <pre id="cReport"></pre></details>
+  </div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let briefs=[];
+fetch("/api/briefs").then(r=>r.json()).then(data=>{
+  briefs=data.briefs;
+  $("examples").innerHTML='<option value="">— choose —</option>'+
+    briefs.map(b=>`<option value="${b.name}">${b.name.replace(/_/g," ")}</option>`).join("");
+  $("model").innerHTML=data.models.map(m=>`<option>${m}</option>`).join("");
+  const first=briefs.find(b=>b.name.includes("coastal"))||briefs[0];
+  if(first){$("brief").value=first.text;$("examples").value=first.name;}
+});
+$("examples").onchange=()=>{
+  const b=briefs.find(x=>x.name===$("examples").value);
+  if(b)$("brief").value=b.text;
+};
+$("mode").onchange=()=>{
+  const llm=$("mode").value==="llm";
+  $("apikey").disabled=$("provider").disabled=$("model").disabled=!llm;
+};
+$("mode").onchange();
+function fmt(x,d=4){return typeof x==="number"?Number(x.toPrecision(d)).toString():x;}
+$("run").onclick=async()=>{
+  $("err").textContent="";$("results").style.display="none";
+  $("console").textContent="";$("run").disabled=true;$("spin").style.display="";
+  const body={brief_text:$("brief").value,mode:$("mode").value,
+    provider:$("provider").value,model:$("model").value,api_key:$("apikey").value};
+  const resp=await fetch("/api/run",{method:"POST",body:JSON.stringify(body)});
+  const data=await resp.json();
+  if(data.error){$("err").textContent=data.error;$("run").disabled=false;
+    $("spin").style.display="none";return;}
+  const timer=setInterval(async()=>{
+    const s=await(await fetch("/api/status?id="+data.job_id)).json();
+    $("console").textContent=s.log.join("\n");
+    $("console").scrollTop=$("console").scrollHeight;
+    if(!s.done)return;
+    clearInterval(timer);$("run").disabled=false;$("spin").style.display="none";
+    if(s.error){$("err").textContent=s.error;return;}
+    render(s.result);
+  },700);
+};
+function render(r){
+  const c=r.conclusion,ok=c.verdict==="proceed";
+  $("banner").className="banner "+(ok?"ok":"bad");
+  $("banner").textContent=c.headline;
+  $("cBody").textContent=c.body;
+  $("cNarr").textContent=c.agent_narrative?("Agent engineer's note: "+c.agent_narrative):"";
+  $("cBasis").textContent=c.basis;
+  const d=r.design;
+  $("cDesign").innerHTML=d.system==="base_isolated"
+    ?`Lead-rubber base isolation — Qd <b>${fmt(d.isolation.qd_kn)} kN</b>,
+      Kd <b>${fmt(d.isolation.kd_kn_m)} kN/m</b>,
+      Dy <b>${fmt(d.isolation.dy_m*1000,3)} mm</b>`
+    :"Conventional fixed-base frame — base isolation not required on this site.";
+  const tb=$("cChecks").querySelector("tbody");tb.innerHTML="";
+  for(const ch of r.acceptance.checks){
+    if(ch.check==="all_records_converged"){
+      tb.insertAdjacentHTML("beforeend",`<tr><td>all records converged</td>
+        <td>${ch.satisfied?"yes":"no"}</td><td>required</td><td>—</td>
+        <td class="${ch.satisfied?"ok":"bad"}">${ch.satisfied?"OK":"FAIL"}</td></tr>`);
+      continue;}
+    tb.insertAdjacentHTML("beforeend",`<tr><td>${ch.check}</td>
+      <td>${fmt(ch.value)}</td><td>${fmt(ch.limit)}</td>
+      <td>${(ch.utilization*100).toFixed(0)}%</td>
+      <td class="${ch.satisfied?"ok":"bad"}">${ch.satisfied?"OK":"FAIL"}</td></tr>`);
+  }
+  $("cReport").textContent=r.report_markdown;
+  $("results").style.display="";
+}
+</script>
+</body>
+</html>

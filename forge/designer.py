@@ -155,10 +155,22 @@ def candidate_grid(spec: BuildingSpec) -> list[Design]:
 
 
 def worst_utilization(report: dict[str, Any]) -> float:
+    """Worst limit utilization over the real demand checks.
+
+    The convergence check pins at 1.0 by construction and would mask the
+    margins of passing designs, so it is excluded; a non-converged suite
+    already fails the report outright.
+    """
     values = [
         c["utilization"] for c in report.get("checks", ())
         if c.get("utilization") is not None
+        and c.get("check") != "all_records_converged"
     ]
+    if not report.get("passed") and any(
+        c.get("check") == "all_records_converged" and not c.get("satisfied")
+        for c in report.get("checks", ())
+    ):
+        return float("inf")
     return max(values) if values else float("inf")
 
 

@@ -53,7 +53,7 @@ Governing check: **base_shear_coeff** at utilization 0.78.
 
 | # | Stage | System | Qd (kN) | Kd (kN/m) | Dy (mm) | Result | Worst utilization |
 |---|---|---|---|---|---|---|---|
-| 1 | agent | base_isolated | 883 | 7,553 | 20 | pass | 1.00 |
+| 1 | agent | base_isolated | 883 | 7,553 | 20 | pass | 0.78 |
 
 ## Engineering notes
 

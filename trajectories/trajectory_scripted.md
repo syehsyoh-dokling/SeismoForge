@@ -14,7 +14,7 @@
 "# Project brief: Coastal Hospital\n\nA regional health authority is planning a five-story acute-care hospital on a\nreclaimed coastal site with deep soft soil. The facility must remain\noperational immediately after a major earthquake, so equipment accelerations\nand structural drift are both tightly controlled. The structural concept is a\nstiff concrete shear-wall block; the question for us is the base isolation\nlayer and whether the available moat is enough on this soil.\n\n## Project data\n\n- Building use: hospital\n- Stories above grade: 5\n- Seismic floor weight: 550 tonnes per floor\n- Story lateral stiffness: 450,000 kN/m\n- Story height: 3.6 m\n\n## Site hazard\n\n- Design PGA: 0.32 g\n- Predominant site period: 1.1 s\n- Strong-motion duration: 25 s\n- Moat clearance available: 0.90 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+0.02s`):
+**Tool call** `parse_brief` (`t+0.01s`):
 
 ```json
 {
@@ -22,7 +22,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+0.04s`):
+**Tool result** `parse_brief` (`t+0.02s`):
 
 ```json
 {
@@ -50,7 +50,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+0.06s`):
+**Tool call** `propose_rule_of_thumb` (`t+0.03s`):
 
 ```json
 {
@@ -58,7 +58,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+0.08s`):
+**Tool result** `propose_rule_of_thumb` (`t+0.05s`):
 
 ```json
 {
@@ -71,7 +71,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+0.1s`):
+**Tool call** `simulate_design` (`t+0.07s`):
 
 ```json
 {
@@ -87,7 +87,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+0.46s`):
+**Tool result** `simulate_design` (`t+0.4s`):
 
 ```json
 {
@@ -164,7 +164,7 @@
 }
 ```
 
-**Tool call** `candidate_designs` (`t+0.46s`):
+**Tool call** `candidate_designs` (`t+0.4s`):
 
 ```json
 {
@@ -172,7 +172,7 @@
 }
 ```
 
-**Tool result** `candidate_designs` (`t+0.48s`):
+**Tool result** `candidate_designs` (`t+0.42s`):
 
 ```json
 [
@@ -302,7 +302,7 @@
 ...[result truncated for display]
 ```
 
-**Tool call** `simulate_design` (`t+0.5s`):
+**Tool call** `simulate_design` (`t+0.43s`):
 
 ```json
 {
@@ -318,7 +318,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+0.77s`):
+**Tool result** `simulate_design` (`t+0.72s`):
 
 ```json
 {
@@ -396,7 +396,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+0.77s`):
+**Tool call** `simulate_design` (`t+0.72s`):
 
 ```json
 {
@@ -412,7 +412,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+1.04s`):
+**Tool result** `simulate_design` (`t+1.02s`):
 
 ```json
 {
@@ -490,7 +490,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+1.04s`):
+**Tool call** `simulate_design` (`t+1.02s`):
 
 ```json
 {
@@ -598,7 +598,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+1.57s`):
+**Tool result** `simulate_design` (`t+1.58s`):
 
 ```json
 {
@@ -675,7 +675,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+1.57s`):
+**Tool call** `simulate_design` (`t+1.58s`):
 
 ```json
 {
@@ -783,7 +783,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+2.11s`):
+**Tool result** `simulate_design` (`t+2.1s`):
 
 ```json
 {
@@ -860,7 +860,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+2.11s`):
+**Tool call** `simulate_design` (`t+2.1s`):
 
 ```json
 {
@@ -953,7 +953,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+2.38s`):
+**Tool call** `simulate_design` (`t+2.37s`):
 
 ```json
 {
@@ -1046,7 +1046,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+2.65s`):
+**Tool call** `simulate_design` (`t+2.64s`):
 
 ```json
 {
@@ -1155,7 +1155,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+3.17s`):
+**Tool result** `simulate_design` (`t+3.21s`):
 
 ```json
 {
@@ -1232,7 +1232,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+3.17s`):
+**Tool call** `simulate_design` (`t+3.21s`):
 
 ```json
 {
@@ -1248,7 +1248,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+3.43s`):
+**Tool result** `simulate_design` (`t+3.5s`):
 
 ```json
 {
@@ -1324,7 +1324,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+3.43s`):
+**Tool call** `simulate_design` (`t+3.5s`):
 
 ```json
 {
@@ -1340,7 +1340,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+3.69s`):
+**Tool result** `simulate_design` (`t+3.77s`):
 
 ```json
 {
@@ -1414,7 +1414,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+3.69s`):
+**Tool call** `simulate_design` (`t+3.78s`):
 
 ```json
 {
@@ -1430,7 +1430,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+3.95s`):
+**Tool result** `simulate_design` (`t+4.04s`):
 
 ```json
 {
@@ -1507,7 +1507,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+3.95s`):
+**Tool call** `simulate_design` (`t+4.05s`):
 
 ```json
 {
@@ -1523,7 +1523,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+4.21s`):
+**Tool result** `simulate_design` (`t+4.31s`):
 
 ```json
 {
@@ -1600,7 +1600,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+4.22s`):
+**Tool call** `simulate_design` (`t+4.32s`):
 
 ```json
 {
@@ -1616,7 +1616,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+4.47s`):
+**Tool result** `simulate_design` (`t+4.58s`):
 
 ```json
 {
@@ -1694,7 +1694,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+4.48s`):
+**Tool call** `simulate_design` (`t+4.58s`):
 
 ```json
 {
@@ -1710,7 +1710,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+4.74s`):
+**Tool result** `simulate_design` (`t+4.85s`):
 
 ```json
 {
@@ -1788,7 +1788,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+4.75s`):
+**Tool call** `simulate_design` (`t+4.86s`):
 
 ```json
 {
@@ -1804,7 +1804,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+5.01s`):
+**Tool result** `simulate_design` (`t+5.12s`):
 
 ```json
 {
@@ -1881,7 +1881,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+5.01s`):
+**Tool call** `simulate_design` (`t+5.13s`):
 
 ```json
 {
@@ -1897,7 +1897,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+5.29s`):
+**Tool result** `simulate_design` (`t+5.39s`):
 
 ```json
 {
@@ -1973,7 +1973,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+5.29s`):
+**Tool call** `write_report` (`t+5.39s`):
 
 ```json
 {
@@ -1991,7 +1991,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+5.57s`):
+**Tool result** `write_report` (`t+5.67s`):
 
 ```json
 {
@@ -2004,7 +2004,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+5.57s`):
+**Tool call** `verify_output` (`t+5.67s`):
 
 ```json
 {
@@ -2012,7 +2012,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+5.84s`):
+**Tool result** `verify_output` (`t+5.95s`):
 
 ```json
 {
@@ -2021,9 +2021,9 @@
 }
 ```
 
-**policy** (`t+5.85s`): `{"note": "brief_01_coastal_hospital: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'base_shear_coeff', 'governing_utilization': 0.9301141630578948, 'passed': True}"}`
+**policy** (`t+5.95s`): `{"note": "brief_01_coastal_hospital: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'base_shear_coeff', 'governing_utilization': 0.9301141630578948, 'passed': True}"}`
 
-**Tool call** `read_brief` (`t+5.86s`):
+**Tool call** `read_brief` (`t+5.97s`):
 
 ```json
 {
@@ -2031,13 +2031,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+5.88s`):
+**Tool result** `read_brief` (`t+5.98s`):
 
 ```json
 "# Project brief: Valley Office Tower\n\nA developer wants an eight-story commercial office building in a valley city\nwith moderate-to-high seismicity on firm alluvium. Tenant comfort and\ninsurance terms favour an isolated solution if it is economical; the frame\nitself is a conventional stiff core.\n\n## Project data\n\n- Building use: office\n- Stories above grade: 8\n- Seismic floor weight: 600 tonnes per floor\n- Story lateral stiffness: 380,000 kN/m\n- Story height: 3.4 m\n\n## Site hazard\n\n- Design PGA: 0.25 g\n- Predominant site period: 0.7 s\n- Strong-motion duration: 22 s\n- Moat clearance available: 0.55 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+5.89s`):
+**Tool call** `parse_brief` (`t+6.0s`):
 
 ```json
 {
@@ -2045,7 +2045,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+5.91s`):
+**Tool result** `parse_brief` (`t+6.02s`):
 
 ```json
 {
@@ -2073,7 +2073,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+5.92s`):
+**Tool call** `propose_rule_of_thumb` (`t+6.03s`):
 
 ```json
 {
@@ -2081,7 +2081,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+5.94s`):
+**Tool result** `propose_rule_of_thumb` (`t+6.05s`):
 
 ```json
 {
@@ -2094,7 +2094,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+5.96s`):
+**Tool call** `simulate_design` (`t+6.07s`):
 
 ```json
 {
@@ -2110,7 +2110,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+6.28s`):
+**Tool result** `simulate_design` (`t+6.4s`):
 
 ```json
 {
@@ -2184,7 +2184,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+6.29s`):
+**Tool call** `write_report` (`t+6.4s`):
 
 ```json
 {
@@ -2202,7 +2202,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+6.62s`):
+**Tool result** `write_report` (`t+6.75s`):
 
 ```json
 {
@@ -2215,7 +2215,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+6.63s`):
+**Tool call** `verify_output` (`t+6.75s`):
 
 ```json
 {
@@ -2223,7 +2223,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+6.96s`):
+**Tool result** `verify_output` (`t+7.13s`):
 
 ```json
 {
@@ -2232,9 +2232,9 @@
 }
 ```
 
-**policy** (`t+6.96s`): `{"note": "brief_02_valley_office: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.798823974217303, 'passed': True}"}`
+**policy** (`t+7.13s`): `{"note": "brief_02_valley_office: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.798823974217303, 'passed': True}"}`
 
-**Tool call** `read_brief` (`t+6.97s`):
+**Tool call** `read_brief` (`t+7.15s`):
 
 ```json
 {
@@ -2242,13 +2242,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+7.0s`):
+**Tool result** `read_brief` (`t+7.17s`):
 
 ```json
 "# Project brief: Hillside Distribution Warehouse\n\nA logistics operator needs a simple two-story racking warehouse in a\nlow-to-moderate seismic region on stiff hillside soils. Contents are\npalletized goods; the owner wants the cheapest system that verifiably meets\nthe performance targets, and suspects isolation is unnecessary here.\n\n## Project data\n\n- Building use: warehouse\n- Stories above grade: 2\n- Seismic floor weight: 400 tonnes per floor\n- Story lateral stiffness: 150,000 kN/m\n- Story height: 4.5 m\n\n## Site hazard\n\n- Design PGA: 0.15 g\n- Predominant site period: 0.5 s\n- Strong-motion duration: 20 s\n- Moat clearance available: 0.35 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+7.01s`):
+**Tool call** `parse_brief` (`t+7.18s`):
 
 ```json
 {
@@ -2256,7 +2256,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+7.02s`):
+**Tool result** `parse_brief` (`t+7.21s`):
 
 ```json
 {
@@ -2284,7 +2284,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+7.04s`):
+**Tool call** `propose_rule_of_thumb` (`t+7.22s`):
 
 ```json
 {
@@ -2292,7 +2292,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+7.05s`):
+**Tool result** `propose_rule_of_thumb` (`t+7.25s`):
 
 ```json
 {
@@ -2301,7 +2301,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+7.07s`):
+**Tool call** `simulate_design` (`t+7.27s`):
 
 ```json
 {
@@ -2313,7 +2313,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+7.19s`):
+**Tool result** `simulate_design` (`t+7.39s`):
 
 ```json
 {
@@ -2367,7 +2367,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+7.19s`):
+**Tool call** `write_report` (`t+7.39s`):
 
 ```json
 {
@@ -2381,7 +2381,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+7.33s`):
+**Tool result** `write_report` (`t+7.53s`):
 
 ```json
 {
@@ -2394,7 +2394,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+7.33s`):
+**Tool call** `verify_output` (`t+7.53s`):
 
 ```json
 {
@@ -2402,7 +2402,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+7.46s`):
+**Tool result** `verify_output` (`t+7.68s`):
 
 ```json
 {
@@ -2411,9 +2411,9 @@
 }
 ```
 
-**policy** (`t+7.46s`): `{"note": "brief_03_hillside_warehouse: {'verdict': 'proceed', 'system': 'fixed_base', 'governing_check': 'base_shear_coeff', 'governing_utilization': 0.8814411402274767, 'passed': True}"}`
+**policy** (`t+7.69s`): `{"note": "brief_03_hillside_warehouse: {'verdict': 'proceed', 'system': 'fixed_base', 'governing_check': 'base_shear_coeff', 'governing_utilization': 0.8814411402274767, 'passed': True}"}`
 
-**Tool call** `read_brief` (`t+7.48s`):
+**Tool call** `read_brief` (`t+7.7s`):
 
 ```json
 {
@@ -2421,13 +2421,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+7.5s`):
+**Tool result** `read_brief` (`t+7.73s`):
 
 ```json
 "# Project brief: Metro Data Center\n\nA colocation provider is building a three-story data hall near a metropolitan\nfault system. Rack equipment is acceleration-sensitive and downtime is\ncontractual money, so floor accelerations dominate the design conversation.\nThe floor plates are heavy with mechanical plant.\n\n## Project data\n\n- Building use: data_center\n- Stories above grade: 3\n- Seismic floor weight: 800 tonnes per floor\n- Story lateral stiffness: 500,000 kN/m\n- Story height: 4.0 m\n\n## Site hazard\n\n- Design PGA: 0.28 g\n- Predominant site period: 0.9 s\n- Strong-motion duration: 24 s\n- Moat clearance available: 0.60 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+7.52s`):
+**Tool call** `parse_brief` (`t+7.74s`):
 
 ```json
 {
@@ -2435,7 +2435,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+7.54s`):
+**Tool result** `parse_brief` (`t+7.76s`):
 
 ```json
 {
@@ -2463,7 +2463,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+7.55s`):
+**Tool call** `propose_rule_of_thumb` (`t+7.78s`):
 
 ```json
 {
@@ -2471,7 +2471,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+7.57s`):
+**Tool result** `propose_rule_of_thumb` (`t+7.79s`):
 
 ```json
 {
@@ -2484,7 +2484,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+7.59s`):
+**Tool call** `simulate_design` (`t+7.81s`):
 
 ```json
 {
@@ -2500,7 +2500,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+7.79s`):
+**Tool result** `simulate_design` (`t+8.0s`):
 
 ```json
 {
@@ -2576,7 +2576,7 @@
 }
 ```
 
-**Tool call** `candidate_designs` (`t+7.79s`):
+**Tool call** `candidate_designs` (`t+8.01s`):
 
 ```json
 {
@@ -2584,7 +2584,7 @@
 }
 ```
 
-**Tool result** `candidate_designs` (`t+7.81s`):
+**Tool result** `candidate_designs` (`t+8.02s`):
 
 ```json
 [
@@ -2716,7 +2716,7 @@
 ...[result truncated for display]
 ```
 
-**Tool call** `simulate_design` (`t+7.83s`):
+**Tool call** `simulate_design` (`t+8.04s`):
 
 ```json
 {
@@ -2732,7 +2732,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+8.03s`):
+**Tool result** `simulate_design` (`t+8.23s`):
 
 ```json
 {
@@ -2809,7 +2809,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+8.04s`):
+**Tool call** `simulate_design` (`t+8.23s`):
 
 ```json
 {
@@ -2825,7 +2825,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+8.24s`):
+**Tool result** `simulate_design` (`t+8.43s`):
 
 ```json
 {
@@ -2902,7 +2902,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+8.24s`):
+**Tool call** `simulate_design` (`t+8.44s`):
 
 ```json
 {
@@ -2918,7 +2918,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+8.44s`):
+**Tool result** `simulate_design` (`t+8.63s`):
 
 ```json
 {
@@ -2994,7 +2994,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+8.44s`):
+**Tool call** `simulate_design` (`t+8.64s`):
 
 ```json
 {
@@ -3010,7 +3010,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+8.64s`):
+**Tool result** `simulate_design` (`t+8.84s`):
 
 ```json
 {
@@ -3086,7 +3086,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+8.65s`):
+**Tool call** `simulate_design` (`t+8.84s`):
 
 ```json
 {
@@ -3102,7 +3102,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+8.84s`):
+**Tool result** `simulate_design` (`t+9.03s`):
 
 ```json
 {
@@ -3178,7 +3178,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+8.85s`):
+**Tool call** `simulate_design` (`t+9.04s`):
 
 ```json
 {
@@ -3194,7 +3194,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+9.05s`):
+**Tool result** `simulate_design` (`t+9.23s`):
 
 ```json
 {
@@ -3270,7 +3270,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+9.05s`):
+**Tool call** `simulate_design` (`t+9.23s`):
 
 ```json
 {
@@ -3286,7 +3286,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+9.24s`):
+**Tool result** `simulate_design` (`t+9.43s`):
 
 ```json
 {
@@ -3363,7 +3363,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+9.25s`):
+**Tool call** `simulate_design` (`t+9.43s`):
 
 ```json
 {
@@ -3379,7 +3379,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+9.44s`):
+**Tool result** `simulate_design` (`t+9.62s`):
 
 ```json
 {
@@ -3456,7 +3456,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+9.45s`):
+**Tool call** `simulate_design` (`t+9.63s`):
 
 ```json
 {
@@ -3472,7 +3472,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+9.64s`):
+**Tool result** `simulate_design` (`t+9.82s`):
 
 ```json
 {
@@ -3548,7 +3548,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+9.65s`):
+**Tool call** `simulate_design` (`t+9.83s`):
 
 ```json
 {
@@ -3564,7 +3564,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+9.84s`):
+**Tool result** `simulate_design` (`t+10.02s`):
 
 ```json
 {
@@ -3638,7 +3638,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+9.85s`):
+**Tool call** `simulate_design` (`t+10.02s`):
 
 ```json
 {
@@ -3654,7 +3654,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+10.05s`):
+**Tool result** `simulate_design` (`t+10.22s`):
 
 ```json
 {
@@ -3728,7 +3728,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+10.05s`):
+**Tool call** `simulate_design` (`t+10.22s`):
 
 ```json
 {
@@ -3744,7 +3744,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+10.24s`):
+**Tool result** `simulate_design` (`t+10.41s`):
 
 ```json
 {
@@ -3818,7 +3818,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+10.25s`):
+**Tool call** `simulate_design` (`t+10.42s`):
 
 ```json
 {
@@ -3834,7 +3834,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+10.44s`):
+**Tool result** `simulate_design` (`t+10.61s`):
 
 ```json
 {
@@ -3911,7 +3911,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+10.44s`):
+**Tool call** `simulate_design` (`t+10.62s`):
 
 ```json
 {
@@ -3927,7 +3927,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+10.64s`):
+**Tool result** `simulate_design` (`t+10.81s`):
 
 ```json
 {
@@ -4004,7 +4004,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+10.64s`):
+**Tool call** `simulate_design` (`t+10.82s`):
 
 ```json
 {
@@ -4020,7 +4020,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+10.84s`):
+**Tool result** `simulate_design` (`t+11.02s`):
 
 ```json
 {
@@ -4096,7 +4096,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+10.85s`):
+**Tool call** `simulate_design` (`t+11.02s`):
 
 ```json
 {
@@ -4112,7 +4112,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+11.04s`):
+**Tool result** `simulate_design` (`t+11.22s`):
 
 ```json
 {
@@ -4188,7 +4188,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+11.05s`):
+**Tool call** `simulate_design` (`t+11.22s`):
 
 ```json
 {
@@ -4204,7 +4204,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+11.25s`):
+**Tool result** `simulate_design` (`t+11.41s`):
 
 ```json
 {
@@ -4280,7 +4280,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+11.25s`):
+**Tool call** `simulate_design` (`t+11.41s`):
 
 ```json
 {
@@ -4296,7 +4296,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+11.47s`):
+**Tool result** `simulate_design` (`t+11.6s`):
 
 ```json
 {
@@ -4372,7 +4372,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+11.47s`):
+**Tool call** `write_report` (`t+11.61s`):
 
 ```json
 {
@@ -4381,16 +4381,16 @@
     "system": "base_isolated",
     "isolation": {
       "qd_kn": 1883.52,
-      "kd_kn_m": 9252.754126021273,
+      "kd_kn_m": 5921.762640653615,
       "dy_m": 0.045
     }
   },
   "verdict": "proceed",
-  "engineer_notes": "Governing check: peak_floor_accel_g at utilization 0.92."
+  "engineer_notes": "Governing check: peak_floor_accel_g at utilization 0.79."
 }
 ```
 
-**Tool result** `write_report` (`t+11.68s`):
+**Tool result** `write_report` (`t+11.86s`):
 
 ```json
 {
@@ -4403,7 +4403,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+11.68s`):
+**Tool call** `verify_output` (`t+11.86s`):
 
 ```json
 {
@@ -4411,7 +4411,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+11.88s`):
+**Tool result** `verify_output` (`t+12.08s`):
 
 ```json
 {
@@ -4420,9 +4420,9 @@
 }
 ```
 
-**policy** (`t+11.88s`): `{"note": "brief_04_metro_datacenter: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.9161070704094786, 'passed': True}"}`
+**policy** (`t+12.08s`): `{"note": "brief_04_metro_datacenter: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.7923240391019488, 'passed': True}"}`
 
-**Tool call** `read_brief` (`t+11.9s`):
+**Tool call** `read_brief` (`t+12.1s`):
 
 ```json
 {
@@ -4430,13 +4430,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+11.92s`):
+**Tool result** `read_brief` (`t+12.12s`):
 
 ```json
 "# Project brief: Riverside School\n\nA school district is replacing a four-story classroom block on river-deposit\nsoils. Life safety plus post-earthquake usability as a neighbourhood shelter\nare the goals; the district asked explicitly for evidence that the chosen\nsystem holds its targets across multiple plausible ground motions, not just\none design record.\n\n## Project data\n\n- Building use: school\n- Stories above grade: 4\n- Seismic floor weight: 480 tonnes per floor\n- Story lateral stiffness: 300,000 kN/m\n- Story height: 3.5 m\n\n## Site hazard\n\n- Design PGA: 0.30 g\n- Predominant site period: 1.0 s\n- Strong-motion duration: 24 s\n- Moat clearance available: 0.60 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+11.93s`):
+**Tool call** `parse_brief` (`t+12.13s`):
 
 ```json
 {
@@ -4444,7 +4444,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+11.95s`):
+**Tool result** `parse_brief` (`t+12.14s`):
 
 ```json
 {
@@ -4472,7 +4472,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+11.96s`):
+**Tool call** `propose_rule_of_thumb` (`t+12.16s`):
 
 ```json
 {
@@ -4480,7 +4480,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+11.98s`):
+**Tool result** `propose_rule_of_thumb` (`t+12.17s`):
 
 ```json
 {
@@ -4493,7 +4493,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+11.99s`):
+**Tool call** `simulate_design` (`t+12.19s`):
 
 ```json
 {
@@ -4509,7 +4509,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+12.22s`):
+**Tool result** `simulate_design` (`t+12.41s`):
 
 ```json
 {
@@ -4585,7 +4585,7 @@
 }
 ```
 
-**Tool call** `candidate_designs` (`t+12.22s`):
+**Tool call** `candidate_designs` (`t+12.41s`):
 
 ```json
 {
@@ -4593,7 +4593,7 @@
 }
 ```
 
-**Tool result** `candidate_designs` (`t+12.24s`):
+**Tool result** `candidate_designs` (`t+12.43s`):
 
 ```json
 [
@@ -4721,7 +4721,7 @@
 ...[result truncated for display]
 ```
 
-**Tool call** `simulate_design` (`t+12.25s`):
+**Tool call** `simulate_design` (`t+12.44s`):
 
 ```json
 {
@@ -4737,7 +4737,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+12.49s`):
+**Tool result** `simulate_design` (`t+12.67s`):
 
 ```json
 {
@@ -4815,7 +4815,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+12.49s`):
+**Tool call** `simulate_design` (`t+12.67s`):
 
 ```json
 {
@@ -4831,7 +4831,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+12.75s`):
+**Tool result** `simulate_design` (`t+12.91s`):
 
 ```json
 {
@@ -4909,7 +4909,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+12.75s`):
+**Tool call** `simulate_design` (`t+12.91s`):
 
 ```json
 {
@@ -4925,7 +4925,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+12.98s`):
+**Tool result** `simulate_design` (`t+13.14s`):
 
 ```json
 {
@@ -5001,7 +5001,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+12.98s`):
+**Tool call** `simulate_design` (`t+13.14s`):
 
 ```json
 {
@@ -5017,7 +5017,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+13.23s`):
+**Tool result** `simulate_design` (`t+13.37s`):
 
 ```json
 {
@@ -5093,7 +5093,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+13.23s`):
+**Tool call** `simulate_design` (`t+13.37s`):
 
 ```json
 {
@@ -5109,7 +5109,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+13.47s`):
+**Tool result** `simulate_design` (`t+13.61s`):
 
 ```json
 {
@@ -5185,7 +5185,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+13.47s`):
+**Tool call** `simulate_design` (`t+13.61s`):
 
 ```json
 {
@@ -5201,7 +5201,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+13.71s`):
+**Tool result** `simulate_design` (`t+13.86s`):
 
 ```json
 {
@@ -5277,7 +5277,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+13.71s`):
+**Tool call** `simulate_design` (`t+13.86s`):
 
 ```json
 {
@@ -5293,7 +5293,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+13.94s`):
+**Tool result** `simulate_design` (`t+14.1s`):
 
 ```json
 {
@@ -5370,7 +5370,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+13.94s`):
+**Tool call** `simulate_design` (`t+14.1s`):
 
 ```json
 {
@@ -5386,7 +5386,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+14.17s`):
+**Tool result** `simulate_design` (`t+14.33s`):
 
 ```json
 {
@@ -5463,7 +5463,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+14.18s`):
+**Tool call** `simulate_design` (`t+14.34s`):
 
 ```json
 {
@@ -5479,7 +5479,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+14.42s`):
+**Tool result** `simulate_design` (`t+14.59s`):
 
 ```json
 {
@@ -5553,7 +5553,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+14.42s`):
+**Tool call** `simulate_design` (`t+14.6s`):
 
 ```json
 {
@@ -5569,7 +5569,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+14.64s`):
+**Tool result** `simulate_design` (`t+14.86s`):
 
 ```json
 {
@@ -5643,7 +5643,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+14.65s`):
+**Tool call** `simulate_design` (`t+14.86s`):
 
 ```json
 {
@@ -5659,7 +5659,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+14.88s`):
+**Tool result** `simulate_design` (`t+15.09s`):
 
 ```json
 {
@@ -5733,7 +5733,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+14.88s`):
+**Tool call** `simulate_design` (`t+15.09s`):
 
 ```json
 {
@@ -5749,7 +5749,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+15.12s`):
+**Tool result** `simulate_design` (`t+15.31s`):
 
 ```json
 {
@@ -5823,7 +5823,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+15.12s`):
+**Tool call** `simulate_design` (`t+15.32s`):
 
 ```json
 {
@@ -5839,7 +5839,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+15.34s`):
+**Tool result** `simulate_design` (`t+15.54s`):
 
 ```json
 {
@@ -5915,7 +5915,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+15.35s`):
+**Tool call** `simulate_design` (`t+15.54s`):
 
 ```json
 {
@@ -5931,7 +5931,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+15.58s`):
+**Tool result** `simulate_design` (`t+15.77s`):
 
 ```json
 {
@@ -6007,7 +6007,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+15.59s`):
+**Tool call** `simulate_design` (`t+15.77s`):
 
 ```json
 {
@@ -6023,7 +6023,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+15.81s`):
+**Tool result** `simulate_design` (`t+16.0s`):
 
 ```json
 {
@@ -6099,7 +6099,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+15.82s`):
+**Tool call** `simulate_design` (`t+16.0s`):
 
 ```json
 {
@@ -6115,7 +6115,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+16.04s`):
+**Tool result** `simulate_design` (`t+16.23s`):
 
 ```json
 {
@@ -6191,7 +6191,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+16.05s`):
+**Tool call** `simulate_design` (`t+16.23s`):
 
 ```json
 {
@@ -6207,7 +6207,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+16.27s`):
+**Tool result** `simulate_design` (`t+16.45s`):
 
 ```json
 {
@@ -6281,7 +6281,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+16.28s`):
+**Tool call** `simulate_design` (`t+16.45s`):
 
 ```json
 {
@@ -6297,7 +6297,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+16.51s`):
+**Tool result** `simulate_design` (`t+16.68s`):
 
 ```json
 {
@@ -6371,7 +6371,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+16.52s`):
+**Tool call** `write_report` (`t+16.68s`):
 
 ```json
 {
@@ -6379,17 +6379,17 @@
   "design": {
     "system": "base_isolated",
     "isolation": {
-      "qd_kn": 1506.816,
-      "kd_kn_m": 7402.203300817018,
-      "dy_m": 0.03
+      "qd_kn": 2071.8720000000003,
+      "kd_kn_m": 4737.410112522892,
+      "dy_m": 0.045
     }
   },
   "verdict": "proceed",
-  "engineer_notes": "Governing check: peak_floor_accel_g at utilization 0.91."
+  "engineer_notes": "Governing check: peak_floor_accel_g at utilization 0.85."
 }
 ```
 
-**Tool result** `write_report` (`t+16.76s`):
+**Tool result** `write_report` (`t+16.92s`):
 
 ```json
 {
@@ -6402,7 +6402,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+16.76s`):
+**Tool call** `verify_output` (`t+16.92s`):
 
 ```json
 {
@@ -6410,7 +6410,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+17.0s`):
+**Tool result** `verify_output` (`t+17.15s`):
 
 ```json
 {
@@ -6419,9 +6419,9 @@
 }
 ```
 
-**policy** (`t+17.0s`): `{"note": "brief_05_riverside_school: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.9083429421526344, 'passed': True}"}`
+**policy** (`t+17.16s`): `{"note": "brief_05_riverside_school: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.8534988456172266, 'passed': True}"}`
 
-**Tool call** `read_brief` (`t+17.01s`):
+**Tool call** `read_brief` (`t+17.17s`):
 
 ```json
 {
@@ -6429,13 +6429,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+17.03s`):
+**Tool result** `read_brief` (`t+17.19s`):
 
 ```json
 "# Project brief: Downtown Residential Tower\n\nA twelve-story apartment tower on a constrained downtown lot. The structural\nsystem is a stiff wall-frame; the lot line limits how much isolator travel the\npodium can accommodate. The owner wants to know whether isolation still pays\noff with that constraint.\n\n## Project data\n\n- Building use: residential\n- Stories above grade: 12\n- Seismic floor weight: 650 tonnes per floor\n- Story lateral stiffness: 550,000 kN/m\n- Story height: 3.0 m\n\n## Site hazard\n\n- Design PGA: 0.26 g\n- Predominant site period: 0.8 s\n- Strong-motion duration: 22 s\n- Moat clearance available: 0.50 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+17.05s`):
+**Tool call** `parse_brief` (`t+17.21s`):
 
 ```json
 {
@@ -6443,7 +6443,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+17.07s`):
+**Tool result** `parse_brief` (`t+17.22s`):
 
 ```json
 {
@@ -6471,7 +6471,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+17.08s`):
+**Tool call** `propose_rule_of_thumb` (`t+17.24s`):
 
 ```json
 {
@@ -6479,7 +6479,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+17.09s`):
+**Tool result** `propose_rule_of_thumb` (`t+17.26s`):
 
 ```json
 {
@@ -6492,7 +6492,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+17.11s`):
+**Tool call** `simulate_design` (`t+17.27s`):
 
 ```json
 {
@@ -6508,7 +6508,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+17.54s`):
+**Tool result** `simulate_design` (`t+17.74s`):
 
 ```json
 {
@@ -6584,7 +6584,7 @@
 }
 ```
 
-**Tool call** `candidate_designs` (`t+17.54s`):
+**Tool call** `candidate_designs` (`t+17.74s`):
 
 ```json
 {
@@ -6592,7 +6592,7 @@
 }
 ```
 
-**Tool result** `candidate_designs` (`t+17.56s`):
+**Tool result** `candidate_designs` (`t+17.77s`):
 
 ```json
 [
@@ -6720,7 +6720,7 @@
 ...[result truncated for display]
 ```
 
-**Tool call** `simulate_design` (`t+17.57s`):
+**Tool call** `simulate_design` (`t+17.78s`):
 
 ```json
 {
@@ -6736,7 +6736,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+18.01s`):
+**Tool result** `simulate_design` (`t+18.23s`):
 
 ```json
 {
@@ -6810,7 +6810,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+18.01s`):
+**Tool call** `simulate_design` (`t+18.24s`):
 
 ```json
 {
@@ -6826,7 +6826,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+18.44s`):
+**Tool result** `simulate_design` (`t+18.67s`):
 
 ```json
 {
@@ -6900,7 +6900,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+18.45s`):
+**Tool call** `simulate_design` (`t+18.67s`):
 
 ```json
 {
@@ -6916,7 +6916,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+18.88s`):
+**Tool result** `simulate_design` (`t+19.11s`):
 
 ```json
 {
@@ -6990,7 +6990,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+18.88s`):
+**Tool call** `simulate_design` (`t+19.12s`):
 
 ```json
 {
@@ -7006,7 +7006,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+19.32s`):
+**Tool result** `simulate_design` (`t+19.56s`):
 
 ```json
 {
@@ -7080,7 +7080,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+19.32s`):
+**Tool call** `simulate_design` (`t+19.56s`):
 
 ```json
 {
@@ -7096,7 +7096,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+19.76s`):
+**Tool result** `simulate_design` (`t+20.05s`):
 
 ```json
 {
@@ -7170,7 +7170,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+19.76s`):
+**Tool call** `simulate_design` (`t+20.06s`):
 
 ```json
 {
@@ -7186,7 +7186,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+20.2s`):
+**Tool result** `simulate_design` (`t+20.56s`):
 
 ```json
 {
@@ -7260,7 +7260,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+20.21s`):
+**Tool call** `simulate_design` (`t+20.56s`):
 
 ```json
 {
@@ -7276,7 +7276,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+20.65s`):
+**Tool result** `simulate_design` (`t+21.03s`):
 
 ```json
 {
@@ -7352,7 +7352,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+20.65s`):
+**Tool call** `simulate_design` (`t+21.03s`):
 
 ```json
 {
@@ -7368,7 +7368,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+21.1s`):
+**Tool result** `simulate_design` (`t+21.51s`):
 
 ```json
 {
@@ -7444,7 +7444,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+21.1s`):
+**Tool call** `simulate_design` (`t+21.51s`):
 
 ```json
 {
@@ -7460,7 +7460,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+21.56s`):
+**Tool result** `simulate_design` (`t+21.95s`):
 
 ```json
 {
@@ -7536,7 +7536,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+21.57s`):
+**Tool call** `simulate_design` (`t+21.96s`):
 
 ```json
 {
@@ -7552,7 +7552,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+22.01s`):
+**Tool result** `simulate_design` (`t+22.4s`):
 
 ```json
 {
@@ -7626,7 +7626,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+22.01s`):
+**Tool call** `simulate_design` (`t+22.4s`):
 
 ```json
 {
@@ -7642,7 +7642,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+22.45s`):
+**Tool result** `simulate_design` (`t+22.84s`):
 
 ```json
 {
@@ -7716,7 +7716,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+22.45s`):
+**Tool call** `simulate_design` (`t+22.84s`):
 
 ```json
 {
@@ -7732,7 +7732,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+22.89s`):
+**Tool result** `simulate_design` (`t+23.28s`):
 
 ```json
 {
@@ -7806,7 +7806,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+22.89s`):
+**Tool call** `simulate_design` (`t+23.29s`):
 
 ```json
 {
@@ -7822,7 +7822,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+23.32s`):
+**Tool result** `simulate_design` (`t+23.73s`):
 
 ```json
 {
@@ -7899,7 +7899,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+23.33s`):
+**Tool call** `simulate_design` (`t+23.73s`):
 
 ```json
 {
@@ -7915,7 +7915,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+23.76s`):
+**Tool result** `simulate_design` (`t+24.17s`):
 
 ```json
 {
@@ -7992,7 +7992,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+23.76s`):
+**Tool call** `simulate_design` (`t+24.17s`):
 
 ```json
 {
@@ -8008,7 +8008,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+24.19s`):
+**Tool result** `simulate_design` (`t+24.62s`):
 
 ```json
 {
@@ -8084,7 +8084,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+24.2s`):
+**Tool call** `simulate_design` (`t+24.62s`):
 
 ```json
 {
@@ -8100,7 +8100,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+24.63s`):
+**Tool result** `simulate_design` (`t+25.06s`):
 
 ```json
 {
@@ -8176,7 +8176,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+24.63s`):
+**Tool call** `simulate_design` (`t+25.06s`):
 
 ```json
 {
@@ -8192,7 +8192,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+25.07s`):
+**Tool result** `simulate_design` (`t+25.58s`):
 
 ```json
 {
@@ -8268,7 +8268,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+25.07s`):
+**Tool call** `simulate_design` (`t+25.59s`):
 
 ```json
 {
@@ -8284,7 +8284,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+25.5s`):
+**Tool result** `simulate_design` (`t+26.07s`):
 
 ```json
 {
@@ -8360,7 +8360,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+25.51s`):
+**Tool call** `write_report` (`t+26.08s`):
 
 ```json
 {
@@ -8369,16 +8369,16 @@
     "system": "base_isolated",
     "isolation": {
       "qd_kn": 3825.9,
-      "kd_kn_m": 53460.35717256737,
-      "dy_m": 0.03
+      "kd_kn_m": 30071.450909569136,
+      "dy_m": 0.045
     }
   },
   "verdict": "proceed",
-  "engineer_notes": "Governing check: peak_drift_ratio at utilization 0.99."
+  "engineer_notes": "Governing check: peak_floor_accel_g at utilization 0.79."
 }
 ```
 
-**Tool result** `write_report` (`t+25.95s`):
+**Tool result** `write_report` (`t+26.55s`):
 
 ```json
 {
@@ -8391,7 +8391,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+25.95s`):
+**Tool call** `verify_output` (`t+26.55s`):
 
 ```json
 {
@@ -8399,7 +8399,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+26.41s`):
+**Tool result** `verify_output` (`t+27.02s`):
 
 ```json
 {
@@ -8408,9 +8408,9 @@
 }
 ```
 
-**policy** (`t+26.41s`): `{"note": "brief_06_downtown_residential: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_drift_ratio', 'governing_utilization': 0.9883201586239574, 'passed': True}"}`
+**policy** (`t+27.02s`): `{"note": "brief_06_downtown_residential: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.7918948803050672, 'passed': True}"}`
 
-**Tool call** `read_brief` (`t+26.43s`):
+**Tool call** `read_brief` (`t+27.04s`):
 
 ```json
 {
@@ -8418,13 +8418,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+26.45s`):
+**Tool result** `read_brief` (`t+27.06s`):
 
 ```json
 "# Project brief: Plains Office Campus Block\n\nA six-story office block on firm plains soils in a moderate seismic zone. The\nclient's engineer believes a conventional fixed-base frame is sufficient here\nand wants that assumption tested honestly before spending on bearings.\n\n## Project data\n\n- Building use: office\n- Stories above grade: 6\n- Seismic floor weight: 580 tonnes per floor\n- Story lateral stiffness: 320,000 kN/m\n- Story height: 3.5 m\n\n## Site hazard\n\n- Design PGA: 0.18 g\n- Predominant site period: 0.6 s\n- Strong-motion duration: 20 s\n- Moat clearance available: 0.45 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+26.46s`):
+**Tool call** `parse_brief` (`t+27.07s`):
 
 ```json
 {
@@ -8432,7 +8432,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+26.49s`):
+**Tool result** `parse_brief` (`t+27.09s`):
 
 ```json
 {
@@ -8460,7 +8460,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+26.5s`):
+**Tool call** `propose_rule_of_thumb` (`t+27.1s`):
 
 ```json
 {
@@ -8468,7 +8468,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+26.52s`):
+**Tool result** `propose_rule_of_thumb` (`t+27.12s`):
 
 ```json
 {
@@ -8477,7 +8477,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+26.54s`):
+**Tool call** `simulate_design` (`t+27.13s`):
 
 ```json
 {
@@ -8489,7 +8489,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+26.78s`):
+**Tool result** `simulate_design` (`t+27.37s`):
 
 ```json
 {
@@ -8545,7 +8545,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+26.78s`):
+**Tool call** `suggest_refinement` (`t+27.37s`):
 
 ```json
 {
@@ -8557,7 +8557,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+26.8s`):
+**Tool result** `suggest_refinement` (`t+27.38s`):
 
 ```json
 {
@@ -8573,7 +8573,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+26.81s`):
+**Tool call** `simulate_design` (`t+27.4s`):
 
 ```json
 {
@@ -8589,7 +8589,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+27.07s`):
+**Tool result** `simulate_design` (`t+27.67s`):
 
 ```json
 {
@@ -8663,7 +8663,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+27.07s`):
+**Tool call** `write_report` (`t+27.68s`):
 
 ```json
 {
@@ -8681,7 +8681,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+27.34s`):
+**Tool result** `write_report` (`t+27.99s`):
 
 ```json
 {
@@ -8694,7 +8694,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+27.34s`):
+**Tool call** `verify_output` (`t+28.0s`):
 
 ```json
 {
@@ -8702,7 +8702,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+27.61s`):
+**Tool result** `verify_output` (`t+28.28s`):
 
 ```json
 {
@@ -8711,9 +8711,9 @@
 }
 ```
 
-**policy** (`t+27.61s`): `{"note": "brief_07_plains_office: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.6087980894650564, 'passed': True}"}`
+**policy** (`t+28.28s`): `{"note": "brief_07_plains_office: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.6087980894650564, 'passed': True}"}`
 
-**Tool call** `read_brief` (`t+27.63s`):
+**Tool call** `read_brief` (`t+28.3s`):
 
 ```json
 {
@@ -8721,13 +8721,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+27.65s`):
+**Tool result** `read_brief` (`t+28.32s`):
 
 ```json
 "# Project brief: Lakeside Community Hospital\n\nA three-story community hospital near a lake shore, on medium-stiff soils in\na moderate zone. Operational continuity drives the brief: imaging and surgical\nequipment set a hard ceiling on floor accelerations.\n\n## Project data\n\n- Building use: hospital\n- Stories above grade: 3\n- Seismic floor weight: 500 tonnes per floor\n- Story lateral stiffness: 420,000 kN/m\n- Story height: 3.6 m\n\n## Site hazard\n\n- Design PGA: 0.22 g\n- Predominant site period: 0.8 s\n- Strong-motion duration: 22 s\n- Moat clearance available: 0.55 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+27.66s`):
+**Tool call** `parse_brief` (`t+28.33s`):
 
 ```json
 {
@@ -8735,7 +8735,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+27.68s`):
+**Tool result** `parse_brief` (`t+28.35s`):
 
 ```json
 {
@@ -8763,7 +8763,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+27.69s`):
+**Tool call** `propose_rule_of_thumb` (`t+28.37s`):
 
 ```json
 {
@@ -8771,7 +8771,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+27.7s`):
+**Tool result** `propose_rule_of_thumb` (`t+28.38s`):
 
 ```json
 {
@@ -8784,7 +8784,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+27.73s`):
+**Tool call** `simulate_design` (`t+28.4s`):
 
 ```json
 {
@@ -8800,7 +8800,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+27.91s`):
+**Tool result** `simulate_design` (`t+28.59s`):
 
 ```json
 {
@@ -8874,7 +8874,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+27.92s`):
+**Tool call** `write_report` (`t+28.59s`):
 
 ```json
 {
@@ -8892,7 +8892,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+28.12s`):
+**Tool result** `write_report` (`t+28.82s`):
 
 ```json
 {
@@ -8905,7 +8905,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+28.12s`):
+**Tool call** `verify_output` (`t+28.83s`):
 
 ```json
 {
@@ -8913,7 +8913,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+28.32s`):
+**Tool result** `verify_output` (`t+29.07s`):
 
 ```json
 {
@@ -8922,9 +8922,9 @@
 }
 ```
 
-**policy** (`t+28.32s`): `{"note": "brief_08_lakeside_hospital: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'base_shear_coeff', 'governing_utilization': 0.7784508621501076, 'passed': True}"}`
+**policy** (`t+29.07s`): `{"note": "brief_08_lakeside_hospital: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'base_shear_coeff', 'governing_utilization': 0.7784508621501076, 'passed': True}"}`
 
-**Tool call** `read_brief` (`t+28.34s`):
+**Tool call** `read_brief` (`t+29.1s`):
 
 ```json
 {
@@ -8932,13 +8932,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+28.36s`):
+**Tool result** `read_brief` (`t+29.12s`):
 
 ```json
 "# Project brief: Port Logistics Warehouse\n\nA three-story port warehouse handling time-critical cargo, on softer harbour\nsoils than the operator's usual sites. The operator's standard fixed-base\ndesign has always been fine elsewhere; the question is whether it still holds\non this ground, and what to do if it does not.\n\n## Project data\n\n- Building use: warehouse\n- Stories above grade: 3\n- Seismic floor weight: 450 tonnes per floor\n- Story lateral stiffness: 200,000 kN/m\n- Story height: 4.2 m\n\n## Site hazard\n\n- Design PGA: 0.24 g\n- Predominant site period: 0.9 s\n- Strong-motion duration: 23 s\n- Moat clearance available: 0.45 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+28.38s`):
+**Tool call** `parse_brief` (`t+29.13s`):
 
 ```json
 {
@@ -8946,7 +8946,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+28.39s`):
+**Tool result** `parse_brief` (`t+29.15s`):
 
 ```json
 {
@@ -8974,7 +8974,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+28.41s`):
+**Tool call** `propose_rule_of_thumb` (`t+29.16s`):
 
 ```json
 {
@@ -8982,7 +8982,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+28.42s`):
+**Tool result** `propose_rule_of_thumb` (`t+29.18s`):
 
 ```json
 {
@@ -8991,7 +8991,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+28.44s`):
+**Tool call** `simulate_design` (`t+29.19s`):
 
 ```json
 {
@@ -9003,7 +9003,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+28.59s`):
+**Tool result** `simulate_design` (`t+29.36s`):
 
 ```json
 {
@@ -9060,7 +9060,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+28.59s`):
+**Tool call** `suggest_refinement` (`t+29.37s`):
 
 ```json
 {
@@ -9072,7 +9072,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+28.61s`):
+**Tool result** `suggest_refinement` (`t+29.38s`):
 
 ```json
 {
@@ -9088,7 +9088,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+28.62s`):
+**Tool call** `simulate_design` (`t+29.4s`):
 
 ```json
 {
@@ -9104,7 +9104,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+28.82s`):
+**Tool result** `simulate_design` (`t+29.62s`):
 
 ```json
 {
@@ -9178,7 +9178,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+28.82s`):
+**Tool call** `write_report` (`t+29.62s`):
 
 ```json
 {
@@ -9196,7 +9196,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+29.03s`):
+**Tool result** `write_report` (`t+29.84s`):
 
 ```json
 {
@@ -9209,7 +9209,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+29.04s`):
+**Tool call** `verify_output` (`t+29.85s`):
 
 ```json
 {
@@ -9217,7 +9217,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+29.24s`):
+**Tool result** `verify_output` (`t+30.07s`):
 
 ```json
 {
@@ -9226,9 +9226,9 @@
 }
 ```
 
-**policy** (`t+29.24s`): `{"note": "brief_09_port_warehouse: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_isolator_disp_m', 'governing_utilization': 0.7547779224555964, 'passed': True}"}`
+**policy** (`t+30.07s`): `{"note": "brief_09_port_warehouse: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_isolator_disp_m', 'governing_utilization': 0.7547779224555964, 'passed': True}"}`
 
-**Tool call** `read_brief` (`t+29.26s`):
+**Tool call** `read_brief` (`t+30.09s`):
 
 ```json
 {
@@ -9236,13 +9236,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+29.27s`):
+**Tool result** `read_brief` (`t+30.11s`):
 
 ```json
 "# Project brief: Cliffside Clinic\n\nA six-story clinic proposed on a severe near-fault site with very soft, long-\nperiod soils, on a lot whose retaining condition caps the moat at 0.40 m. The\nclient is aware the site is aggressive and wants a straight answer: is there a\nbuildable isolation design that meets hospital-grade performance here, or does\nthe project need a different site, a bigger moat, or supplemental damping\noutside our standard system?\n\n## Project data\n\n- Building use: hospital\n- Stories above grade: 6\n- Seismic floor weight: 700 tonnes per floor\n- Story lateral stiffness: 400,000 kN/m\n- Story height: 3.6 m\n\n## Site hazard\n\n- Design PGA: 0.38 g\n- Predominant site period: 1.3 s\n- Strong-motion duration: 28 s\n- Moat clearance available: 0.40 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+29.29s`):
+**Tool call** `parse_brief` (`t+30.12s`):
 
 ```json
 {
@@ -9250,7 +9250,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+29.31s`):
+**Tool result** `parse_brief` (`t+30.14s`):
 
 ```json
 {
@@ -9278,7 +9278,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+29.32s`):
+**Tool call** `propose_rule_of_thumb` (`t+30.15s`):
 
 ```json
 {
@@ -9286,7 +9286,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+29.33s`):
+**Tool result** `propose_rule_of_thumb` (`t+30.17s`):
 
 ```json
 {
@@ -9299,7 +9299,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+29.35s`):
+**Tool call** `simulate_design` (`t+30.18s`):
 
 ```json
 {
@@ -9315,7 +9315,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+29.67s`):
+**Tool result** `simulate_design` (`t+30.54s`):
 
 ```json
 {
@@ -9394,7 +9394,7 @@
 }
 ```
 
-**Tool call** `candidate_designs` (`t+29.67s`):
+**Tool call** `candidate_designs` (`t+30.55s`):
 
 ```json
 {
@@ -9402,7 +9402,7 @@
 }
 ```
 
-**Tool result** `candidate_designs` (`t+29.68s`):
+**Tool result** `candidate_designs` (`t+30.56s`):
 
 ```json
 [
@@ -9533,7 +9533,7 @@
 ...[result truncated for display]
 ```
 
-**Tool call** `simulate_design` (`t+29.7s`):
+**Tool call** `simulate_design` (`t+30.57s`):
 
 ```json
 {
@@ -9549,7 +9549,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+30.02s`):
+**Tool result** `simulate_design` (`t+30.95s`):
 
 ```json
 {
@@ -9628,7 +9628,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+30.03s`):
+**Tool call** `simulate_design` (`t+30.95s`):
 
 ```json
 {
@@ -9644,7 +9644,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+30.35s`):
+**Tool result** `simulate_design` (`t+31.31s`):
 
 ```json
 {
@@ -9723,7 +9723,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+30.35s`):
+**Tool call** `simulate_design` (`t+31.31s`):
 
 ```json
 {
@@ -9739,7 +9739,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+30.69s`):
+**Tool result** `simulate_design` (`t+31.66s`):
 
 ```json
 {
@@ -9818,7 +9818,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+30.7s`):
+**Tool call** `simulate_design` (`t+31.67s`):
 
 ```json
 {
@@ -9834,7 +9834,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+31.02s`):
+**Tool result** `simulate_design` (`t+31.99s`):
 
 ```json
 {
@@ -9913,7 +9913,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+31.02s`):
+**Tool call** `simulate_design` (`t+32.0s`):
 
 ```json
 {
@@ -9929,7 +9929,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+31.33s`):
+**Tool result** `simulate_design` (`t+32.33s`):
 
 ```json
 {
@@ -10008,7 +10008,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+31.34s`):
+**Tool call** `simulate_design` (`t+32.33s`):
 
 ```json
 {
@@ -10024,7 +10024,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+31.66s`):
+**Tool result** `simulate_design` (`t+32.66s`):
 
 ```json
 {
@@ -10103,7 +10103,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+31.67s`):
+**Tool call** `simulate_design` (`t+32.66s`):
 
 ```json
 {
@@ -10119,7 +10119,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+31.99s`):
+**Tool result** `simulate_design` (`t+32.99s`):
 
 ```json
 {
@@ -10198,7 +10198,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+32.0s`):
+**Tool call** `simulate_design` (`t+33.0s`):
 
 ```json
 {
@@ -10214,7 +10214,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+32.32s`):
+**Tool result** `simulate_design` (`t+33.33s`):
 
 ```json
 {
@@ -10293,7 +10293,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+32.32s`):
+**Tool call** `simulate_design` (`t+33.34s`):
 
 ```json
 {
@@ -10309,7 +10309,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+32.64s`):
+**Tool result** `simulate_design` (`t+33.67s`):
 
 ```json
 {
@@ -10388,7 +10388,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+32.65s`):
+**Tool call** `simulate_design` (`t+33.67s`):
 
 ```json
 {
@@ -10404,7 +10404,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+32.97s`):
+**Tool result** `simulate_design` (`t+34.0s`):
 
 ```json
 {
@@ -10483,7 +10483,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+32.98s`):
+**Tool call** `simulate_design` (`t+34.0s`):
 
 ```json
 {
@@ -10499,7 +10499,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+33.31s`):
+**Tool result** `simulate_design` (`t+34.33s`):
 
 ```json
 {
@@ -10578,7 +10578,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+33.31s`):
+**Tool call** `simulate_design` (`t+34.33s`):
 
 ```json
 {
@@ -10594,7 +10594,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+33.63s`):
+**Tool result** `simulate_design` (`t+34.7s`):
 
 ```json
 {
@@ -10673,7 +10673,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+33.64s`):
+**Tool call** `simulate_design` (`t+34.71s`):
 
 ```json
 {
@@ -10689,7 +10689,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+33.97s`):
+**Tool result** `simulate_design` (`t+35.06s`):
 
 ```json
 {
@@ -10768,7 +10768,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+33.97s`):
+**Tool call** `simulate_design` (`t+35.06s`):
 
 ```json
 {
@@ -10784,7 +10784,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+34.3s`):
+**Tool result** `simulate_design` (`t+35.4s`):
 
 ```json
 {
@@ -10863,7 +10863,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+34.3s`):
+**Tool call** `simulate_design` (`t+35.4s`):
 
 ```json
 {
@@ -10879,7 +10879,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+34.62s`):
+**Tool result** `simulate_design` (`t+35.73s`):
 
 ```json
 {
@@ -10958,7 +10958,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+34.63s`):
+**Tool call** `simulate_design` (`t+35.74s`):
 
 ```json
 {
@@ -10974,7 +10974,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+34.94s`):
+**Tool result** `simulate_design` (`t+36.11s`):
 
 ```json
 {
@@ -11053,7 +11053,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+34.95s`):
+**Tool call** `simulate_design` (`t+36.12s`):
 
 ```json
 {
@@ -11069,7 +11069,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+35.28s`):
+**Tool result** `simulate_design` (`t+36.44s`):
 
 ```json
 {
@@ -11148,7 +11148,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+35.28s`):
+**Tool call** `simulate_design` (`t+36.44s`):
 
 ```json
 {
@@ -11164,7 +11164,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+35.61s`):
+**Tool result** `simulate_design` (`t+36.77s`):
 
 ```json
 {
@@ -11243,7 +11243,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+35.62s`):
+**Tool call** `suggest_refinement` (`t+36.77s`):
 
 ```json
 {
@@ -11259,7 +11259,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+35.63s`):
+**Tool result** `suggest_refinement` (`t+36.79s`):
 
 ```json
 {
@@ -11275,7 +11275,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+35.65s`):
+**Tool call** `simulate_design` (`t+36.8s`):
 
 ```json
 {
@@ -11291,7 +11291,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+36.03s`):
+**Tool result** `simulate_design` (`t+37.12s`):
 
 ```json
 {
@@ -11370,7 +11370,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+36.03s`):
+**Tool call** `suggest_refinement` (`t+37.13s`):
 
 ```json
 {
@@ -11386,7 +11386,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+36.04s`):
+**Tool result** `suggest_refinement` (`t+37.14s`):
 
 ```json
 {
@@ -11402,7 +11402,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+36.06s`):
+**Tool call** `simulate_design` (`t+37.16s`):
 
 ```json
 {
@@ -11418,7 +11418,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+36.38s`):
+**Tool result** `simulate_design` (`t+37.5s`):
 
 ```json
 {
@@ -11497,7 +11497,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+36.38s`):
+**Tool call** `suggest_refinement` (`t+37.5s`):
 
 ```json
 {
@@ -11513,7 +11513,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+36.41s`):
+**Tool result** `suggest_refinement` (`t+37.52s`):
 
 ```json
 {
@@ -11529,7 +11529,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+36.43s`):
+**Tool call** `simulate_design` (`t+37.54s`):
 
 ```json
 {
@@ -11545,7 +11545,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+36.76s`):
+**Tool result** `simulate_design` (`t+37.85s`):
 
 ```json
 {
@@ -11624,7 +11624,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+36.76s`):
+**Tool call** `suggest_refinement` (`t+37.86s`):
 
 ```json
 {
@@ -11640,7 +11640,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+36.78s`):
+**Tool result** `suggest_refinement` (`t+37.87s`):
 
 ```json
 {
@@ -11656,7 +11656,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+36.8s`):
+**Tool call** `simulate_design` (`t+37.89s`):
 
 ```json
 {
@@ -11672,7 +11672,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+37.12s`):
+**Tool result** `simulate_design` (`t+38.22s`):
 
 ```json
 {
@@ -11752,7 +11752,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+37.12s`):
+**Tool call** `suggest_refinement` (`t+38.22s`):
 
 ```json
 {
@@ -11768,7 +11768,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+37.13s`):
+**Tool result** `suggest_refinement` (`t+38.24s`):
 
 ```json
 {
@@ -11784,7 +11784,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+37.15s`):
+**Tool call** `simulate_design` (`t+38.25s`):
 
 ```json
 {
@@ -11800,7 +11800,7 @@
 }
 ```
 
-**Tool result** `simulate_design` (`t+37.47s`):
+**Tool result** `simulate_design` (`t+38.57s`):
 
 ```json
 {
@@ -11880,7 +11880,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+37.47s`):
+**Tool call** `suggest_refinement` (`t+38.57s`):
 
 ```json
 {
@@ -11896,7 +11896,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+37.49s`):
+**Tool result** `suggest_refinement` (`t+38.59s`):
 
 ```json
 {
@@ -11905,7 +11905,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+37.51s`):
+**Tool call** `write_report` (`t+38.6s`):
 
 ```json
 {
@@ -11923,7 +11923,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+37.84s`):
+**Tool result** `write_report` (`t+38.93s`):
 
 ```json
 {
@@ -11936,7 +11936,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+37.84s`):
+**Tool call** `verify_output` (`t+38.93s`):
 
 ```json
 {
@@ -11944,7 +11944,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+38.18s`):
+**Tool result** `verify_output` (`t+39.27s`):
 
 ```json
 {
@@ -11953,6 +11953,6 @@
 }
 ```
 
-**policy** (`t+38.18s`): `{"note": "brief_10_cliffside_clinic: {'verdict': 'not_buildable_within_brief', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 2.2179047179234304, 'passed': False}"}`
+**policy** (`t+39.28s`): `{"note": "brief_10_cliffside_clinic: {'verdict': 'not_buildable_within_brief', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 2.2179047179234304, 'passed': False}"}`
 
-**run_complete** (`t+38.2s`): `{"wall_time_sec": 38.2}`
+**run_complete** (`t+39.29s`): `{"wall_time_sec": 39.3}`
