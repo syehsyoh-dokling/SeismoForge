@@ -49,7 +49,13 @@ JOBS_LOCK = threading.Lock()
 # at a time; the browser keeps polling and sees the wait in the run log.
 ENGINE_LOCK = threading.Lock()
 
-ANTHROPIC_MODELS = ("claude-opus-5", "claude-sonnet-5", "claude-haiku-4-5")
+# Model menus per provider. The tool surface is identical either way; only
+# the wire format differs, and agent/llm.py owns that.
+PROVIDER_MODELS = {
+    "anthropic": ("claude-opus-5", "claude-sonnet-5", "claude-haiku-4-5"),
+    "openai": ("gpt-5.5", "gpt-5.4", "gpt-5.1", "gpt-4.1"),
+}
+DEFAULT_PROVIDER = "anthropic"
 
 
 def _log(job: dict, line: str) -> None:
@@ -140,13 +146,15 @@ def start_job(brief_text: str, mode: str, provider: str, model: str,
             if mode not in MODES:
                 raise RuntimeError(f"unknown mode {mode!r}; expected one of {MODES}")
             if mode != "offline":
-                if provider != "anthropic":
+                if provider not in PROVIDER_MODELS:
                     raise RuntimeError(
-                        f"provider {provider!r} is on the roadmap; this build "
-                        "runs the Anthropic API (or the offline engine)"
+                        f"unknown provider {provider!r}; expected one of "
+                        f"{sorted(PROVIDER_MODELS)}"
                     )
-                if model not in ANTHROPIC_MODELS:
-                    raise RuntimeError(f"unknown model {model!r}")
+                if model not in PROVIDER_MODELS[provider]:
+                    raise RuntimeError(
+                        f"model {model!r} is not offered for {provider}"
+                    )
                 if not api_key:
                     raise RuntimeError(f"an API key is required for {mode} mode")
             if not ENGINE_LOCK.acquire(blocking=False):
@@ -163,6 +171,7 @@ def start_job(brief_text: str, mode: str, provider: str, model: str,
                     trajectory_path=TRAJECTORY_ROOT / f"{job_id}.jsonl",
                     model=model,
                     api_key=api_key or None,
+                    provider=provider if mode != "offline" else None,
                     progress=lambda line: _log(job, line),
                 )
             finally:
@@ -214,7 +223,11 @@ class Handler(BaseHTTPRequestHandler):
                  "text": path.read_text(encoding="utf-8")}
                 for path in list_briefs(REPO / "briefs")
             ]
-            self._json({"briefs": briefs, "models": list(ANTHROPIC_MODELS)})
+            self._json({
+                "briefs": briefs,
+                "providers": {name: list(models)
+                              for name, models in PROVIDER_MODELS.items()},
+            })
         elif parsed.path == "/api/status":
             job_id = parse_qs(parsed.query).get("id", [""])[0]
             with JOBS_LOCK:
@@ -254,8 +267,8 @@ class Handler(BaseHTTPRequestHandler):
         self._json(start_job(
             brief_text,
             mode,
-            str(payload.get("provider", "anthropic")),
-            str(payload.get("model", ANTHROPIC_MODELS[0])),
+            str(payload.get("provider", DEFAULT_PROVIDER)),
+            str(payload.get("model", PROVIDER_MODELS[DEFAULT_PROVIDER][0])),
             str(payload.get("api_key", "")),
         ))
 

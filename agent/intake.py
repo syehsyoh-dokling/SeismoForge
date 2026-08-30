@@ -44,7 +44,7 @@ FIELDS: tuple[tuple[str, str, str, str], ...] = (
      "seismic weight of one floor in tonnes; convert if the brief gives kN "
      "(divide by 9.81) or another unit"),
     ("story_stiffness_kn_m", "Story lateral stiffness", " kN/m",
-     "lateral stiffness of one storey in kN/m"),
+     "lateral stiffness of one storey in kN/m; convert MN/m by x1000"),
     ("story_height_m", "Story height", " m", "floor-to-floor height in metres"),
     ("pga_g", "Design PGA", " g", "design peak ground acceleration in g"),
     ("soil_period_sec", "Predominant site period", " s",
@@ -147,54 +147,53 @@ def render_datasheet(values: dict[str, str], title: str = "Extracted brief") -> 
     return "\n".join(lines)
 
 
+def _request(brief_text: str) -> str:
+    wanted = "\n".join(
+        f"- {name} ({label}): {description}"
+        for name, label, _, description in FIELDS
+    )
+    return (
+        f"Extract these parameters:\n\n{wanted}\n\n"
+        f"--- PROJECT BRIEF ---\n{brief_text}\n--- END BRIEF ---"
+    )
+
+
 def understand_brief(
     brief_text: str,
     *,
-    model: str,
+    model: str | None = None,
     api_key: str | None = None,
+    provider: str | None = None,
 ) -> dict[str, Any]:
     """Extract the nine parameters from free prose.
 
-    Returns ``{"fields": [...], "datasheet": str}``. Raises ValueError when
-    the brief is missing a parameter or the model quotes a source that is not
-    in the text - in both cases the caller should show the message to the
-    person who wrote the brief.
+    Returns the extracted fields plus the datasheet they assemble into. Raises
+    ValueError when the brief is missing a parameter, or when the model quotes
+    a source that is not in the text - in both cases the message is meant for
+    the person who wrote the brief.
     """
-    import anthropic
+    from llm import open_conversation
 
-    client = anthropic.Anthropic(api_key=api_key) if api_key else anthropic.Anthropic()
-    wanted = "\n".join(
-        f"- {name} ({label}): {description}" for name, label, _, description in FIELDS
+    conversation = open_conversation(
+        system=SYSTEM_PROMPT,
+        tools=[_tool_schema()],
+        model=model,
+        api_key=api_key,
+        provider=provider,
+        max_tokens=4000,
+        force_tool="submit_brief_fields",
     )
-    messages: list[dict[str, Any]] = [
-        {
-            "role": "user",
-            "content": (
-                f"Extract these parameters:\n\n{wanted}\n\n"
-                f"--- PROJECT BRIEF ---\n{brief_text}\n--- END BRIEF ---"
-            ),
-        }
-    ]
+    reply = conversation.start(_request(brief_text))
 
     last_error = "the model returned no extraction"
     for _attempt in range(MAX_ATTEMPTS):
-        response = client.messages.create(
-            model=model,
-            max_tokens=4000,
-            system=SYSTEM_PROMPT,
-            tools=[_tool_schema()],
-            tool_choice={"type": "tool", "name": "submit_brief_fields"},
-            messages=messages,
-        )
-        blocks = [b for b in response.content if b.type == "tool_use"]
-        if not blocks:
+        if not reply.tool_calls:
             last_error = "the model did not call submit_brief_fields"
             break
-        extraction = dict(blocks[0].input)
-        fields = list(extraction.get("fields", []))
+        call = reply.tool_calls[0]
+        fields = list(call.arguments.get("fields", []))
         missing = [name for name, _, _, _ in FIELDS
                    if name not in {entry.get("field") for entry in fields}]
-
         if missing:
             raise ValueError(
                 "the brief does not state: " + ", ".join(missing)
@@ -210,30 +209,27 @@ def understand_brief(
             return {
                 "fields": fields,
                 "datasheet": render_datasheet(values),
+                "model": conversation.model,
+                "usage": dict(conversation.usage),
             }
 
         last_error = (
             "these fields quote text that is not in the brief: "
             + ", ".join(unfounded)
         )
-        messages += [
-            {"role": "assistant", "content": response.content},
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "tool_result",
-                        "tool_use_id": blocks[0].id,
-                        "is_error": True,
-                        "content": (
-                            f"{last_error}. Copy each source span character for "
-                            "character from the brief, or list the field under "
-                            "`missing` if it is not there."
-                        ),
-                    }
-                ],
-            },
-        ]
+        reply = conversation.submit_tool_results(
+            [
+                {
+                    "id": call.id,
+                    "is_error": True,
+                    "content": (
+                        f"{last_error}. Copy each source span character for "
+                        "character from the brief, or list the field under "
+                        "`missing` if it is not there."
+                    ),
+                }
+            ]
+        )
 
     raise ValueError(f"brief intake failed: {last_error}")
 

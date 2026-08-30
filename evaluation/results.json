@@ -116,7 +116,7 @@
     "total": 10,
     "wall_time_sec": 0.4
   },
-  "agent": {
+  "offline": {
     "rows": [
       {
         "brief": "brief_01_coastal_hospital",
@@ -231,6 +231,123 @@
     ],
     "correct": 10,
     "total": 10,
-    "wall_time_sec": 37.9
+    "wall_time_sec": 37.8
+  },
+  "assisted": {
+    "rows": [
+      {
+        "brief": "brief_01_coastal_hospital",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "base_shear_coeff",
+        "governing_utilization": 0.9301141630578948,
+        "simulations_claimed": 19,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_02_valley_office",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 0.798823974217303,
+        "simulations_claimed": 1,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_03_hillside_warehouse",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "fixed_base",
+        "design_passes": true,
+        "governing_check": "base_shear_coeff",
+        "governing_utilization": 0.8814411402274767,
+        "simulations_claimed": 1,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_04_metro_datacenter",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 0.7923240391019488,
+        "simulations_claimed": 19,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_05_riverside_school",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 0.8534988456172266,
+        "simulations_claimed": 19,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_06_downtown_residential",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 0.7918948803050672,
+        "simulations_claimed": 19,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_07_plains_office",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 0.6087980894650564,
+        "simulations_claimed": 2,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_08_lakeside_hospital",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "base_shear_coeff",
+        "governing_utilization": 0.7784508621501076,
+        "simulations_claimed": 1,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_09_port_warehouse",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_isolator_disp_m",
+        "governing_utilization": 0.7547779224555964,
+        "simulations_claimed": 2,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_10_cliffside_clinic",
+        "correct": true,
+        "verdict": "not_buildable_within_brief",
+        "system": "base_isolated",
+        "design_passes": false,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 2.2179047179234304,
+        "simulations_claimed": 27,
+        "outcome": "correctly flagged infeasible brief"
+      }
+    ],
+    "correct": 10,
+    "total": 10,
+    "wall_time_sec": 80.5
   }
 }

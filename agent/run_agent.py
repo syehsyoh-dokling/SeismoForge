@@ -26,17 +26,14 @@ AGENT_DIR = Path(__file__).resolve().parent
 if str(AGENT_DIR) not in sys.path:
     sys.path.insert(0, str(AGENT_DIR))
 
+from llm import PROVIDERS, estimate_cost  # noqa: E402
 from session import (  # noqa: E402
-    DEFAULT_MODEL,
     MODES,
     ForgeTools,
     TrajectoryLogger,
     resolve_spec,
     run_brief,
 )
-
-PRICE_IN_PER_MTOK = 5.00
-PRICE_OUT_PER_MTOK = 25.00
 
 # Older docs and scripts used --driver; keep them working.
 DRIVER_ALIASES = {"scripted": "offline", "llm": "agent"}
@@ -52,7 +49,11 @@ def main() -> int:
                         help="brief names (default: all briefs)")
     parser.add_argument("--brief-dir", default=str(AGENT_DIR.parent / "briefs"),
                         help="directory of briefs to run (e.g. briefs_prose)")
-    parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--model", default=None,
+                        help="model id; default depends on the provider")
+    parser.add_argument("--provider", choices=PROVIDERS, default=None,
+                        help="anthropic or openai; inferred from the model or "
+                             "the key in the environment when omitted")
     parser.add_argument("--trajectory-dir",
                         default=str(AGENT_DIR.parent / "trajectories"))
     parser.add_argument("--quiet", action="store_true",
@@ -72,33 +73,48 @@ def main() -> int:
     started = time.monotonic()
     portfolio = {}
     usage = {"input_tokens": 0, "output_tokens": 0}
+    models_used: set[str] = set()
     for brief in briefs:
         if mode != "offline":
             # Free-prose intake: the model reads the brief file as written and
             # the deterministic parser validates what it extracted.
             text = (brief_dir / f"{brief}.md").read_text(encoding="utf-8")
+            intake: dict = {}
             tools.adopt_spec(
                 brief,
                 resolve_spec(text, name=brief, mode=mode, model=args.model,
+                             provider=args.provider, record=intake,
                              progress=progress),
             )
+            models_used.add(intake.get("model", ""))
+            for key, value in intake.get("usage", {}).items():
+                usage[key] = usage.get(key, 0) + value
         outcome = run_brief(tools, log, brief, mode=mode, model=args.model,
-                            progress=progress)
-        for key in usage:
-            usage[key] += outcome.get("usage", {}).get(key, 0)
+                            provider=args.provider, progress=progress)
+        if outcome.get("model"):
+            models_used.add(outcome["model"])
+        if outcome.get("driver") == "llm":
+            for key in usage:
+                usage[key] += outcome.get("usage", {}).get(key, 0)
         portfolio[brief] = outcome
         log.event("brief_complete", brief=brief, mode=mode)
 
     wall = round(time.monotonic() - started, 1)
-    cost = (
-        usage["input_tokens"] * PRICE_IN_PER_MTOK
-        + usage["output_tokens"] * PRICE_OUT_PER_MTOK
-    ) / 1_000_000
     summary = {"mode": mode, "wall_time_sec": wall, "portfolio": portfolio}
     if any(usage.values()):
+        used_model = ", ".join(sorted(m for m in models_used if m))
+        cost = estimate_cost(used_model, usage)
+        summary["model"] = used_model
         summary["usage"] = usage
-        summary["estimated_cost_usd"] = round(cost, 4)
-        log.event("usage", **usage, estimated_cost_usd=round(cost, 4))
+        if cost is None:
+            summary["estimated_cost_usd"] = None
+            summary["price_note"] = (
+                f"no published price configured for {used_model!r}; "
+                "add it to PRICES in agent/llm.py to get a cost figure"
+            )
+        else:
+            summary["estimated_cost_usd"] = cost
+        log.event("usage", **usage, model=used_model, estimated_cost_usd=cost)
     log.event("run_complete", wall_time_sec=wall)
     log.render_markdown(
         Path(args.trajectory_dir) / f"trajectory_{mode}.md",

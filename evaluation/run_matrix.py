@@ -100,11 +100,19 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--skip-run", action="store_true",
                         help="judge existing outputs without re-running the systems")
+    parser.add_argument("--fresh", action="store_true",
+                        help="start a new results table instead of adding a column")
     parser.add_argument("--agent-out", default=str(REPO / "outputs" / "agent"),
                         help="agent output tree to judge (e.g. an LLM-mode run)")
     parser.add_argument("--mode", default="offline",
                         help="session mode to run: offline, assisted or agent")
+    parser.add_argument("--brief-dir", default=str(REPO / "briefs"),
+                        help="brief set to run (e.g. briefs_prose)")
+    parser.add_argument("--label", default=None,
+                        help="column name for this system in results "
+                             "(default: the mode name)")
     args = parser.parse_args()
+    label = args.label or args.mode
 
     feasible = json.loads(
         (REPO / "evaluation" / "ground_truth.json").read_text(encoding="utf-8")
@@ -114,8 +122,9 @@ def main() -> int:
     if not args.skip_run:
         for name, command in (
             ("baseline", [sys.executable, str(REPO / "baselines" / "oneshot.py")]),
-            ("agent", [sys.executable, str(REPO / "agent" / "run_agent.py"),
-                       "--mode", args.mode, "--quiet"]),
+            (label, [sys.executable, str(REPO / "agent" / "run_agent.py"),
+                     "--mode", args.mode, "--brief-dir", args.brief_dir,
+                     "--out", args.agent_out, "--quiet"]),
         ):
             print(f"== running {name} ==", flush=True)
             started = time.monotonic()
@@ -126,10 +135,19 @@ def main() -> int:
                 print(completed.stderr[-2000:])
                 raise SystemExit(f"{name} failed with exit {completed.returncode}")
 
+    # Results accumulate across runs so one table can hold several systems:
+    # judge each mode into its own column, then render them side by side.
+    out = REPO / "evaluation"
+    results_path = out / "results.json"
     results = {}
+    if results_path.is_file():
+        results = json.loads(results_path.read_text(encoding="utf-8"))
+    if args.fresh:
+        results = {}
+
     for name, out_dir in (
         ("baseline", REPO / "outputs" / "baseline"),
-        ("agent", Path(args.agent_out)),
+        (label, Path(args.agent_out)),
     ):
         rows = judge(out_dir, feasible)
         results[name] = {
@@ -140,8 +158,7 @@ def main() -> int:
         }
         print(f"{name}: {results[name]['correct']}/{results[name]['total']} correct")
 
-    out = REPO / "evaluation"
-    (out / "results.json").write_text(json.dumps(results, indent=2), encoding="utf-8")
+    results_path.write_text(json.dumps(results, indent=2), encoding="utf-8")
 
     lines = [
         "# SeismoForge - measured comparison",
@@ -156,15 +173,23 @@ def main() -> int:
     for name, data in results.items():
         wall = data["wall_time_sec"] if data["wall_time_sec"] is not None else "-"
         lines.append(f"| {name} | **{data['correct']}/{data['total']}** | {wall} |")
+    systems = list(results)
+    header = " | ".join(systems)
     lines += ["", "## Per-brief outcomes", "",
-              "| Brief | Baseline | Agent |", "|---|---|---|"]
-    agent_by_brief = {r["brief"]: r for r in results["agent"]["rows"]}
+              f"| Brief | {header} |", "|---" * (len(systems) + 1) + "|"]
+    by_system = {
+        name: {r["brief"]: r for r in data["rows"]} for name, data in results.items()
+    }
+
+    def cell(row):
+        mark = "CORRECT" if row.get("correct") else "wrong"
+        return f"{mark} - {row.get('outcome', '?')}"
+
     for row in results["baseline"]["rows"]:
-        agent_row = agent_by_brief.get(row["brief"], {})
-        def cell(r):
-            mark = "CORRECT" if r.get("correct") else "wrong"
-            return f"{mark} - {r.get('outcome', '?')}"
-        lines.append(f"| {row['brief']} | {cell(row)} | {cell(agent_row)} |")
+        cells = " | ".join(
+            cell(by_system[name].get(row["brief"], {})) for name in systems
+        )
+        lines.append(f"| {row['brief']} | {cells} |")
     (out / "results.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"wrote {out / 'results.json'} and {out / 'results.md'}")
     return 0

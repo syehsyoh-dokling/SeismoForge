@@ -34,12 +34,12 @@ from forge.brief_parser import parse_brief_text  # noqa: E402
 from forge.building import BuildingSpec, Design, design_from_dict  # noqa: E402
 from forge.motions import DT  # noqa: E402
 from forge.policy import search  # noqa: E402
+from llm import open_conversation  # noqa: E402
 from forge.simulate import TAIL_SEC  # noqa: E402
 from tools import TOOL_DEFINITIONS, ForgeTools, dispatch  # noqa: E402
 from trajectory import TrajectoryLogger  # noqa: E402
 
 MODES = ("offline", "assisted", "agent")
-DEFAULT_MODEL = "claude-opus-5"
 MAX_TURNS_PER_BRIEF = 30
 
 # Progress lines are for a human watching a run; the trajectory is the record.
@@ -149,93 +149,63 @@ class ToolSearch:
 # The LLM driver: one conversation per brief over the same tools
 
 
-def _llm_client(api_key: str | None):
-    import anthropic
-
-    return anthropic.Anthropic(api_key=api_key) if api_key else anthropic.Anthropic()
-
-
-def _create(client, model: str, system_prompt: str, tool_defs, messages):
-    import anthropic
-
-    try:
-        return client.beta.messages.create(
-            model=model, max_tokens=16000, system=system_prompt,
-            tools=tool_defs, messages=messages,
-            betas=["server-side-fallback-2026-07-01"], fallbacks="default",
-        )
-    except (TypeError, anthropic.BadRequestError):
-        return client.messages.create(
-            model=model, max_tokens=16000, system=system_prompt,
-            tools=tool_defs, messages=messages,
-        )
-
-
 def run_llm_search(
     tools: ForgeTools,
     log: TrajectoryLogger,
     brief: str,
-    model: str,
+    model: str | None = None,
     api_key: str | None = None,
+    provider: str | None = None,
     progress: Progress = _noop,
 ) -> dict[str, Any]:
     """Let the model drive the tools for one brief. Returns usage + summary."""
-    client = _llm_client(api_key)
-    system_prompt = (AGENT_DIR / "system_prompt.md").read_text(encoding="utf-8")
-    messages: list[dict[str, Any]] = [
-        {
-            "role": "user",
-            "content": (
-                f"Forge the prototype design for brief {brief!r}: follow the "
-                "workflow, write the report, verify it, then give the "
-                "client-facing summary paragraph."
-            ),
-        }
-    ]
-    usage = {"input_tokens": 0, "output_tokens": 0}
-    final_text = ""
+    conversation = open_conversation(
+        system=(AGENT_DIR / "system_prompt.md").read_text(encoding="utf-8"),
+        tools=TOOL_DEFINITIONS,
+        model=model,
+        api_key=api_key,
+        provider=provider,
+    )
+    log.event("llm_start", brief=brief, model=conversation.model)
+    reply = conversation.start(
+        f"Forge the prototype design for brief {brief!r}: follow the workflow, "
+        "write the report, verify it, then give the client-facing summary "
+        "paragraph."
+    )
 
+    final_text = ""
     for _turn in range(MAX_TURNS_PER_BRIEF):
-        response = _create(client, model, system_prompt, TOOL_DEFINITIONS, messages)
-        usage["input_tokens"] += response.usage.input_tokens
-        usage["output_tokens"] += response.usage.output_tokens
-        if response.stop_reason == "refusal":
-            log.event("refusal", brief=brief,
-                      detail=str(getattr(response, "stop_details", None)))
+        if reply.refused:
+            log.event("refusal", brief=brief)
             progress("the model declined the request")
             break
-        for block in response.content:
-            if block.type == "text" and block.text.strip():
-                log.event("assistant_text", text=block.text)
-                final_text = block.text
-                progress(f"agent: {block.text.strip()[:300]}")
-        tool_blocks = [b for b in response.content if b.type == "tool_use"]
-        if response.stop_reason != "tool_use" or not tool_blocks:
+        if reply.text.strip():
+            log.event("assistant_text", text=reply.text)
+            final_text = reply.text
+            progress(f"agent: {reply.text.strip()[:300]}")
+        if not reply.wants_tools:
             break
-        messages.append({"role": "assistant", "content": response.content})
         results = []
-        for block in tool_blocks:
-            progress(f"agent calls {block.name}")
-            log.event("tool_call", name=block.name, input=dict(block.input))
+        for call in reply.tool_calls:
+            progress(f"agent calls {call.name}")
+            log.event("tool_call", name=call.name, input=call.arguments)
             try:
-                result = dispatch(tools, block.name, dict(block.input))
+                result = dispatch(tools, call.name, call.arguments)
                 content, is_error = json.dumps(result, default=str), False
-                log.event("tool_result", name=block.name, result=result)
+                log.event("tool_result", name=call.name, result=result)
             except Exception as error:
                 content, is_error = f"{type(error).__name__}: {error}", True
-                log.event("tool_error", name=block.name, error=content)
+                log.event("tool_error", name=call.name, error=content)
                 progress(f"tool error: {content}")
-            results.append(
-                {
-                    "type": "tool_result",
-                    "tool_use_id": block.id,
-                    "content": content,
-                    **({"is_error": True} if is_error else {}),
-                }
-            )
-        messages.append({"role": "user", "content": results})
+            results.append({"id": call.id, "content": content, "is_error": is_error})
+        reply = conversation.submit_tool_results(results)
 
-    return {"summary": final_text, "usage": usage}
+    return {
+        "summary": final_text,
+        "usage": dict(conversation.usage),
+        "model": conversation.model,
+        "estimated_cost_usd": conversation.estimated_cost_usd,
+    }
 
 
 # ----------------------------------------------------------------------
@@ -247,8 +217,9 @@ def run_brief(
     log: TrajectoryLogger,
     brief: str,
     mode: str = "offline",
-    model: str = DEFAULT_MODEL,
+    model: str | None = None,
     api_key: str | None = None,
+    provider: str | None = None,
     progress: Progress = _noop,
 ) -> dict[str, Any]:
     """Search, report, and verify one brief. The spec must already parse."""
@@ -262,8 +233,8 @@ def run_brief(
     )
 
     if mode == "agent":
-        progress(f"LLM agent drives the tools ({model})")
-        llm = run_llm_search(tools, log, brief, model, api_key, progress)
+        progress("the model drives the tools")
+        llm = run_llm_search(tools, log, brief, model, api_key, provider, progress)
         payload_path = tools.out_root / brief / "design.json"
         if not payload_path.is_file():
             raise ToolError("the agent finished without writing design.json")
@@ -273,8 +244,10 @@ def run_brief(
             "brief": brief,
             "mode": mode,
             "driver": "llm",
+            "model": llm["model"],
             "summary": llm["summary"],
             "usage": llm["usage"],
+            "estimated_cost_usd": llm["estimated_cost_usd"],
             "verification": verification,
         }
 
@@ -330,8 +303,9 @@ def run_session(
     run_dir: Path,
     trajectory_path: Path,
     name: str = "user_brief",
-    model: str = DEFAULT_MODEL,
+    model: str | None = None,
     api_key: str | None = None,
+    provider: str | None = None,
     progress: Progress = _noop,
 ) -> dict[str, Any]:
     """Run one free-standing brief and return the deliverable payload."""
@@ -339,8 +313,10 @@ def run_session(
     brief_dir = run_dir / "brief"
     brief_dir.mkdir(parents=True, exist_ok=True)
 
+    intake: dict[str, Any] = {}
     spec = resolve_spec(brief_text, name=name, mode=mode, model=model,
-                        api_key=api_key, progress=progress)
+                        api_key=api_key, provider=provider,
+                        record=intake, progress=progress)
     canonical = canonical_brief(spec, name)
     (brief_dir / f"{name}.md").write_text(canonical, encoding="utf-8")
 
@@ -348,7 +324,11 @@ def run_session(
     log.event("session_start", brief=name, mode=mode)
     tools = ForgeTools(run_dir, brief_dir=brief_dir)
     outcome = run_brief(tools, log, name, mode=mode, model=model,
-                        api_key=api_key, progress=progress)
+                        api_key=api_key, provider=provider, progress=progress)
+    outcome.setdefault("model", intake.get("model", ""))
+    for key, value in intake.get("usage", {}).items():
+        outcome.setdefault("usage", {})
+        outcome["usage"][key] = outcome["usage"].get(key, 0) + value
     log.event("session_complete", brief=name, mode=mode)
     log.render_markdown(
         Path(trajectory_path).with_suffix(".md"),
@@ -376,8 +356,10 @@ def resolve_spec(
     *,
     name: str,
     mode: str,
-    model: str = DEFAULT_MODEL,
+    model: str | None = None,
     api_key: str | None = None,
+    provider: str | None = None,
+    record: dict[str, Any] | None = None,
     progress: Progress = _noop,
 ) -> BuildingSpec:
     """Turn brief text into a BuildingSpec.
@@ -393,7 +375,14 @@ def resolve_spec(
     from intake import understand_brief  # local import: needs the SDK
 
     progress("reading the brief with the language model")
-    extraction = understand_brief(brief_text, model=model, api_key=api_key)
+    extraction = understand_brief(
+        brief_text, model=model, api_key=api_key, provider=provider
+    )
+    if record is not None:
+        record["model"] = extraction["model"]
+        usage = record.setdefault("usage", {})
+        for key, value in extraction["usage"].items():
+            usage[key] = usage.get(key, 0) + value
     progress(
         "extracted: "
         + ", ".join(f"{f['field']}={f['value']}" for f in extraction["fields"])

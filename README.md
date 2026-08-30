@@ -57,13 +57,26 @@ genuinely not buildable, the baseline happily says "proceed".
 Measured on 10 briefs, judged by independent re-simulation of every
 submitted design:
 
-| Metric | One-shot baseline | SeismoForge agent |
-|---|---|---|
-| Briefs resolved correctly (primary) | **3/10** | **10/10** |
-| Infeasible brief handled honestly | no ("proceed") | yes (flagged, with evidence) |
-| Wall time, full portfolio (offline mode) | 0.8 s (unverified) | 39.7 s (110 design evaluations, 550 nonlinear RHAs) |
-| Human time per brief today | ~a day of engineering study | minutes of review |
-| Cost per brief | $0 | $0 in offline mode; API cost only when the model is in the loop |
+| Metric | One-shot baseline | `offline` | `assisted` |
+|---|---|---|---|
+| Brief the system can read | labelled datasheet | labelled datasheet | **free prose** |
+| Briefs resolved correctly (primary) | **3/10** | **10/10** | **10/10** |
+| Infeasible brief handled honestly | no ("proceed") | yes (flagged, with evidence) | yes (flagged, with evidence) |
+| Wall time, full portfolio | 0.4 s (unverified) | 37.8 s | 80.5 s |
+| Simulation done | none | 110 design evaluations, 550 nonlinear RHAs | same |
+| Model tokens, full portfolio | none | none | 8,291 in / 2,201 out (`gpt-5.5`) |
+| Human time per brief today | ~a day of engineering study | minutes of review | minutes of review |
+
+`offline` and `assisted` reach the identical designs - the model's reading of
+the prose lands on the same nine values the strict parser reads out of the
+datasheet, brief for brief. What changes is what the system will accept as
+input: the strict parser scores **0/10** on `briefs_prose/`, failing all nine
+fields on all ten briefs. That is the axis the model earns its place on.
+
+`agent` mode (the model also drives the search) runs end to end and reproduces
+the offline design on the coastal hospital - Qd 2158 kN, Kd 6785 kN/m, Dy 45 mm,
+verification clean - but has not been scored across the portfolio yet, and this
+table will not carry a number until it has been.
 
 The architecture is a deliberate division of labor:
 
@@ -100,6 +113,12 @@ The architecture is a deliberate division of labor:
   | `offline` | strict parser | scripted policy | no |
   | `assisted` | the model | scripted policy | yes |
   | `agent` | the model | the model | yes |
+
+  Either provider drives them. `agent/llm.py` holds the one place the wire
+  formats differ - Anthropic carries tool results as content blocks inside a
+  user turn, OpenAI as separate `tool` messages keyed by call id - so the 9
+  tools are declared once and the session never learns which vendor answered.
+  Measured here on `gpt-5.5`; `claude-opus-5` runs the same code path.
 
   Splitting intake from search is deliberate: it makes the model's
   contribution measurable one axis at a time rather than asserted as a whole.
@@ -169,6 +188,8 @@ correctly.
 | Final | LLM driver over the locked tool surface; scripted driver kept for offline reproduction | **10/10**, including the honest "not buildable within brief" verdict ([evaluation/results.md](evaluation/results.md)) | Main contribution: physics-in-the-loop + a report writer that can refuse |
 | Unification | One session for every entry point, after finding the GUI ran a second code path that skipped the tool layer and logged no trajectory; the search strategy and the LLM tool loop each existed twice and had already drifted | **10/10 unchanged**, and a GUI run now reproduces the CLI's 19 design evaluations on brief 01 | Kept. A demo that does not exercise the measured path is not evidence of anything |
 | Intake | Asked what the model does that the scripted policy cannot, and found the answer was: read. The strict parser rejects the same ten projects written as prose on all nine fields, 10/10 (`briefs_prose/`) | 10/10 rejected by the parser; source-lock and round-trip checks in `tests/selftest.py` | Kept. This is the axis where the model's contribution is real rather than substitutable - and it is measured separately from the search axis, so the two do not hide behind each other |
+| Provider layer | The design center advertised a provider choice and shipped one vendor, hard-wired in three places. Pulled the wire-format difference into `agent/llm.py` so the tool surface is declared once | `assisted` and `agent` both run on `gpt-5.5`; the same code path takes `claude-opus-5` | Kept. A tool surface that only one vendor can drive is a claim about the vendor, not about the design |
+| Intake measured | Ran `assisted` over the prose set - the model reads, the scripted policy searches | **10/10**, 80.5 s, 8,291 in / 2,201 out tokens; the strict parser scores 0/10 on the same input | The model's contribution is real and it is *specific*: it changes what the system can read, not how well it searches. Both reach the same designs |
 | Hardening | Adversarial pass over the harness itself, after the result was in: the judge now grades submissions exactly as submitted instead of clamping them into bounds first, a suite that produced no usable demand degrades into unmet checks rather than an unparseable infinity, refinement moves read the design they were asked about instead of whichever was simulated last, and the GUI runs one simulation at a time | **10/10 unchanged**, same evaluator and same briefs | Kept. None of it moved the score - which is the point: the result survives a stricter harness, and the two paths that could have flattered it (a repairing judge, a stale refinement source) are closed |
 
 The challenging case: `brief_10_cliffside_clinic` is deliberately not

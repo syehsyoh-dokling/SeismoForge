@@ -13,12 +13,12 @@ python3 -m venv ~/venvs/seismoforge
 ```
 
 ```bash
-~/venvs/seismoforge/bin/pip install numpy openseespy anthropic
+~/venvs/seismoforge/bin/pip install numpy openseespy anthropic openai
 ```
 
-`anthropic` is only needed for the two modes that put the model in the loop;
-the baseline, the offline mode, and the evaluation all run with no key and no
-network.
+The two SDKs are only needed for the modes that put a model in the loop, and
+only the one you actually use. The baseline, the offline mode, and the
+evaluation all run with no key and no network.
 
 All commands below run from the repository root:
 
@@ -94,6 +94,10 @@ design:
 Everything else is shared: the same 9 tools, the same OpenSees engine, the
 same evidence lock, and a trajectory from every run.
 
+Either provider works. Set `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` and the
+provider is inferred; `--provider` and `--model` override it. The committed
+results were produced with `gpt-5.5`.
+
 The strict parser cannot read `briefs_prose/` at all - it fails on all nine
 fields for all ten briefs, which `tests/selftest.py` asserts. That 0/10 is
 the baseline the intake modes are measured against:
@@ -103,8 +107,12 @@ $PY agent/run_agent.py --mode assisted --brief-dir briefs_prose --out outputs/ag
 ```
 
 ```bash
-$PY evaluation/run_matrix.py --skip-run --agent-out outputs/agent_assisted
+$PY evaluation/run_matrix.py --mode assisted --brief-dir briefs_prose     --label assisted --agent-out outputs/agent_assisted
 ```
+
+Each run adds a column to `evaluation/results.{json,md}`; `--fresh` starts a
+new table instead. The committed table holds `baseline`, `offline` and
+`assisted` side by side.
 
 ## 6. LLM agent mode
 

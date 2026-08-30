@@ -89,13 +89,12 @@
     <div><label>Provider</label>
       <select id="provider">
         <option value="anthropic">Anthropic</option>
-        <option value="openai" disabled>OpenAI (roadmap)</option>
+        <option value="openai">OpenAI</option>
         <option value="google" disabled>Google (roadmap)</option>
-        <option value="other" disabled>Other (roadmap)</option>
       </select></div>
     <div><label>Model</label><select id="model"></select></div>
     <div style="flex:1;min-width:230px"><label>API key (kept in memory only)</label>
-      <input id="apikey" type="password" placeholder="sk-ant-..." style="width:100%"></div>
+      <input id="apikey" type="password" placeholder="sk-ant-... or sk-proj-..." style="width:100%"></div>
   </div>
   <div class="hint">Every mode runs the same 9 tools, the same OpenSees engine,
     and leaves the same trajectory. Offline needs no key and reproduces every
@@ -143,15 +142,20 @@
 </main>
 <script>
 const $=id=>document.getElementById(id);
-let briefs=[];
+let briefs=[],providers={};
 fetch("/api/briefs").then(r=>r.json()).then(data=>{
-  briefs=data.briefs;
+  briefs=data.briefs;providers=data.providers||{};
   $("examples").innerHTML='<option value="">— choose —</option>'+
     briefs.map(b=>`<option value="${b.name}">${b.name.replace(/_/g," ")}</option>`).join("");
-  $("model").innerHTML=data.models.map(m=>`<option>${m}</option>`).join("");
+  fillModels();
   const first=briefs.find(b=>b.name.includes("coastal"))||briefs[0];
   if(first){$("brief").value=first.text;$("examples").value=first.name;}
 });
+function fillModels(){
+  const list=providers[$("provider").value]||[];
+  $("model").innerHTML=list.map(m=>`<option>${m}</option>`).join("");
+}
+$("provider").onchange=fillModels;
 $("examples").onchange=()=>{
   const b=briefs.find(x=>x.name===$("examples").value);
   if(b)$("brief").value=b.text;
