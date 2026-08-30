@@ -61,25 +61,35 @@ class ForgeTools:
             return f"unknown brief {brief!r}; available: {self.list_briefs()}"
         return path.read_text(encoding="utf-8")
 
-    def _spec(self, brief: str) -> BuildingSpec:
+    def spec(self, brief: str) -> BuildingSpec:
+        """The parsed brief, cached. Every tool works from this one object."""
         if brief not in self._specs:
             self._specs[brief] = parse_brief_file(self.brief_dir / f"{brief}.md")
         return self._specs[brief]
 
+    def adopt_spec(self, brief: str, spec: BuildingSpec) -> None:
+        """Install an already-resolved spec (free-prose intake path).
+
+        The brief file may be prose the deterministic parser cannot read; the
+        spec handed in here has still been through that parser, as the
+        validator of whatever the intake step extracted.
+        """
+        self._specs[brief] = spec
+
     def parse_brief(self, brief: str) -> dict[str, Any]:
-        spec = self._spec(brief)
+        spec = self.spec(brief)
         data = spec.as_dict()
         data["fixed_base_period_sec"] = fixed_base_period(spec)
         return data
 
     # -- design space ---------------------------------------------------
     def propose_rule_of_thumb(self, brief: str) -> dict[str, Any]:
-        spec = self._spec(brief)
+        spec = self.spec(brief)
         design = clamp(rule_of_thumb(spec), spec)
         return design.as_dict()
 
     def candidate_designs(self, brief: str) -> list[dict[str, Any]]:
-        spec = self._spec(brief)
+        spec = self.spec(brief)
         out = []
         for design in candidate_grid(spec):
             design = clamp(design, spec)
@@ -97,8 +107,13 @@ class ForgeTools:
         return out
 
     # -- simulation -----------------------------------------------------
-    def simulate_design(self, brief: str, design: dict[str, Any]) -> dict[str, Any]:
-        spec = self._spec(brief)
+    def simulate_design(
+        self, brief: str, design: dict[str, Any], stage: str = "agent"
+    ) -> dict[str, Any]:
+        # `stage` labels the ledger entry (rule_of_thumb / screen / refine).
+        # It is deliberately absent from the tool schema: the scripted driver
+        # knows which phase it is in, the model does not need to.
+        spec = self.spec(brief)
         parsed = clamp(design_from_dict(design), spec)
         assessment = assess(spec, parsed)
         report = acceptance_report(spec, parsed, assessment)
@@ -106,7 +121,7 @@ class ForgeTools:
         # as null rather than infinity so the value stays valid JSON.
         worst = finite(worst_utilization(report))
         entry = {
-            "stage": "agent",
+            "stage": stage,
             "design": parsed.as_dict(),
             "envelope": assessment["envelope"],
             "passed": report["passed"],
@@ -132,7 +147,7 @@ class ForgeTools:
         }
 
     def suggest_refinement(self, brief: str, design: dict[str, Any]) -> dict[str, Any]:
-        spec = self._spec(brief)
+        spec = self.spec(brief)
         parsed = clamp(design_from_dict(design), spec)
         simulated = self._sims.get(self._sim_key(brief, parsed))
         if simulated is None:
@@ -161,7 +176,7 @@ class ForgeTools:
     ) -> dict[str, Any]:
         if verdict not in VERDICTS:
             return {"error": f"verdict must be one of {VERDICTS}"}
-        spec = self._spec(brief)
+        spec = self.spec(brief)
         parsed = clamp(design_from_dict(design), spec)
         # Evidence lock: the report is rendered from a fresh simulation of
         # exactly the submitted design, never from conversational numbers.
@@ -210,7 +225,7 @@ class ForgeTools:
             except json.JSONDecodeError as error:
                 problems.append(f"design.json is invalid JSON: {error}")
         if payload is not None:
-            spec = self._spec(brief)
+            spec = self.spec(brief)
             try:
                 design = clamp(design_from_dict(payload["design"]), spec)
             except (KeyError, ValueError, TypeError) as error:

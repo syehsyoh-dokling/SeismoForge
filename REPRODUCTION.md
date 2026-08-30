@@ -39,7 +39,8 @@ $PY evaluation/run_matrix.py
 ```
 
 This runs the baseline (one-shot rule-of-thumb designs, no simulation) and
-the agent (scripted driver through the full tool layer) over all 10 briefs,
+the offline mode (scripted search through the full tool layer) over all 10
+briefs,
 then judges both the way a peer reviewer would: every submitted design is
 independently re-simulated and its verdict checked against the evidence.
 
@@ -49,8 +50,9 @@ committed copies are the run used in the README). Wall time: roughly a
 minute, dominated by ~200 nonlinear response-history analyses.
 
 Deliverables land under `outputs/<system>/<brief>/` as `design_report.md`
-(client-facing) and `design.json` (machine-readable). The agent trajectory is
-written to `trajectories/trajectory_scripted.{jsonl,md}`.
+(client-facing) and `design.json` (machine-readable). The trajectory is written
+to `trajectories/trajectory_offline.{jsonl,md}`; GUI runs write their own under
+`trajectories/gui/<run-id>.{jsonl,md}`.
 
 ## 4. Individual pieces
 
@@ -60,10 +62,10 @@ Baseline only:
 $PY baselines/oneshot.py
 ```
 
-Agent only (offline scripted driver):
+Agent only (offline mode - scripted search, no key):
 
 ```bash
-$PY agent/run_agent.py --driver scripted
+$PY agent/run_agent.py --mode offline
 ```
 
 Judge existing outputs without re-running:
@@ -72,13 +74,13 @@ Judge existing outputs without re-running:
 $PY evaluation/run_matrix.py --skip-run
 ```
 
-## 5. LLM driver
+## 5. LLM modes
 
 Requires an Anthropic API key (`export ANTHROPIC_API_KEY=...`) or an active
 `ant auth login` profile. Keys never enter the repository.
 
 ```bash
-$PY agent/run_agent.py --driver llm --out outputs/agent_llm
+$PY agent/run_agent.py --mode agent --out outputs/agent_llm
 ```
 
 Then judge that run:
@@ -88,9 +90,8 @@ $PY evaluation/run_matrix.py --skip-run --agent-out outputs/agent_llm
 ```
 
 The run prints token usage and estimated cost (model `claude-opus-5`;
-typically well under a few dollars for the full portfolio). Trajectory:
-`trajectories/trajectory_llm.{jsonl,md}`. Run a single brief with
-`--briefs brief_01_coastal_hospital`.
+typically well under a few dollars for the full portfolio). Trajectory: `trajectories/trajectory_agent.{jsonl,md}`. Run a single brief
+with `--briefs brief_01_coastal_hospital`.
 
 ## 6. Design-center GUI (optional, same engine)
 

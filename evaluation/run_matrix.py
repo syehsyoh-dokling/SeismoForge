@@ -101,7 +101,9 @@ def main() -> int:
     parser.add_argument("--skip-run", action="store_true",
                         help="judge existing outputs without re-running the systems")
     parser.add_argument("--agent-out", default=str(REPO / "outputs" / "agent"),
-                        help="agent output tree to judge (e.g. an LLM-driver run)")
+                        help="agent output tree to judge (e.g. an LLM-mode run)")
+    parser.add_argument("--mode", default="offline",
+                        help="session mode to run: offline, assisted or agent")
     args = parser.parse_args()
 
     feasible = json.loads(
@@ -113,7 +115,7 @@ def main() -> int:
         for name, command in (
             ("baseline", [sys.executable, str(REPO / "baselines" / "oneshot.py")]),
             ("agent", [sys.executable, str(REPO / "agent" / "run_agent.py"),
-                       "--driver", "scripted"]),
+                       "--mode", args.mode, "--quiet"]),
         ):
             print(f"== running {name} ==", flush=True)
             started = time.monotonic()

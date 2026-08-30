@@ -55,7 +55,7 @@ Governing check: **peak_floor_accel_g** at utilization 0.80.
 
 | # | Stage | System | Qd (kN) | Kd (kN/m) | Dy (mm) | Result | Worst utilization |
 |---|---|---|---|---|---|---|---|
-| 1 | agent | base_isolated | 2,825 | 24,170 | 20 | pass | 0.80 |
+| 1 | rule_of_thumb | base_isolated | 2,825 | 24,170 | 20 | pass | 0.80 |
 
 ## Engineering notes
 

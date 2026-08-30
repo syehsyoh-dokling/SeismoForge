@@ -1,6 +1,6 @@
-# SeismoForge trajectory (scripted driver)
+# SeismoForge trajectory (offline mode)
 
-**Tool call** `read_brief` (`t+0.02s`):
+**Tool call** `read_brief` (`t+0.01s`):
 
 ```json
 {
@@ -8,13 +8,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+0.02s`):
+**Tool result** `read_brief` (`t+0.01s`):
 
 ```json
 "# Project brief: Coastal Hospital\n\nA regional health authority is planning a five-story acute-care hospital on a\nreclaimed coastal site with deep soft soil. The facility must remain\noperational immediately after a major earthquake, so equipment accelerations\nand structural drift are both tightly controlled. The structural concept is a\nstiff concrete shear-wall block; the question for us is the base isolation\nlayer and whether the available moat is enough on this soil.\n\n## Project data\n\n- Building use: hospital\n- Stories above grade: 5\n- Seismic floor weight: 550 tonnes per floor\n- Story lateral stiffness: 450,000 kN/m\n- Story height: 3.6 m\n\n## Site hazard\n\n- Design PGA: 0.32 g\n- Predominant site period: 1.1 s\n- Strong-motion duration: 25 s\n- Moat clearance available: 0.90 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+0.04s`):
+**Tool call** `parse_brief` (`t+0.02s`):
 
 ```json
 {
@@ -22,7 +22,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+0.06s`):
+**Tool result** `parse_brief` (`t+0.04s`):
 
 ```json
 {
@@ -50,7 +50,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+0.07s`):
+**Tool call** `propose_rule_of_thumb` (`t+0.05s`):
 
 ```json
 {
@@ -58,7 +58,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+0.08s`):
+**Tool result** `propose_rule_of_thumb` (`t+0.06s`):
 
 ```json
 {
@@ -71,7 +71,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+0.1s`):
+**Tool call** `simulate_design` (`t+0.08s`):
 
 ```json
 {
@@ -83,11 +83,12 @@
       "kd_kn_m": 13847.659236222313,
       "dy_m": 0.02
     }
-  }
+  },
+  "stage": "rule_of_thumb"
 }
 ```
 
-**Tool result** `simulate_design` (`t+0.38s`):
+**Tool result** `simulate_design` (`t+0.37s`):
 
 ```json
 {
@@ -165,7 +166,7 @@
 }
 ```
 
-**Tool call** `candidate_designs` (`t+0.39s`):
+**Tool call** `candidate_designs` (`t+0.37s`):
 
 ```json
 {
@@ -173,7 +174,7 @@
 }
 ```
 
-**Tool result** `candidate_designs` (`t+0.4s`):
+**Tool result** `candidate_designs` (`t+0.38s`):
 
 ```json
 [
@@ -307,7 +308,7 @@
 ...[result truncated for display]
 ```
 
-**Tool call** `simulate_design` (`t+0.43s`):
+**Tool call** `simulate_design` (`t+0.4s`):
 
 ```json
 {
@@ -319,11 +320,12 @@
       "kd_kn_m": 18848.202849302597,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+0.69s`):
+**Tool result** `simulate_design` (`t+0.66s`):
 
 ```json
 {
@@ -402,7 +404,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+0.7s`):
+**Tool call** `simulate_design` (`t+0.66s`):
 
 ```json
 {
@@ -414,11 +416,12 @@
       "kd_kn_m": 18848.202849302597,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+0.96s`):
+**Tool result** `simulate_design` (`t+0.94s`):
 
 ```json
 {
@@ -497,7 +500,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+0.96s`):
+**Tool call** `simulate_design` (`t+0.94s`):
 
 ```json
 {
@@ -509,11 +512,12 @@
       "kd_kn_m": 10602.114102732708,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+1.22s`):
+**Tool result** `simulate_design` (`t+1.23s`):
 
 ```json
 {
@@ -590,7 +594,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+1.22s`):
+**Tool call** `simulate_design` (`t+1.23s`):
 
 ```json
 {
@@ -602,7 +606,8 @@
       "kd_kn_m": 10602.114102732708,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
@@ -684,7 +689,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+1.5s`):
+**Tool call** `simulate_design` (`t+1.49s`):
 
 ```json
 {
@@ -696,7 +701,8 @@
       "kd_kn_m": 6785.353025748934,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
@@ -789,11 +795,12 @@
       "kd_kn_m": 6785.353025748934,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+2.02s`):
+**Tool result** `simulate_design` (`t+2.03s`):
 
 ```json
 {
@@ -871,7 +878,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+2.02s`):
+**Tool call** `simulate_design` (`t+2.04s`):
 
 ```json
 {
@@ -883,11 +890,12 @@
       "kd_kn_m": 18848.202849302597,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+2.28s`):
+**Tool result** `simulate_design` (`t+2.31s`):
 
 ```json
 {
@@ -965,7 +973,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+2.28s`):
+**Tool call** `simulate_design` (`t+2.32s`):
 
 ```json
 {
@@ -977,11 +985,12 @@
       "kd_kn_m": 18848.202849302597,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+2.55s`):
+**Tool result** `simulate_design` (`t+2.59s`):
 
 ```json
 {
@@ -1059,7 +1068,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+2.55s`):
+**Tool call** `simulate_design` (`t+2.59s`):
 
 ```json
 {
@@ -1071,11 +1080,12 @@
       "kd_kn_m": 10602.114102732708,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+2.81s`):
+**Tool result** `simulate_design` (`t+2.85s`):
 
 ```json
 {
@@ -1153,7 +1163,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+2.82s`):
+**Tool call** `simulate_design` (`t+2.85s`):
 
 ```json
 {
@@ -1165,11 +1175,12 @@
       "kd_kn_m": 10602.114102732708,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+3.07s`):
+**Tool result** `simulate_design` (`t+3.12s`):
 
 ```json
 {
@@ -1247,7 +1258,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+3.08s`):
+**Tool call** `simulate_design` (`t+3.12s`):
 
 ```json
 {
@@ -1259,11 +1270,12 @@
       "kd_kn_m": 6785.353025748934,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+3.34s`):
+**Tool result** `simulate_design` (`t+3.38s`):
 
 ```json
 {
@@ -1340,7 +1352,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+3.34s`):
+**Tool call** `simulate_design` (`t+3.39s`):
 
 ```json
 {
@@ -1352,11 +1364,12 @@
       "kd_kn_m": 6785.353025748934,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+3.6s`):
+**Tool result** `simulate_design` (`t+3.65s`):
 
 ```json
 {
@@ -1431,7 +1444,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+3.6s`):
+**Tool call** `simulate_design` (`t+3.65s`):
 
 ```json
 {
@@ -1443,11 +1456,12 @@
       "kd_kn_m": 18848.202849302597,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+3.86s`):
+**Tool result** `simulate_design` (`t+3.91s`):
 
 ```json
 {
@@ -1525,7 +1539,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+3.86s`):
+**Tool call** `simulate_design` (`t+3.91s`):
 
 ```json
 {
@@ -1537,11 +1551,12 @@
       "kd_kn_m": 18848.202849302597,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+4.12s`):
+**Tool result** `simulate_design` (`t+4.17s`):
 
 ```json
 {
@@ -1619,7 +1634,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+4.12s`):
+**Tool call** `simulate_design` (`t+4.18s`):
 
 ```json
 {
@@ -1631,11 +1646,12 @@
       "kd_kn_m": 10602.114102732708,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+4.39s`):
+**Tool result** `simulate_design` (`t+4.44s`):
 
 ```json
 {
@@ -1714,7 +1730,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+4.39s`):
+**Tool call** `simulate_design` (`t+4.44s`):
 
 ```json
 {
@@ -1726,11 +1742,12 @@
       "kd_kn_m": 10602.114102732708,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+4.66s`):
+**Tool result** `simulate_design` (`t+4.69s`):
 
 ```json
 {
@@ -1809,7 +1826,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+4.66s`):
+**Tool call** `simulate_design` (`t+4.7s`):
 
 ```json
 {
@@ -1821,11 +1838,12 @@
       "kd_kn_m": 6785.353025748934,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+4.92s`):
+**Tool result** `simulate_design` (`t+4.96s`):
 
 ```json
 {
@@ -1903,7 +1921,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+4.92s`):
+**Tool call** `simulate_design` (`t+4.96s`):
 
 ```json
 {
@@ -1915,11 +1933,12 @@
       "kd_kn_m": 6785.353025748934,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+5.18s`):
+**Tool result** `simulate_design` (`t+5.23s`):
 
 ```json
 {
@@ -1996,7 +2015,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+5.19s`):
+**Tool call** `write_report` (`t+5.23s`):
 
 ```json
 {
@@ -2027,7 +2046,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+5.5s`):
+**Tool call** `verify_output` (`t+5.51s`):
 
 ```json
 {
@@ -2044,7 +2063,7 @@
 }
 ```
 
-**policy** (`t+5.78s`): `{"note": "brief_01_coastal_hospital: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'base_shear_coeff', 'governing_utilization': 0.9301141630578948, 'passed': True}"}`
+**brief_complete** (`t+5.78s`): `{"brief": "brief_01_coastal_hospital", "mode": "offline"}`
 
 **Tool call** `read_brief` (`t+5.79s`):
 
@@ -2054,13 +2073,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+5.81s`):
+**Tool result** `read_brief` (`t+5.82s`):
 
 ```json
 "# Project brief: Valley Office Tower\n\nA developer wants an eight-story commercial office building in a valley city\nwith moderate-to-high seismicity on firm alluvium. Tenant comfort and\ninsurance terms favour an isolated solution if it is economical; the frame\nitself is a conventional stiff core.\n\n## Project data\n\n- Building use: office\n- Stories above grade: 8\n- Seismic floor weight: 600 tonnes per floor\n- Story lateral stiffness: 380,000 kN/m\n- Story height: 3.4 m\n\n## Site hazard\n\n- Design PGA: 0.25 g\n- Predominant site period: 0.7 s\n- Strong-motion duration: 22 s\n- Moat clearance available: 0.55 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+5.81s`):
+**Tool call** `parse_brief` (`t+5.83s`):
 
 ```json
 {
@@ -2068,7 +2087,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+5.83s`):
+**Tool result** `parse_brief` (`t+5.84s`):
 
 ```json
 {
@@ -2096,7 +2115,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+5.84s`):
+**Tool call** `propose_rule_of_thumb` (`t+5.86s`):
 
 ```json
 {
@@ -2104,7 +2123,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+5.86s`):
+**Tool result** `propose_rule_of_thumb` (`t+5.87s`):
 
 ```json
 {
@@ -2117,7 +2136,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+5.87s`):
+**Tool call** `simulate_design` (`t+5.89s`):
 
 ```json
 {
@@ -2129,11 +2148,12 @@
       "kd_kn_m": 24170.459757769855,
       "dy_m": 0.02
     }
-  }
+  },
+  "stage": "rule_of_thumb"
 }
 ```
 
-**Tool result** `simulate_design` (`t+6.2s`):
+**Tool result** `simulate_design` (`t+6.21s`):
 
 ```json
 {
@@ -2208,7 +2228,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+6.2s`):
+**Tool call** `write_report` (`t+6.21s`):
 
 ```json
 {
@@ -2226,7 +2246,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+6.57s`):
+**Tool result** `write_report` (`t+6.55s`):
 
 ```json
 {
@@ -2239,7 +2259,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+6.57s`):
+**Tool call** `verify_output` (`t+6.55s`):
 
 ```json
 {
@@ -2247,7 +2267,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+6.9s`):
+**Tool result** `verify_output` (`t+6.88s`):
 
 ```json
 {
@@ -2256,9 +2276,9 @@
 }
 ```
 
-**policy** (`t+6.9s`): `{"note": "brief_02_valley_office: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.798823974217303, 'passed': True}"}`
+**brief_complete** (`t+6.88s`): `{"brief": "brief_02_valley_office", "mode": "offline"}`
 
-**Tool call** `read_brief` (`t+6.92s`):
+**Tool call** `read_brief` (`t+6.9s`):
 
 ```json
 {
@@ -2266,13 +2286,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+6.93s`):
+**Tool result** `read_brief` (`t+6.92s`):
 
 ```json
 "# Project brief: Hillside Distribution Warehouse\n\nA logistics operator needs a simple two-story racking warehouse in a\nlow-to-moderate seismic region on stiff hillside soils. Contents are\npalletized goods; the owner wants the cheapest system that verifiably meets\nthe performance targets, and suspects isolation is unnecessary here.\n\n## Project data\n\n- Building use: warehouse\n- Stories above grade: 2\n- Seismic floor weight: 400 tonnes per floor\n- Story lateral stiffness: 150,000 kN/m\n- Story height: 4.5 m\n\n## Site hazard\n\n- Design PGA: 0.15 g\n- Predominant site period: 0.5 s\n- Strong-motion duration: 20 s\n- Moat clearance available: 0.35 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+6.95s`):
+**Tool call** `parse_brief` (`t+6.94s`):
 
 ```json
 {
@@ -2280,7 +2300,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+6.97s`):
+**Tool result** `parse_brief` (`t+6.95s`):
 
 ```json
 {
@@ -2308,7 +2328,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+6.98s`):
+**Tool call** `propose_rule_of_thumb` (`t+6.97s`):
 
 ```json
 {
@@ -2316,7 +2336,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+6.99s`):
+**Tool result** `propose_rule_of_thumb` (`t+6.98s`):
 
 ```json
 {
@@ -2325,7 +2345,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+7.01s`):
+**Tool call** `simulate_design` (`t+7.0s`):
 
 ```json
 {
@@ -2333,7 +2353,8 @@
   "design": {
     "system": "fixed_base",
     "isolation": null
-  }
+  },
+  "stage": "rule_of_thumb"
 }
 ```
 
@@ -2406,7 +2427,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+7.29s`):
+**Tool result** `write_report` (`t+7.26s`):
 
 ```json
 {
@@ -2419,7 +2440,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+7.3s`):
+**Tool call** `verify_output` (`t+7.26s`):
 
 ```json
 {
@@ -2427,7 +2448,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+7.43s`):
+**Tool result** `verify_output` (`t+7.39s`):
 
 ```json
 {
@@ -2436,9 +2457,9 @@
 }
 ```
 
-**policy** (`t+7.43s`): `{"note": "brief_03_hillside_warehouse: {'verdict': 'proceed', 'system': 'fixed_base', 'governing_check': 'base_shear_coeff', 'governing_utilization': 0.8814411402274767, 'passed': True}"}`
+**brief_complete** (`t+7.39s`): `{"brief": "brief_03_hillside_warehouse", "mode": "offline"}`
 
-**Tool call** `read_brief` (`t+7.45s`):
+**Tool call** `read_brief` (`t+7.41s`):
 
 ```json
 {
@@ -2446,13 +2467,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+7.47s`):
+**Tool result** `read_brief` (`t+7.42s`):
 
 ```json
 "# Project brief: Metro Data Center\n\nA colocation provider is building a three-story data hall near a metropolitan\nfault system. Rack equipment is acceleration-sensitive and downtime is\ncontractual money, so floor accelerations dominate the design conversation.\nThe floor plates are heavy with mechanical plant.\n\n## Project data\n\n- Building use: data_center\n- Stories above grade: 3\n- Seismic floor weight: 800 tonnes per floor\n- Story lateral stiffness: 500,000 kN/m\n- Story height: 4.0 m\n\n## Site hazard\n\n- Design PGA: 0.28 g\n- Predominant site period: 0.9 s\n- Strong-motion duration: 24 s\n- Moat clearance available: 0.60 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+7.48s`):
+**Tool call** `parse_brief` (`t+7.44s`):
 
 ```json
 {
@@ -2460,7 +2481,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+7.5s`):
+**Tool result** `parse_brief` (`t+7.46s`):
 
 ```json
 {
@@ -2488,7 +2509,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+7.52s`):
+**Tool call** `propose_rule_of_thumb` (`t+7.47s`):
 
 ```json
 {
@@ -2496,7 +2517,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+7.54s`):
+**Tool result** `propose_rule_of_thumb` (`t+7.49s`):
 
 ```json
 {
@@ -2509,7 +2530,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+7.56s`):
+**Tool call** `simulate_design` (`t+7.5s`):
 
 ```json
 {
@@ -2521,11 +2542,12 @@
       "kd_kn_m": 12085.229878884928,
       "dy_m": 0.02
     }
-  }
+  },
+  "stage": "rule_of_thumb"
 }
 ```
 
-**Tool result** `simulate_design` (`t+7.76s`):
+**Tool result** `simulate_design` (`t+7.69s`):
 
 ```json
 {
@@ -2602,7 +2624,7 @@
 }
 ```
 
-**Tool call** `candidate_designs` (`t+7.76s`):
+**Tool call** `candidate_designs` (`t+7.7s`):
 
 ```json
 {
@@ -2610,7 +2632,7 @@
 }
 ```
 
-**Tool result** `candidate_designs` (`t+7.78s`):
+**Tool result** `candidate_designs` (`t+7.71s`):
 
 ```json
 [
@@ -2744,7 +2766,7 @@
 ...[result truncated for display]
 ```
 
-**Tool call** `simulate_design` (`t+7.79s`):
+**Tool call** `simulate_design` (`t+7.73s`):
 
 ```json
 {
@@ -2756,11 +2778,12 @@
       "kd_kn_m": 16449.340668482266,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+7.98s`):
+**Tool result** `simulate_design` (`t+7.92s`):
 
 ```json
 {
@@ -2838,7 +2861,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+7.99s`):
+**Tool call** `simulate_design` (`t+7.93s`):
 
 ```json
 {
@@ -2850,11 +2873,12 @@
       "kd_kn_m": 16449.340668482266,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+8.18s`):
+**Tool result** `simulate_design` (`t+8.13s`):
 
 ```json
 {
@@ -2932,7 +2956,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+8.18s`):
+**Tool call** `simulate_design` (`t+8.13s`):
 
 ```json
 {
@@ -2944,11 +2968,12 @@
       "kd_kn_m": 9252.754126021273,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+8.38s`):
+**Tool result** `simulate_design` (`t+8.33s`):
 
 ```json
 {
@@ -3025,7 +3050,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+8.39s`):
+**Tool call** `simulate_design` (`t+8.33s`):
 
 ```json
 {
@@ -3037,11 +3062,12 @@
       "kd_kn_m": 9252.754126021273,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+8.59s`):
+**Tool result** `simulate_design` (`t+8.53s`):
 
 ```json
 {
@@ -3118,7 +3144,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+8.59s`):
+**Tool call** `simulate_design` (`t+8.53s`):
 
 ```json
 {
@@ -3130,11 +3156,12 @@
       "kd_kn_m": 5921.762640653615,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+8.79s`):
+**Tool result** `simulate_design` (`t+8.73s`):
 
 ```json
 {
@@ -3211,7 +3238,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+8.8s`):
+**Tool call** `simulate_design` (`t+8.73s`):
 
 ```json
 {
@@ -3223,11 +3250,12 @@
       "kd_kn_m": 5921.762640653615,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+9.0s`):
+**Tool result** `simulate_design` (`t+8.92s`):
 
 ```json
 {
@@ -3304,7 +3332,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+9.0s`):
+**Tool call** `simulate_design` (`t+8.92s`):
 
 ```json
 {
@@ -3316,11 +3344,12 @@
       "kd_kn_m": 16449.340668482266,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+9.2s`):
+**Tool result** `simulate_design` (`t+9.12s`):
 
 ```json
 {
@@ -3398,7 +3427,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+9.2s`):
+**Tool call** `simulate_design` (`t+9.12s`):
 
 ```json
 {
@@ -3410,11 +3439,12 @@
       "kd_kn_m": 16449.340668482266,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+9.4s`):
+**Tool result** `simulate_design` (`t+9.31s`):
 
 ```json
 {
@@ -3492,7 +3522,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+9.4s`):
+**Tool call** `simulate_design` (`t+9.31s`):
 
 ```json
 {
@@ -3504,11 +3534,12 @@
       "kd_kn_m": 9252.754126021273,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+9.6s`):
+**Tool result** `simulate_design` (`t+9.5s`):
 
 ```json
 {
@@ -3585,7 +3616,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+9.6s`):
+**Tool call** `simulate_design` (`t+9.51s`):
 
 ```json
 {
@@ -3597,11 +3628,12 @@
       "kd_kn_m": 9252.754126021273,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+9.79s`):
+**Tool result** `simulate_design` (`t+9.7s`):
 
 ```json
 {
@@ -3676,7 +3708,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+9.8s`):
+**Tool call** `simulate_design` (`t+9.7s`):
 
 ```json
 {
@@ -3688,11 +3720,12 @@
       "kd_kn_m": 5921.762640653615,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+9.99s`):
+**Tool result** `simulate_design` (`t+9.9s`):
 
 ```json
 {
@@ -3767,7 +3800,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+9.99s`):
+**Tool call** `simulate_design` (`t+9.9s`):
 
 ```json
 {
@@ -3779,11 +3812,12 @@
       "kd_kn_m": 5921.762640653615,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+10.19s`):
+**Tool result** `simulate_design` (`t+10.09s`):
 
 ```json
 {
@@ -3858,7 +3892,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+10.19s`):
+**Tool call** `simulate_design` (`t+10.1s`):
 
 ```json
 {
@@ -3870,11 +3904,12 @@
       "kd_kn_m": 16449.340668482266,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+10.39s`):
+**Tool result** `simulate_design` (`t+10.29s`):
 
 ```json
 {
@@ -3952,7 +3987,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+10.39s`):
+**Tool call** `simulate_design` (`t+10.29s`):
 
 ```json
 {
@@ -3964,11 +3999,12 @@
       "kd_kn_m": 16449.340668482266,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+10.59s`):
+**Tool result** `simulate_design` (`t+10.48s`):
 
 ```json
 {
@@ -4046,7 +4082,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+10.59s`):
+**Tool call** `simulate_design` (`t+10.49s`):
 
 ```json
 {
@@ -4058,11 +4094,12 @@
       "kd_kn_m": 9252.754126021273,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+10.78s`):
+**Tool result** `simulate_design` (`t+10.68s`):
 
 ```json
 {
@@ -4139,7 +4176,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+10.79s`):
+**Tool call** `simulate_design` (`t+10.69s`):
 
 ```json
 {
@@ -4151,11 +4188,12 @@
       "kd_kn_m": 9252.754126021273,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+10.98s`):
+**Tool result** `simulate_design` (`t+10.9s`):
 
 ```json
 {
@@ -4232,7 +4270,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+10.98s`):
+**Tool call** `simulate_design` (`t+10.9s`):
 
 ```json
 {
@@ -4244,11 +4282,12 @@
       "kd_kn_m": 5921.762640653615,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+11.18s`):
+**Tool result** `simulate_design` (`t+11.11s`):
 
 ```json
 {
@@ -4325,7 +4364,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+11.18s`):
+**Tool call** `simulate_design` (`t+11.11s`):
 
 ```json
 {
@@ -4337,11 +4376,12 @@
       "kd_kn_m": 5921.762640653615,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+11.37s`):
+**Tool result** `simulate_design` (`t+11.31s`):
 
 ```json
 {
@@ -4418,7 +4458,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+11.37s`):
+**Tool call** `write_report` (`t+11.31s`):
 
 ```json
 {
@@ -4436,7 +4476,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+11.63s`):
+**Tool result** `write_report` (`t+11.53s`):
 
 ```json
 {
@@ -4449,7 +4489,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+11.63s`):
+**Tool call** `verify_output` (`t+11.53s`):
 
 ```json
 {
@@ -4457,7 +4497,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+11.84s`):
+**Tool result** `verify_output` (`t+11.75s`):
 
 ```json
 {
@@ -4466,9 +4506,9 @@
 }
 ```
 
-**policy** (`t+11.84s`): `{"note": "brief_04_metro_datacenter: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.7923240391019488, 'passed': True}"}`
+**brief_complete** (`t+11.75s`): `{"brief": "brief_04_metro_datacenter", "mode": "offline"}`
 
-**Tool call** `read_brief` (`t+11.86s`):
+**Tool call** `read_brief` (`t+11.77s`):
 
 ```json
 {
@@ -4476,13 +4516,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+11.87s`):
+**Tool result** `read_brief` (`t+11.79s`):
 
 ```json
 "# Project brief: Riverside School\n\nA school district is replacing a four-story classroom block on river-deposit\nsoils. Life safety plus post-earthquake usability as a neighbourhood shelter\nare the goals; the district asked explicitly for evidence that the chosen\nsystem holds its targets across multiple plausible ground motions, not just\none design record.\n\n## Project data\n\n- Building use: school\n- Stories above grade: 4\n- Seismic floor weight: 480 tonnes per floor\n- Story lateral stiffness: 300,000 kN/m\n- Story height: 3.5 m\n\n## Site hazard\n\n- Design PGA: 0.30 g\n- Predominant site period: 1.0 s\n- Strong-motion duration: 24 s\n- Moat clearance available: 0.60 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+11.89s`):
+**Tool call** `parse_brief` (`t+11.81s`):
 
 ```json
 {
@@ -4490,7 +4530,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+11.91s`):
+**Tool result** `parse_brief` (`t+11.83s`):
 
 ```json
 {
@@ -4518,7 +4558,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+11.92s`):
+**Tool call** `propose_rule_of_thumb` (`t+11.84s`):
 
 ```json
 {
@@ -4526,7 +4566,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+11.93s`):
+**Tool result** `propose_rule_of_thumb` (`t+11.86s`):
 
 ```json
 {
@@ -4539,7 +4579,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+11.95s`):
+**Tool call** `simulate_design` (`t+11.88s`):
 
 ```json
 {
@@ -4551,11 +4591,12 @@
       "kd_kn_m": 9668.183903107942,
       "dy_m": 0.02
     }
-  }
+  },
+  "stage": "rule_of_thumb"
 }
 ```
 
-**Tool result** `simulate_design` (`t+12.17s`):
+**Tool result** `simulate_design` (`t+12.12s`):
 
 ```json
 {
@@ -4632,7 +4673,7 @@
 }
 ```
 
-**Tool call** `candidate_designs` (`t+12.18s`):
+**Tool call** `candidate_designs` (`t+12.12s`):
 
 ```json
 {
@@ -4640,7 +4681,7 @@
 }
 ```
 
-**Tool result** `candidate_designs` (`t+12.19s`):
+**Tool result** `candidate_designs` (`t+12.14s`):
 
 ```json
 [
@@ -4772,7 +4813,7 @@
 ...[result truncated for display]
 ```
 
-**Tool call** `simulate_design` (`t+12.21s`):
+**Tool call** `simulate_design` (`t+12.16s`):
 
 ```json
 {
@@ -4784,11 +4825,12 @@
       "kd_kn_m": 13159.472534785813,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+12.43s`):
+**Tool result** `simulate_design` (`t+12.38s`):
 
 ```json
 {
@@ -4867,7 +4909,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+12.43s`):
+**Tool call** `simulate_design` (`t+12.38s`):
 
 ```json
 {
@@ -4879,11 +4921,12 @@
       "kd_kn_m": 13159.472534785813,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+12.68s`):
+**Tool result** `simulate_design` (`t+12.6s`):
 
 ```json
 {
@@ -4962,7 +5005,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+12.68s`):
+**Tool call** `simulate_design` (`t+12.61s`):
 
 ```json
 {
@@ -4974,11 +5017,12 @@
       "kd_kn_m": 7402.203300817018,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+12.93s`):
+**Tool result** `simulate_design` (`t+12.83s`):
 
 ```json
 {
@@ -5055,7 +5099,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+12.94s`):
+**Tool call** `simulate_design` (`t+12.83s`):
 
 ```json
 {
@@ -5067,11 +5111,12 @@
       "kd_kn_m": 7402.203300817018,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+13.18s`):
+**Tool result** `simulate_design` (`t+13.05s`):
 
 ```json
 {
@@ -5148,7 +5193,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+13.19s`):
+**Tool call** `simulate_design` (`t+13.06s`):
 
 ```json
 {
@@ -5160,11 +5205,12 @@
       "kd_kn_m": 4737.410112522892,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+13.42s`):
+**Tool result** `simulate_design` (`t+13.29s`):
 
 ```json
 {
@@ -5241,7 +5287,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+13.42s`):
+**Tool call** `simulate_design` (`t+13.29s`):
 
 ```json
 {
@@ -5253,11 +5299,12 @@
       "kd_kn_m": 4737.410112522892,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+13.67s`):
+**Tool result** `simulate_design` (`t+13.51s`):
 
 ```json
 {
@@ -5334,7 +5381,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+13.67s`):
+**Tool call** `simulate_design` (`t+13.51s`):
 
 ```json
 {
@@ -5346,11 +5393,12 @@
       "kd_kn_m": 13159.472534785813,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+13.92s`):
+**Tool result** `simulate_design` (`t+13.73s`):
 
 ```json
 {
@@ -5428,7 +5476,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+13.92s`):
+**Tool call** `simulate_design` (`t+13.73s`):
 
 ```json
 {
@@ -5440,11 +5488,12 @@
       "kd_kn_m": 13159.472534785813,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+14.15s`):
+**Tool result** `simulate_design` (`t+13.96s`):
 
 ```json
 {
@@ -5522,7 +5571,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+14.16s`):
+**Tool call** `simulate_design` (`t+13.96s`):
 
 ```json
 {
@@ -5534,11 +5583,12 @@
       "kd_kn_m": 7402.203300817018,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+14.38s`):
+**Tool result** `simulate_design` (`t+14.2s`):
 
 ```json
 {
@@ -5613,7 +5663,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+14.38s`):
+**Tool call** `simulate_design` (`t+14.2s`):
 
 ```json
 {
@@ -5625,11 +5675,12 @@
       "kd_kn_m": 7402.203300817018,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+14.62s`):
+**Tool result** `simulate_design` (`t+14.43s`):
 
 ```json
 {
@@ -5704,7 +5755,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+14.63s`):
+**Tool call** `simulate_design` (`t+14.43s`):
 
 ```json
 {
@@ -5716,11 +5767,12 @@
       "kd_kn_m": 4737.410112522892,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+14.85s`):
+**Tool result** `simulate_design` (`t+14.66s`):
 
 ```json
 {
@@ -5795,7 +5847,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+14.86s`):
+**Tool call** `simulate_design` (`t+14.66s`):
 
 ```json
 {
@@ -5807,11 +5859,12 @@
       "kd_kn_m": 4737.410112522892,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+15.09s`):
+**Tool result** `simulate_design` (`t+14.92s`):
 
 ```json
 {
@@ -5886,7 +5939,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+15.09s`):
+**Tool call** `simulate_design` (`t+14.92s`):
 
 ```json
 {
@@ -5898,11 +5951,12 @@
       "kd_kn_m": 13159.472534785813,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+15.33s`):
+**Tool result** `simulate_design` (`t+15.17s`):
 
 ```json
 {
@@ -5979,7 +6033,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+15.33s`):
+**Tool call** `simulate_design` (`t+15.17s`):
 
 ```json
 {
@@ -5991,11 +6045,12 @@
       "kd_kn_m": 13159.472534785813,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+15.56s`):
+**Tool result** `simulate_design` (`t+15.4s`):
 
 ```json
 {
@@ -6072,7 +6127,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+15.56s`):
+**Tool call** `simulate_design` (`t+15.4s`):
 
 ```json
 {
@@ -6084,11 +6139,12 @@
       "kd_kn_m": 7402.203300817018,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+15.79s`):
+**Tool result** `simulate_design` (`t+15.65s`):
 
 ```json
 {
@@ -6165,7 +6221,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+15.79s`):
+**Tool call** `simulate_design` (`t+15.65s`):
 
 ```json
 {
@@ -6177,11 +6233,12 @@
       "kd_kn_m": 7402.203300817018,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+16.03s`):
+**Tool result** `simulate_design` (`t+15.89s`):
 
 ```json
 {
@@ -6258,7 +6315,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+16.03s`):
+**Tool call** `simulate_design` (`t+15.89s`):
 
 ```json
 {
@@ -6270,11 +6327,12 @@
       "kd_kn_m": 4737.410112522892,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+16.26s`):
+**Tool result** `simulate_design` (`t+16.13s`):
 
 ```json
 {
@@ -6349,7 +6407,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+16.26s`):
+**Tool call** `simulate_design` (`t+16.14s`):
 
 ```json
 {
@@ -6361,11 +6419,12 @@
       "kd_kn_m": 4737.410112522892,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+16.48s`):
+**Tool result** `simulate_design` (`t+16.37s`):
 
 ```json
 {
@@ -6440,7 +6499,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+16.48s`):
+**Tool call** `write_report` (`t+16.38s`):
 
 ```json
 {
@@ -6458,7 +6517,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+16.75s`):
+**Tool result** `write_report` (`t+16.62s`):
 
 ```json
 {
@@ -6471,7 +6530,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+16.76s`):
+**Tool call** `verify_output` (`t+16.62s`):
 
 ```json
 {
@@ -6479,7 +6538,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+16.99s`):
+**Tool result** `verify_output` (`t+16.87s`):
 
 ```json
 {
@@ -6488,9 +6547,9 @@
 }
 ```
 
-**policy** (`t+17.0s`): `{"note": "brief_05_riverside_school: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.8534988456172266, 'passed': True}"}`
+**brief_complete** (`t+16.87s`): `{"brief": "brief_05_riverside_school", "mode": "offline"}`
 
-**Tool call** `read_brief` (`t+17.01s`):
+**Tool call** `read_brief` (`t+16.89s`):
 
 ```json
 {
@@ -6498,13 +6557,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+17.03s`):
+**Tool result** `read_brief` (`t+16.9s`):
 
 ```json
 "# Project brief: Downtown Residential Tower\n\nA twelve-story apartment tower on a constrained downtown lot. The structural\nsystem is a stiff wall-frame; the lot line limits how much isolator travel the\npodium can accommodate. The owner wants to know whether isolation still pays\noff with that constraint.\n\n## Project data\n\n- Building use: residential\n- Stories above grade: 12\n- Seismic floor weight: 650 tonnes per floor\n- Story lateral stiffness: 550,000 kN/m\n- Story height: 3.0 m\n\n## Site hazard\n\n- Design PGA: 0.26 g\n- Predominant site period: 0.8 s\n- Strong-motion duration: 22 s\n- Moat clearance available: 0.50 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+17.04s`):
+**Tool call** `parse_brief` (`t+16.92s`):
 
 ```json
 {
@@ -6512,7 +6571,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+17.06s`):
+**Tool result** `parse_brief` (`t+16.94s`):
 
 ```json
 {
@@ -6540,7 +6599,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+17.07s`):
+**Tool call** `propose_rule_of_thumb` (`t+16.96s`):
 
 ```json
 {
@@ -6548,7 +6607,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+17.09s`):
+**Tool result** `propose_rule_of_thumb` (`t+16.98s`):
 
 ```json
 {
@@ -6561,7 +6620,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+17.1s`):
+**Tool call** `simulate_design` (`t+17.0s`):
 
 ```json
 {
@@ -6573,11 +6632,12 @@
       "kd_kn_m": 39276.99710637602,
       "dy_m": 0.02
     }
-  }
+  },
+  "stage": "rule_of_thumb"
 }
 ```
 
-**Tool result** `simulate_design` (`t+17.54s`):
+**Tool result** `simulate_design` (`t+17.46s`):
 
 ```json
 {
@@ -6654,7 +6714,7 @@
 }
 ```
 
-**Tool call** `candidate_designs` (`t+17.55s`):
+**Tool call** `candidate_designs` (`t+17.47s`):
 
 ```json
 {
@@ -6662,7 +6722,7 @@
 }
 ```
 
-**Tool result** `candidate_designs` (`t+17.56s`):
+**Tool result** `candidate_designs` (`t+17.49s`):
 
 ```json
 [
@@ -6794,7 +6854,7 @@
 ...[result truncated for display]
 ```
 
-**Tool call** `simulate_design` (`t+17.58s`):
+**Tool call** `simulate_design` (`t+17.5s`):
 
 ```json
 {
@@ -6806,11 +6866,12 @@
       "kd_kn_m": 53460.35717256737,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+18.02s`):
+**Tool result** `simulate_design` (`t+17.95s`):
 
 ```json
 {
@@ -6885,7 +6946,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+18.02s`):
+**Tool call** `simulate_design` (`t+17.95s`):
 
 ```json
 {
@@ -6897,11 +6958,12 @@
       "kd_kn_m": 53460.35717256737,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+18.46s`):
+**Tool result** `simulate_design` (`t+18.41s`):
 
 ```json
 {
@@ -6976,7 +7038,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+18.47s`):
+**Tool call** `simulate_design` (`t+18.41s`):
 
 ```json
 {
@@ -6988,11 +7050,12 @@
       "kd_kn_m": 30071.450909569136,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+18.91s`):
+**Tool result** `simulate_design` (`t+18.86s`):
 
 ```json
 {
@@ -7067,7 +7130,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+18.91s`):
+**Tool call** `simulate_design` (`t+18.86s`):
 
 ```json
 {
@@ -7079,11 +7142,12 @@
       "kd_kn_m": 30071.450909569136,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+19.35s`):
+**Tool result** `simulate_design` (`t+19.32s`):
 
 ```json
 {
@@ -7158,7 +7222,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+19.36s`):
+**Tool call** `simulate_design` (`t+19.32s`):
 
 ```json
 {
@@ -7170,11 +7234,12 @@
       "kd_kn_m": 19245.728582124248,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+19.8s`):
+**Tool result** `simulate_design` (`t+19.75s`):
 
 ```json
 {
@@ -7249,7 +7314,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+19.8s`):
+**Tool call** `simulate_design` (`t+19.76s`):
 
 ```json
 {
@@ -7261,11 +7326,12 @@
       "kd_kn_m": 19245.728582124248,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+20.24s`):
+**Tool result** `simulate_design` (`t+20.19s`):
 
 ```json
 {
@@ -7340,7 +7406,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+20.24s`):
+**Tool call** `simulate_design` (`t+20.2s`):
 
 ```json
 {
@@ -7352,11 +7418,12 @@
       "kd_kn_m": 53460.35717256737,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+20.68s`):
+**Tool result** `simulate_design` (`t+20.64s`):
 
 ```json
 {
@@ -7433,7 +7500,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+20.68s`):
+**Tool call** `simulate_design` (`t+20.65s`):
 
 ```json
 {
@@ -7445,11 +7512,12 @@
       "kd_kn_m": 53460.35717256737,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+21.12s`):
+**Tool result** `simulate_design` (`t+21.09s`):
 
 ```json
 {
@@ -7526,7 +7594,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+21.12s`):
+**Tool call** `simulate_design` (`t+21.09s`):
 
 ```json
 {
@@ -7538,11 +7606,12 @@
       "kd_kn_m": 30071.450909569136,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+21.57s`):
+**Tool result** `simulate_design` (`t+21.53s`):
 
 ```json
 {
@@ -7619,7 +7688,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+21.57s`):
+**Tool call** `simulate_design` (`t+21.53s`):
 
 ```json
 {
@@ -7631,11 +7700,12 @@
       "kd_kn_m": 30071.450909569136,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+22.01s`):
+**Tool result** `simulate_design` (`t+21.97s`):
 
 ```json
 {
@@ -7710,7 +7780,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+22.02s`):
+**Tool call** `simulate_design` (`t+21.97s`):
 
 ```json
 {
@@ -7722,11 +7792,12 @@
       "kd_kn_m": 19245.728582124248,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+22.45s`):
+**Tool result** `simulate_design` (`t+22.41s`):
 
 ```json
 {
@@ -7801,7 +7872,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+22.45s`):
+**Tool call** `simulate_design` (`t+22.42s`):
 
 ```json
 {
@@ -7813,11 +7884,12 @@
       "kd_kn_m": 19245.728582124248,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+22.9s`):
+**Tool result** `simulate_design` (`t+22.86s`):
 
 ```json
 {
@@ -7892,7 +7964,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+22.9s`):
+**Tool call** `simulate_design` (`t+22.86s`):
 
 ```json
 {
@@ -7904,11 +7976,12 @@
       "kd_kn_m": 53460.35717256737,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+23.33s`):
+**Tool result** `simulate_design` (`t+23.31s`):
 
 ```json
 {
@@ -7986,7 +8059,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+23.34s`):
+**Tool call** `simulate_design` (`t+23.31s`):
 
 ```json
 {
@@ -7998,11 +8071,12 @@
       "kd_kn_m": 53460.35717256737,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+23.78s`):
+**Tool result** `simulate_design` (`t+23.75s`):
 
 ```json
 {
@@ -8080,7 +8154,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+23.78s`):
+**Tool call** `simulate_design` (`t+23.75s`):
 
 ```json
 {
@@ -8092,11 +8166,12 @@
       "kd_kn_m": 30071.450909569136,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+24.22s`):
+**Tool result** `simulate_design` (`t+24.19s`):
 
 ```json
 {
@@ -8173,7 +8248,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+24.22s`):
+**Tool call** `simulate_design` (`t+24.19s`):
 
 ```json
 {
@@ -8185,11 +8260,12 @@
       "kd_kn_m": 30071.450909569136,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+24.66s`):
+**Tool result** `simulate_design` (`t+24.63s`):
 
 ```json
 {
@@ -8266,7 +8342,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+24.66s`):
+**Tool call** `simulate_design` (`t+24.64s`):
 
 ```json
 {
@@ -8278,11 +8354,12 @@
       "kd_kn_m": 19245.728582124248,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+25.1s`):
+**Tool result** `simulate_design` (`t+25.08s`):
 
 ```json
 {
@@ -8359,7 +8436,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+25.11s`):
+**Tool call** `simulate_design` (`t+25.08s`):
 
 ```json
 {
@@ -8371,11 +8448,12 @@
       "kd_kn_m": 19245.728582124248,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+25.54s`):
+**Tool result** `simulate_design` (`t+25.53s`):
 
 ```json
 {
@@ -8452,7 +8530,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+25.55s`):
+**Tool call** `write_report` (`t+25.54s`):
 
 ```json
 {
@@ -8470,7 +8548,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+26.03s`):
+**Tool result** `write_report` (`t+25.99s`):
 
 ```json
 {
@@ -8483,7 +8561,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+26.03s`):
+**Tool call** `verify_output` (`t+26.0s`):
 
 ```json
 {
@@ -8491,7 +8569,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+26.48s`):
+**Tool result** `verify_output` (`t+26.45s`):
 
 ```json
 {
@@ -8500,9 +8578,9 @@
 }
 ```
 
-**policy** (`t+26.48s`): `{"note": "brief_06_downtown_residential: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.7918948803050672, 'passed': True}"}`
+**brief_complete** (`t+26.45s`): `{"brief": "brief_06_downtown_residential", "mode": "offline"}`
 
-**Tool call** `read_brief` (`t+26.5s`):
+**Tool call** `read_brief` (`t+26.47s`):
 
 ```json
 {
@@ -8510,13 +8588,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+26.52s`):
+**Tool result** `read_brief` (`t+26.49s`):
 
 ```json
 "# Project brief: Plains Office Campus Block\n\nA six-story office block on firm plains soils in a moderate seismic zone. The\nclient's engineer believes a conventional fixed-base frame is sufficient here\nand wants that assumption tested honestly before spending on bearings.\n\n## Project data\n\n- Building use: office\n- Stories above grade: 6\n- Seismic floor weight: 580 tonnes per floor\n- Story lateral stiffness: 320,000 kN/m\n- Story height: 3.5 m\n\n## Site hazard\n\n- Design PGA: 0.18 g\n- Predominant site period: 0.6 s\n- Strong-motion duration: 20 s\n- Moat clearance available: 0.45 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+26.53s`):
+**Tool call** `parse_brief` (`t+26.5s`):
 
 ```json
 {
@@ -8524,7 +8602,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+26.55s`):
+**Tool result** `parse_brief` (`t+26.52s`):
 
 ```json
 {
@@ -8552,7 +8630,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+26.56s`):
+**Tool call** `propose_rule_of_thumb` (`t+26.54s`):
 
 ```json
 {
@@ -8560,7 +8638,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+26.57s`):
+**Tool result** `propose_rule_of_thumb` (`t+26.55s`):
 
 ```json
 {
@@ -8569,7 +8647,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+26.59s`):
+**Tool call** `simulate_design` (`t+26.56s`):
 
 ```json
 {
@@ -8577,11 +8655,12 @@
   "design": {
     "system": "fixed_base",
     "isolation": null
-  }
+  },
+  "stage": "rule_of_thumb"
 }
 ```
 
-**Tool result** `simulate_design` (`t+26.82s`):
+**Tool result** `simulate_design` (`t+26.79s`):
 
 ```json
 {
@@ -8638,7 +8717,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+26.82s`):
+**Tool call** `suggest_refinement` (`t+26.79s`):
 
 ```json
 {
@@ -8650,7 +8729,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+26.84s`):
+**Tool result** `suggest_refinement` (`t+26.81s`):
 
 ```json
 {
@@ -8666,7 +8745,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+26.86s`):
+**Tool call** `simulate_design` (`t+26.83s`):
 
 ```json
 {
@@ -8678,11 +8757,12 @@
       "kd_kn_m": 17523.583324383144,
       "dy_m": 0.02
     }
-  }
+  },
+  "stage": "refine"
 }
 ```
 
-**Tool result** `simulate_design` (`t+27.12s`):
+**Tool result** `simulate_design` (`t+27.08s`):
 
 ```json
 {
@@ -8757,7 +8837,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+27.13s`):
+**Tool call** `write_report` (`t+27.09s`):
 
 ```json
 {
@@ -8775,7 +8855,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+27.42s`):
+**Tool result** `write_report` (`t+27.35s`):
 
 ```json
 {
@@ -8788,7 +8868,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+27.43s`):
+**Tool call** `verify_output` (`t+27.36s`):
 
 ```json
 {
@@ -8796,7 +8876,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+27.7s`):
+**Tool result** `verify_output` (`t+27.62s`):
 
 ```json
 {
@@ -8805,9 +8885,9 @@
 }
 ```
 
-**policy** (`t+27.7s`): `{"note": "brief_07_plains_office: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 0.6087980894650564, 'passed': True}"}`
+**brief_complete** (`t+27.62s`): `{"brief": "brief_07_plains_office", "mode": "offline"}`
 
-**Tool call** `read_brief` (`t+27.72s`):
+**Tool call** `read_brief` (`t+27.64s`):
 
 ```json
 {
@@ -8815,13 +8895,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+27.74s`):
+**Tool result** `read_brief` (`t+27.66s`):
 
 ```json
 "# Project brief: Lakeside Community Hospital\n\nA three-story community hospital near a lake shore, on medium-stiff soils in\na moderate zone. Operational continuity drives the brief: imaging and surgical\nequipment set a hard ceiling on floor accelerations.\n\n## Project data\n\n- Building use: hospital\n- Stories above grade: 3\n- Seismic floor weight: 500 tonnes per floor\n- Story lateral stiffness: 420,000 kN/m\n- Story height: 3.6 m\n\n## Site hazard\n\n- Design PGA: 0.22 g\n- Predominant site period: 0.8 s\n- Strong-motion duration: 22 s\n- Moat clearance available: 0.55 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+27.75s`):
+**Tool call** `parse_brief` (`t+27.66s`):
 
 ```json
 {
@@ -8829,7 +8909,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+27.77s`):
+**Tool result** `parse_brief` (`t+27.68s`):
 
 ```json
 {
@@ -8857,7 +8937,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+27.78s`):
+**Tool call** `propose_rule_of_thumb` (`t+27.69s`):
 
 ```json
 {
@@ -8865,7 +8945,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+27.8s`):
+**Tool result** `propose_rule_of_thumb` (`t+27.71s`):
 
 ```json
 {
@@ -8878,7 +8958,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+27.81s`):
+**Tool call** `simulate_design` (`t+27.72s`):
 
 ```json
 {
@@ -8890,11 +8970,12 @@
       "kd_kn_m": 7553.26867430308,
       "dy_m": 0.02
     }
-  }
+  },
+  "stage": "rule_of_thumb"
 }
 ```
 
-**Tool result** `simulate_design` (`t+28.0s`):
+**Tool result** `simulate_design` (`t+27.9s`):
 
 ```json
 {
@@ -8969,7 +9050,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+28.01s`):
+**Tool call** `write_report` (`t+27.91s`):
 
 ```json
 {
@@ -8987,7 +9068,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+28.24s`):
+**Tool result** `write_report` (`t+28.1s`):
 
 ```json
 {
@@ -9000,7 +9081,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+28.24s`):
+**Tool call** `verify_output` (`t+28.1s`):
 
 ```json
 {
@@ -9008,7 +9089,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+28.45s`):
+**Tool result** `verify_output` (`t+28.3s`):
 
 ```json
 {
@@ -9017,9 +9098,9 @@
 }
 ```
 
-**policy** (`t+28.45s`): `{"note": "brief_08_lakeside_hospital: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'base_shear_coeff', 'governing_utilization': 0.7784508621501076, 'passed': True}"}`
+**brief_complete** (`t+28.3s`): `{"brief": "brief_08_lakeside_hospital", "mode": "offline"}`
 
-**Tool call** `read_brief` (`t+28.46s`):
+**Tool call** `read_brief` (`t+28.32s`):
 
 ```json
 {
@@ -9027,13 +9108,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+28.48s`):
+**Tool result** `read_brief` (`t+28.33s`):
 
 ```json
 "# Project brief: Port Logistics Warehouse\n\nA three-story port warehouse handling time-critical cargo, on softer harbour\nsoils than the operator's usual sites. The operator's standard fixed-base\ndesign has always been fine elsewhere; the question is whether it still holds\non this ground, and what to do if it does not.\n\n## Project data\n\n- Building use: warehouse\n- Stories above grade: 3\n- Seismic floor weight: 450 tonnes per floor\n- Story lateral stiffness: 200,000 kN/m\n- Story height: 4.2 m\n\n## Site hazard\n\n- Design PGA: 0.24 g\n- Predominant site period: 0.9 s\n- Strong-motion duration: 23 s\n- Moat clearance available: 0.45 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+28.49s`):
+**Tool call** `parse_brief` (`t+28.35s`):
 
 ```json
 {
@@ -9041,7 +9122,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+28.51s`):
+**Tool result** `parse_brief` (`t+28.36s`):
 
 ```json
 {
@@ -9069,7 +9150,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+28.52s`):
+**Tool call** `propose_rule_of_thumb` (`t+28.38s`):
 
 ```json
 {
@@ -9077,7 +9158,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+28.54s`):
+**Tool result** `propose_rule_of_thumb` (`t+28.39s`):
 
 ```json
 {
@@ -9086,7 +9167,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+28.55s`):
+**Tool call** `simulate_design` (`t+28.4s`):
 
 ```json
 {
@@ -9094,11 +9175,12 @@
   "design": {
     "system": "fixed_base",
     "isolation": null
-  }
+  },
+  "stage": "rule_of_thumb"
 }
 ```
 
-**Tool result** `simulate_design` (`t+28.72s`):
+**Tool result** `simulate_design` (`t+28.56s`):
 
 ```json
 {
@@ -9156,7 +9238,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+28.73s`):
+**Tool call** `suggest_refinement` (`t+28.56s`):
 
 ```json
 {
@@ -9168,7 +9250,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+28.74s`):
+**Tool result** `suggest_refinement` (`t+28.57s`):
 
 ```json
 {
@@ -9184,7 +9266,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+28.76s`):
+**Tool call** `simulate_design` (`t+28.59s`):
 
 ```json
 {
@@ -9196,11 +9278,12 @@
       "kd_kn_m": 6797.941806872772,
       "dy_m": 0.02
     }
-  }
+  },
+  "stage": "refine"
 }
 ```
 
-**Tool result** `simulate_design` (`t+28.97s`):
+**Tool result** `simulate_design` (`t+28.78s`):
 
 ```json
 {
@@ -9275,7 +9358,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+28.97s`):
+**Tool call** `write_report` (`t+28.78s`):
 
 ```json
 {
@@ -9293,7 +9376,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+29.21s`):
+**Tool result** `write_report` (`t+28.98s`):
 
 ```json
 {
@@ -9306,7 +9389,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+29.21s`):
+**Tool call** `verify_output` (`t+28.98s`):
 
 ```json
 {
@@ -9314,7 +9397,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+29.42s`):
+**Tool result** `verify_output` (`t+29.19s`):
 
 ```json
 {
@@ -9323,9 +9406,9 @@
 }
 ```
 
-**policy** (`t+29.42s`): `{"note": "brief_09_port_warehouse: {'verdict': 'proceed', 'system': 'base_isolated', 'governing_check': 'peak_isolator_disp_m', 'governing_utilization': 0.7547779224555964, 'passed': True}"}`
+**brief_complete** (`t+29.2s`): `{"brief": "brief_09_port_warehouse", "mode": "offline"}`
 
-**Tool call** `read_brief` (`t+29.44s`):
+**Tool call** `read_brief` (`t+29.22s`):
 
 ```json
 {
@@ -9333,13 +9416,13 @@
 }
 ```
 
-**Tool result** `read_brief` (`t+29.46s`):
+**Tool result** `read_brief` (`t+29.23s`):
 
 ```json
 "# Project brief: Cliffside Clinic\n\nA six-story clinic proposed on a severe near-fault site with very soft, long-\nperiod soils, on a lot whose retaining condition caps the moat at 0.40 m. The\nclient is aware the site is aggressive and wants a straight answer: is there a\nbuildable isolation design that meets hospital-grade performance here, or does\nthe project need a different site, a bigger moat, or supplemental damping\noutside our standard system?\n\n## Project data\n\n- Building use: hospital\n- Stories above grade: 6\n- Seismic floor weight: 700 tonnes per floor\n- Story lateral stiffness: 400,000 kN/m\n- Story height: 3.6 m\n\n## Site hazard\n\n- Design PGA: 0.38 g\n- Predominant site period: 1.3 s\n- Strong-motion duration: 28 s\n- Moat clearance available: 0.40 m\n"
 ```
 
-**Tool call** `parse_brief` (`t+29.47s`):
+**Tool call** `parse_brief` (`t+29.24s`):
 
 ```json
 {
@@ -9347,7 +9430,7 @@
 }
 ```
 
-**Tool result** `parse_brief` (`t+29.49s`):
+**Tool result** `parse_brief` (`t+29.26s`):
 
 ```json
 {
@@ -9375,7 +9458,7 @@
 }
 ```
 
-**Tool call** `propose_rule_of_thumb` (`t+29.5s`):
+**Tool call** `propose_rule_of_thumb` (`t+29.27s`):
 
 ```json
 {
@@ -9383,7 +9466,7 @@
 }
 ```
 
-**Tool result** `propose_rule_of_thumb` (`t+29.52s`):
+**Tool result** `propose_rule_of_thumb` (`t+29.29s`):
 
 ```json
 {
@@ -9396,7 +9479,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+29.53s`):
+**Tool call** `simulate_design` (`t+29.3s`):
 
 ```json
 {
@@ -9408,11 +9491,12 @@
       "kd_kn_m": 21149.152288048623,
       "dy_m": 0.02
     }
-  }
+  },
+  "stage": "rule_of_thumb"
 }
 ```
 
-**Tool result** `simulate_design` (`t+29.86s`):
+**Tool result** `simulate_design` (`t+29.61s`):
 
 ```json
 {
@@ -9492,7 +9576,7 @@
 }
 ```
 
-**Tool call** `candidate_designs` (`t+29.86s`):
+**Tool call** `candidate_designs` (`t+29.62s`):
 
 ```json
 {
@@ -9500,7 +9584,7 @@
 }
 ```
 
-**Tool result** `candidate_designs` (`t+29.87s`):
+**Tool result** `candidate_designs` (`t+29.63s`):
 
 ```json
 [
@@ -9634,7 +9718,7 @@
 ...[result truncated for display]
 ```
 
-**Tool call** `simulate_design` (`t+29.89s`):
+**Tool call** `simulate_design` (`t+29.65s`):
 
 ```json
 {
@@ -9646,11 +9730,12 @@
       "kd_kn_m": 28786.346169843964,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+30.2s`):
+**Tool result** `simulate_design` (`t+29.96s`):
 
 ```json
 {
@@ -9730,7 +9815,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+30.21s`):
+**Tool call** `simulate_design` (`t+29.96s`):
 
 ```json
 {
@@ -9742,11 +9827,12 @@
       "kd_kn_m": 28786.346169843964,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+30.52s`):
+**Tool result** `simulate_design` (`t+30.31s`):
 
 ```json
 {
@@ -9826,7 +9912,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+30.52s`):
+**Tool call** `simulate_design` (`t+30.32s`):
 
 ```json
 {
@@ -9838,11 +9924,12 @@
       "kd_kn_m": 16192.319720537229,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+30.84s`):
+**Tool result** `simulate_design` (`t+30.67s`):
 
 ```json
 {
@@ -9922,7 +10009,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+30.85s`):
+**Tool call** `simulate_design` (`t+30.68s`):
 
 ```json
 {
@@ -9934,11 +10021,12 @@
       "kd_kn_m": 16192.319720537229,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+31.17s`):
+**Tool result** `simulate_design` (`t+31.0s`):
 
 ```json
 {
@@ -10018,7 +10106,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+31.17s`):
+**Tool call** `simulate_design` (`t+31.01s`):
 
 ```json
 {
@@ -10030,11 +10118,12 @@
       "kd_kn_m": 10363.084621143826,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+31.49s`):
+**Tool result** `simulate_design` (`t+31.35s`):
 
 ```json
 {
@@ -10114,7 +10203,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+31.5s`):
+**Tool call** `simulate_design` (`t+31.36s`):
 
 ```json
 {
@@ -10126,11 +10215,12 @@
       "kd_kn_m": 10363.084621143826,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+31.83s`):
+**Tool result** `simulate_design` (`t+31.69s`):
 
 ```json
 {
@@ -10210,7 +10300,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+31.84s`):
+**Tool call** `simulate_design` (`t+31.69s`):
 
 ```json
 {
@@ -10222,11 +10312,12 @@
       "kd_kn_m": 28786.346169843964,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+32.16s`):
+**Tool result** `simulate_design` (`t+32.02s`):
 
 ```json
 {
@@ -10306,7 +10397,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+32.16s`):
+**Tool call** `simulate_design` (`t+32.02s`):
 
 ```json
 {
@@ -10318,11 +10409,12 @@
       "kd_kn_m": 28786.346169843964,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+32.48s`):
+**Tool result** `simulate_design` (`t+32.37s`):
 
 ```json
 {
@@ -10402,7 +10494,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+32.48s`):
+**Tool call** `simulate_design` (`t+32.37s`):
 
 ```json
 {
@@ -10414,11 +10506,12 @@
       "kd_kn_m": 16192.319720537229,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+32.8s`):
+**Tool result** `simulate_design` (`t+32.72s`):
 
 ```json
 {
@@ -10498,7 +10591,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+32.8s`):
+**Tool call** `simulate_design` (`t+32.72s`):
 
 ```json
 {
@@ -10510,11 +10603,12 @@
       "kd_kn_m": 16192.319720537229,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+33.12s`):
+**Tool result** `simulate_design` (`t+33.05s`):
 
 ```json
 {
@@ -10594,7 +10688,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+33.12s`):
+**Tool call** `simulate_design` (`t+33.05s`):
 
 ```json
 {
@@ -10606,11 +10700,12 @@
       "kd_kn_m": 10363.084621143826,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+33.44s`):
+**Tool result** `simulate_design` (`t+33.38s`):
 
 ```json
 {
@@ -10690,7 +10785,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+33.44s`):
+**Tool call** `simulate_design` (`t+33.38s`):
 
 ```json
 {
@@ -10702,11 +10797,12 @@
       "kd_kn_m": 10363.084621143826,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+33.77s`):
+**Tool result** `simulate_design` (`t+33.71s`):
 
 ```json
 {
@@ -10786,7 +10882,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+33.77s`):
+**Tool call** `simulate_design` (`t+33.71s`):
 
 ```json
 {
@@ -10798,11 +10894,12 @@
       "kd_kn_m": 28786.346169843964,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+34.08s`):
+**Tool result** `simulate_design` (`t+34.02s`):
 
 ```json
 {
@@ -10882,7 +10979,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+34.09s`):
+**Tool call** `simulate_design` (`t+34.03s`):
 
 ```json
 {
@@ -10894,7 +10991,8 @@
       "kd_kn_m": 28786.346169843964,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
@@ -10978,7 +11076,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+34.42s`):
+**Tool call** `simulate_design` (`t+34.41s`):
 
 ```json
 {
@@ -10990,11 +11088,12 @@
       "kd_kn_m": 16192.319720537229,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+34.74s`):
+**Tool result** `simulate_design` (`t+34.77s`):
 
 ```json
 {
@@ -11074,7 +11173,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+34.74s`):
+**Tool call** `simulate_design` (`t+34.77s`):
 
 ```json
 {
@@ -11086,11 +11185,12 @@
       "kd_kn_m": 16192.319720537229,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+35.06s`):
+**Tool result** `simulate_design` (`t+35.1s`):
 
 ```json
 {
@@ -11170,7 +11270,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+35.06s`):
+**Tool call** `simulate_design` (`t+35.1s`):
 
 ```json
 {
@@ -11182,11 +11282,12 @@
       "kd_kn_m": 10363.084621143826,
       "dy_m": 0.03
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+35.38s`):
+**Tool result** `simulate_design` (`t+35.43s`):
 
 ```json
 {
@@ -11266,7 +11367,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+35.39s`):
+**Tool call** `simulate_design` (`t+35.43s`):
 
 ```json
 {
@@ -11278,11 +11379,12 @@
       "kd_kn_m": 10363.084621143826,
       "dy_m": 0.045
     }
-  }
+  },
+  "stage": "screen"
 }
 ```
 
-**Tool result** `simulate_design` (`t+35.71s`):
+**Tool result** `simulate_design` (`t+35.79s`):
 
 ```json
 {
@@ -11362,7 +11464,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+35.71s`):
+**Tool call** `suggest_refinement` (`t+35.79s`):
 
 ```json
 {
@@ -11378,7 +11480,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+35.72s`):
+**Tool result** `suggest_refinement` (`t+35.81s`):
 
 ```json
 {
@@ -11394,7 +11496,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+35.74s`):
+**Tool call** `simulate_design` (`t+35.83s`):
 
 ```json
 {
@@ -11406,11 +11508,12 @@
       "kd_kn_m": 13763.471762456644,
       "dy_m": 0.036
     }
-  }
+  },
+  "stage": "refine"
 }
 ```
 
-**Tool result** `simulate_design` (`t+36.05s`):
+**Tool result** `simulate_design` (`t+36.17s`):
 
 ```json
 {
@@ -11490,7 +11593,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+36.06s`):
+**Tool call** `suggest_refinement` (`t+36.17s`):
 
 ```json
 {
@@ -11506,7 +11609,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+36.08s`):
+**Tool result** `suggest_refinement` (`t+36.19s`):
 
 ```json
 {
@@ -11522,7 +11625,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+36.1s`):
+**Tool call** `simulate_design` (`t+36.2s`):
 
 ```json
 {
@@ -11534,11 +11637,12 @@
       "kd_kn_m": 11698.950998088147,
       "dy_m": 0.043199999999999995
     }
-  }
+  },
+  "stage": "refine"
 }
 ```
 
-**Tool result** `simulate_design` (`t+36.42s`):
+**Tool result** `simulate_design` (`t+36.55s`):
 
 ```json
 {
@@ -11618,7 +11722,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+36.43s`):
+**Tool call** `suggest_refinement` (`t+36.55s`):
 
 ```json
 {
@@ -11634,7 +11738,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+36.44s`):
+**Tool result** `suggest_refinement` (`t+36.57s`):
 
 ```json
 {
@@ -11650,7 +11754,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+36.46s`):
+**Tool call** `simulate_design` (`t+36.6s`):
 
 ```json
 {
@@ -11662,11 +11766,12 @@
       "kd_kn_m": 9944.108348374924,
       "dy_m": 0.05
     }
-  }
+  },
+  "stage": "refine"
 }
 ```
 
-**Tool result** `simulate_design` (`t+36.77s`):
+**Tool result** `simulate_design` (`t+36.93s`):
 
 ```json
 {
@@ -11746,7 +11851,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+36.78s`):
+**Tool call** `suggest_refinement` (`t+36.93s`):
 
 ```json
 {
@@ -11762,7 +11867,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+36.79s`):
+**Tool result** `suggest_refinement` (`t+36.95s`):
 
 ```json
 {
@@ -11778,7 +11883,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+36.81s`):
+**Tool call** `simulate_design` (`t+36.97s`):
 
 ```json
 {
@@ -11790,11 +11895,12 @@
       "kd_kn_m": 8452.492096118685,
       "dy_m": 0.05
     }
-  }
+  },
+  "stage": "refine"
 }
 ```
 
-**Tool result** `simulate_design` (`t+37.12s`):
+**Tool result** `simulate_design` (`t+37.31s`):
 
 ```json
 {
@@ -11875,7 +11981,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+37.12s`):
+**Tool call** `suggest_refinement` (`t+37.32s`):
 
 ```json
 {
@@ -11891,7 +11997,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+37.14s`):
+**Tool result** `suggest_refinement` (`t+37.33s`):
 
 ```json
 {
@@ -11907,7 +12013,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+37.15s`):
+**Tool call** `simulate_design` (`t+37.35s`):
 
 ```json
 {
@@ -11919,11 +12025,12 @@
       "kd_kn_m": 8452.492096118685,
       "dy_m": 0.04000000000000001
     }
-  }
+  },
+  "stage": "refine"
 }
 ```
 
-**Tool result** `simulate_design` (`t+37.47s`):
+**Tool result** `simulate_design` (`t+37.67s`):
 
 ```json
 {
@@ -12003,7 +12110,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+37.47s`):
+**Tool call** `suggest_refinement` (`t+37.67s`):
 
 ```json
 {
@@ -12019,7 +12126,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+37.48s`):
+**Tool result** `suggest_refinement` (`t+37.69s`):
 
 ```json
 {
@@ -12035,7 +12142,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+37.5s`):
+**Tool call** `simulate_design` (`t+37.7s`):
 
 ```json
 {
@@ -12047,11 +12154,12 @@
       "kd_kn_m": 8188.116243866726,
       "dy_m": 0.04800000000000001
     }
-  }
+  },
+  "stage": "refine"
 }
 ```
 
-**Tool result** `simulate_design` (`t+37.83s`):
+**Tool result** `simulate_design` (`t+38.02s`):
 
 ```json
 {
@@ -12131,7 +12239,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+37.83s`):
+**Tool call** `suggest_refinement` (`t+38.02s`):
 
 ```json
 {
@@ -12147,7 +12255,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+37.85s`):
+**Tool result** `suggest_refinement` (`t+38.03s`):
 
 ```json
 {
@@ -12163,7 +12271,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+37.86s`):
+**Tool call** `simulate_design` (`t+38.05s`):
 
 ```json
 {
@@ -12175,11 +12283,12 @@
       "kd_kn_m": 8188.116243866726,
       "dy_m": 0.05
     }
-  }
+  },
+  "stage": "refine"
 }
 ```
 
-**Tool result** `simulate_design` (`t+38.18s`):
+**Tool result** `simulate_design` (`t+38.37s`):
 
 ```json
 {
@@ -12260,7 +12369,7 @@
 }
 ```
 
-**Tool call** `suggest_refinement` (`t+38.18s`):
+**Tool call** `suggest_refinement` (`t+38.37s`):
 
 ```json
 {
@@ -12276,7 +12385,7 @@
 }
 ```
 
-**Tool result** `suggest_refinement` (`t+38.2s`):
+**Tool result** `suggest_refinement` (`t+38.39s`):
 
 ```json
 {
@@ -12292,7 +12401,7 @@
 }
 ```
 
-**Tool call** `simulate_design` (`t+38.21s`):
+**Tool call** `simulate_design` (`t+38.41s`):
 
 ```json
 {
@@ -12304,11 +12413,12 @@
       "kd_kn_m": 8188.116243866726,
       "dy_m": 0.04000000000000001
     }
-  }
+  },
+  "stage": "refine"
 }
 ```
 
-**Tool result** `simulate_design` (`t+38.53s`):
+**Tool result** `simulate_design` (`t+38.72s`):
 
 ```json
 {
@@ -12388,7 +12498,7 @@
 }
 ```
 
-**Tool call** `write_report` (`t+38.54s`):
+**Tool call** `write_report` (`t+38.72s`):
 
 ```json
 {
@@ -12406,7 +12516,7 @@
 }
 ```
 
-**Tool result** `write_report` (`t+38.91s`):
+**Tool result** `write_report` (`t+39.05s`):
 
 ```json
 {
@@ -12419,7 +12529,7 @@
 }
 ```
 
-**Tool call** `verify_output` (`t+38.91s`):
+**Tool call** `verify_output` (`t+39.06s`):
 
 ```json
 {
@@ -12427,7 +12537,7 @@
 }
 ```
 
-**Tool result** `verify_output` (`t+39.25s`):
+**Tool result** `verify_output` (`t+39.38s`):
 
 ```json
 {
@@ -12436,6 +12546,6 @@
 }
 ```
 
-**policy** (`t+39.25s`): `{"note": "brief_10_cliffside_clinic: {'verdict': 'not_buildable_within_brief', 'system': 'base_isolated', 'governing_check': 'peak_floor_accel_g', 'governing_utilization': 2.2179047179234304, 'passed': False}"}`
+**brief_complete** (`t+39.38s`): `{"brief": "brief_10_cliffside_clinic", "mode": "offline"}`
 
-**run_complete** (`t+39.27s`): `{"wall_time_sec": 39.2}`
+**run_complete** (`t+39.4s`): `{"wall_time_sec": 39.4}`

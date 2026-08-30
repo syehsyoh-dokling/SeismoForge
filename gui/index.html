@@ -82,8 +82,9 @@
   <div class="row">
     <div><label>Run mode</label>
       <select id="mode">
-        <option value="offline">Offline verified engine (no key needed)</option>
-        <option value="llm">LLM design agent</option>
+        <option value="offline">Offline — strict brief, scripted search (no key)</option>
+        <option value="assisted">Assisted — model reads the brief, scripted search</option>
+        <option value="agent">Agent — model reads the brief and drives the search</option>
       </select></div>
     <div><label>Provider</label>
       <select id="provider">
@@ -96,18 +97,21 @@
     <div style="flex:1;min-width:230px"><label>API key (kept in memory only)</label>
       <input id="apikey" type="password" placeholder="sk-ant-..." style="width:100%"></div>
   </div>
-  <div class="hint">Offline mode runs the identical tools with a deterministic
-    policy — judges can reproduce every number with no key.</div>
+  <div class="hint">Every mode runs the same 9 tools, the same OpenSees engine,
+    and leaves the same trajectory. Offline needs no key and reproduces every
+    number; the other two let the model read a brief written as free prose.</div>
 
   <h2>2 · Project brief (your prompt)</h2>
   <div class="row" style="margin-bottom:8px">
     <div><label>Load an example brief</label><select id="examples"></select></div>
   </div>
   <textarea id="brief" spellcheck="false"></textarea>
-  <div class="hint">Free prose is welcome, but the datasheet lines must be
-    present: building use, stories above grade, seismic floor weight, story
-    lateral stiffness, story height, design PGA, predominant site period,
-    strong-motion duration, moat clearance available.</div>
+  <div class="hint"><b>Offline mode</b> needs these labelled lines verbatim:
+    building use, stories above grade, seismic floor weight, story lateral
+    stiffness, story height, design PGA, predominant site period, strong-motion
+    duration, moat clearance available. <b>Assisted and Agent modes</b> read
+    ordinary prose and extract those nine values themselves — every one has to
+    be somewhere in your text, but the wording is yours.</div>
 
   <div style="margin-top:16px" class="row">
     <button id="run">Forge the design</button>
@@ -153,8 +157,8 @@ $("examples").onchange=()=>{
   if(b)$("brief").value=b.text;
 };
 $("mode").onchange=()=>{
-  const llm=$("mode").value==="llm";
-  $("apikey").disabled=$("provider").disabled=$("model").disabled=!llm;
+  const needsKey=$("mode").value!=="offline";
+  $("apikey").disabled=$("provider").disabled=$("model").disabled=!needsKey;
 };
 $("mode").onchange();
 function fmt(x,d=4){return typeof x==="number"?Number(x.toPrecision(d)).toString():x;}

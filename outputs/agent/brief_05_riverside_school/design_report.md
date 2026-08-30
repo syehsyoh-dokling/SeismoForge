@@ -55,25 +55,25 @@ Governing check: **peak_floor_accel_g** at utilization 0.85.
 
 | # | Stage | System | Qd (kN) | Kd (kN/m) | Dy (mm) | Result | Worst utilization |
 |---|---|---|---|---|---|---|---|
-| 1 | agent | base_isolated | 1,130 | 9,668 | 20 | fail | 1.13 |
-| 2 | agent | base_isolated | 942 | 13,159 | 30 | fail | 1.19 |
-| 3 | agent | base_isolated | 942 | 13,159 | 45 | fail | 1.24 |
-| 4 | agent | base_isolated | 942 | 7,402 | 30 | fail | 1.17 |
-| 5 | agent | base_isolated | 942 | 7,402 | 45 | fail | 1.22 |
-| 6 | agent | base_isolated | 942 | 4,737 | 30 | fail | 1.10 |
-| 7 | agent | base_isolated | 942 | 4,737 | 45 | fail | 1.16 |
-| 8 | agent | base_isolated | 1,507 | 13,159 | 30 | fail | 1.17 |
-| 9 | agent | base_isolated | 1,507 | 13,159 | 45 | fail | 1.17 |
-| 10 | agent | base_isolated | 1,507 | 7,402 | 30 | pass | 0.91 |
-| 11 | agent | base_isolated | 1,507 | 7,402 | 45 | pass | 0.92 |
-| 12 | agent | base_isolated | 1,507 | 4,737 | 30 | pass | 0.88 |
-| 13 | agent | base_isolated | 1,507 | 4,737 | 45 | pass | 0.96 |
-| 14 | agent | base_isolated | 2,072 | 13,159 | 30 | fail | 1.25 |
-| 15 | agent | base_isolated | 2,072 | 13,159 | 45 | fail | 1.42 |
-| 16 | agent | base_isolated | 2,072 | 7,402 | 30 | fail | 1.14 |
-| 17 | agent | base_isolated | 2,072 | 7,402 | 45 | fail | 1.09 |
-| 18 | agent | base_isolated | 2,072 | 4,737 | 30 | pass | 0.96 |
-| 19 | agent | base_isolated | 2,072 | 4,737 | 45 | pass | 0.85 |
+| 1 | rule_of_thumb | base_isolated | 1,130 | 9,668 | 20 | fail | 1.13 |
+| 2 | screen | base_isolated | 942 | 13,159 | 30 | fail | 1.19 |
+| 3 | screen | base_isolated | 942 | 13,159 | 45 | fail | 1.24 |
+| 4 | screen | base_isolated | 942 | 7,402 | 30 | fail | 1.17 |
+| 5 | screen | base_isolated | 942 | 7,402 | 45 | fail | 1.22 |
+| 6 | screen | base_isolated | 942 | 4,737 | 30 | fail | 1.10 |
+| 7 | screen | base_isolated | 942 | 4,737 | 45 | fail | 1.16 |
+| 8 | screen | base_isolated | 1,507 | 13,159 | 30 | fail | 1.17 |
+| 9 | screen | base_isolated | 1,507 | 13,159 | 45 | fail | 1.17 |
+| 10 | screen | base_isolated | 1,507 | 7,402 | 30 | pass | 0.91 |
+| 11 | screen | base_isolated | 1,507 | 7,402 | 45 | pass | 0.92 |
+| 12 | screen | base_isolated | 1,507 | 4,737 | 30 | pass | 0.88 |
+| 13 | screen | base_isolated | 1,507 | 4,737 | 45 | pass | 0.96 |
+| 14 | screen | base_isolated | 2,072 | 13,159 | 30 | fail | 1.25 |
+| 15 | screen | base_isolated | 2,072 | 13,159 | 45 | fail | 1.42 |
+| 16 | screen | base_isolated | 2,072 | 7,402 | 30 | fail | 1.14 |
+| 17 | screen | base_isolated | 2,072 | 7,402 | 45 | fail | 1.09 |
+| 18 | screen | base_isolated | 2,072 | 4,737 | 30 | pass | 0.96 |
+| 19 | screen | base_isolated | 2,072 | 4,737 | 45 | pass | 0.85 |
 
 ## Engineering notes
 

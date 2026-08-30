@@ -114,7 +114,7 @@
     ],
     "correct": 3,
     "total": 10,
-    "wall_time_sec": 0.8
+    "wall_time_sec": 0.4
   },
   "agent": {
     "rows": [
@@ -231,6 +231,6 @@
     ],
     "correct": 10,
     "total": 10,
-    "wall_time_sec": 39.7
+    "wall_time_sec": 39.9
   }
 }

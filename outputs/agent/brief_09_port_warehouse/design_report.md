@@ -55,8 +55,8 @@ Governing check: **peak_isolator_disp_m** at utilization 0.75.
 
 | # | Stage | System | Qd (kN) | Kd (kN/m) | Dy (mm) | Result | Worst utilization |
 |---|---|---|---|---|---|---|---|
-| 1 | agent | fixed_base | - | - | - | fail | 1.09 |
-| 2 | agent | base_isolated | 795 | 6,798 | 20 | pass | 0.75 |
+| 1 | rule_of_thumb | fixed_base | - | - | - | fail | 1.09 |
+| 2 | refine | base_isolated | 795 | 6,798 | 20 | pass | 0.75 |
 
 ## Engineering notes
 

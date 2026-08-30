@@ -55,33 +55,33 @@ Governing check: **peak_floor_accel_g** at utilization 2.22.
 
 | # | Stage | System | Qd (kN) | Kd (kN/m) | Dy (mm) | Result | Worst utilization |
 |---|---|---|---|---|---|---|---|
-| 1 | agent | base_isolated | 2,472 | 21,149 | 20 | fail | 2.34 |
-| 2 | agent | base_isolated | 2,060 | 28,786 | 30 | fail | 2.62 |
-| 3 | agent | base_isolated | 2,060 | 28,786 | 45 | fail | 2.58 |
-| 4 | agent | base_isolated | 2,060 | 16,192 | 30 | fail | 3.22 |
-| 5 | agent | base_isolated | 2,060 | 16,192 | 45 | fail | 3.37 |
-| 6 | agent | base_isolated | 2,060 | 10,363 | 30 | fail | 2.91 |
-| 7 | agent | base_isolated | 2,060 | 10,363 | 45 | fail | 2.95 |
-| 8 | agent | base_isolated | 3,296 | 28,786 | 30 | fail | 2.51 |
-| 9 | agent | base_isolated | 3,296 | 28,786 | 45 | fail | 2.54 |
-| 10 | agent | base_isolated | 3,296 | 16,192 | 30 | fail | 2.27 |
-| 11 | agent | base_isolated | 3,296 | 16,192 | 45 | fail | 2.35 |
-| 12 | agent | base_isolated | 3,296 | 10,363 | 30 | fail | 2.42 |
-| 13 | agent | base_isolated | 3,296 | 10,363 | 45 | fail | 2.48 |
-| 14 | agent | base_isolated | 4,532 | 28,786 | 30 | fail | 2.85 |
-| 15 | agent | base_isolated | 4,532 | 28,786 | 45 | fail | 2.86 |
-| 16 | agent | base_isolated | 4,532 | 16,192 | 30 | fail | 2.22 |
-| 17 | agent | base_isolated | 4,532 | 16,192 | 45 | fail | 2.26 |
-| 18 | agent | base_isolated | 4,532 | 10,363 | 30 | fail | 2.38 |
-| 19 | agent | base_isolated | 4,532 | 10,363 | 45 | fail | 2.45 |
-| 20 | agent | base_isolated | 4,985 | 13,763 | 36 | fail | 2.28 |
-| 21 | agent | base_isolated | 5,484 | 11,699 | 43 | fail | 2.33 |
-| 22 | agent | base_isolated | 5,768 | 9,944 | 50 | fail | 2.42 |
-| 23 | agent | base_isolated | 5,768 | 8,452 | 50 | fail | 2.48 |
-| 24 | agent | base_isolated | 4,903 | 8,452 | 40 | fail | 2.48 |
-| 25 | agent | base_isolated | 5,393 | 8,188 | 48 | fail | 2.50 |
-| 26 | agent | base_isolated | 5,768 | 8,188 | 50 | fail | 2.49 |
-| 27 | agent | base_isolated | 4,903 | 8,188 | 40 | fail | 2.50 |
+| 1 | rule_of_thumb | base_isolated | 2,472 | 21,149 | 20 | fail | 2.34 |
+| 2 | screen | base_isolated | 2,060 | 28,786 | 30 | fail | 2.62 |
+| 3 | screen | base_isolated | 2,060 | 28,786 | 45 | fail | 2.58 |
+| 4 | screen | base_isolated | 2,060 | 16,192 | 30 | fail | 3.22 |
+| 5 | screen | base_isolated | 2,060 | 16,192 | 45 | fail | 3.37 |
+| 6 | screen | base_isolated | 2,060 | 10,363 | 30 | fail | 2.91 |
+| 7 | screen | base_isolated | 2,060 | 10,363 | 45 | fail | 2.95 |
+| 8 | screen | base_isolated | 3,296 | 28,786 | 30 | fail | 2.51 |
+| 9 | screen | base_isolated | 3,296 | 28,786 | 45 | fail | 2.54 |
+| 10 | screen | base_isolated | 3,296 | 16,192 | 30 | fail | 2.27 |
+| 11 | screen | base_isolated | 3,296 | 16,192 | 45 | fail | 2.35 |
+| 12 | screen | base_isolated | 3,296 | 10,363 | 30 | fail | 2.42 |
+| 13 | screen | base_isolated | 3,296 | 10,363 | 45 | fail | 2.48 |
+| 14 | screen | base_isolated | 4,532 | 28,786 | 30 | fail | 2.85 |
+| 15 | screen | base_isolated | 4,532 | 28,786 | 45 | fail | 2.86 |
+| 16 | screen | base_isolated | 4,532 | 16,192 | 30 | fail | 2.22 |
+| 17 | screen | base_isolated | 4,532 | 16,192 | 45 | fail | 2.26 |
+| 18 | screen | base_isolated | 4,532 | 10,363 | 30 | fail | 2.38 |
+| 19 | screen | base_isolated | 4,532 | 10,363 | 45 | fail | 2.45 |
+| 20 | refine | base_isolated | 4,985 | 13,763 | 36 | fail | 2.28 |
+| 21 | refine | base_isolated | 5,484 | 11,699 | 43 | fail | 2.33 |
+| 22 | refine | base_isolated | 5,768 | 9,944 | 50 | fail | 2.42 |
+| 23 | refine | base_isolated | 5,768 | 8,452 | 50 | fail | 2.48 |
+| 24 | refine | base_isolated | 4,903 | 8,452 | 40 | fail | 2.48 |
+| 25 | refine | base_isolated | 5,393 | 8,188 | 48 | fail | 2.50 |
+| 26 | refine | base_isolated | 5,768 | 8,188 | 50 | fail | 2.49 |
+| 27 | refine | base_isolated | 4,903 | 8,188 | 40 | fail | 2.50 |
 
 ## Why the brief is not buildable as posed
 

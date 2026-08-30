@@ -80,9 +80,13 @@ The architecture is a deliberate division of labor:
   engineering conclusion: verdict banner, the selected system, per-check
   margins, the agent's engineer note, and the evidence basis. Keys stay in
   memory only.
-- **Two drivers, one tool surface.** `--driver llm` is the product;
-  `--driver scripted` drives the identical tools with a fixed policy so
-  judges reproduce the headline result offline, with no API key.
+- **One session, three modes.** Every entry point - CLI, GUI, evaluation
+  harness - runs a brief through `agent/session.py`. There is no second code
+  path, so what a demo shows is what the evaluation measures, and every run
+  leaves a trajectory. The modes differ in two independent places: who reads
+  the brief, and who decides the next design. `offline` (strict parser +
+  scripted search) needs no API key and reproduces the headline result;
+  `agent` puts Claude in both seats.
 - **Same flow for every building.** The model class is parameterized
   (1-20 story shear frames, any occupancy class, any site in the hazard
   band); all 10 briefs - hospitals to warehouses, 2 to 12 stories - run
@@ -199,7 +203,8 @@ agent/         the agent: tool layer, LLM + scripted drivers, system prompt
 baselines/     one-shot unverified baseline
 evaluation/    ground truth + judge harness + committed results
 outputs/       per-brief deliverables (design_report.md + design.json)
-trajectories/  agent trajectories (JSONL + Markdown)
+trajectories/  run trajectories (JSONL + Markdown); GUI runs land in gui/
+agent/session.py  the one entry point: intake -> search -> report -> verify
 tests/         selftest.py (parser, physics, policy, evidence lock,
                degraded-evidence and judge-integrity cases)
 tools/         development calibration utilities (sweeps, smoke tests)

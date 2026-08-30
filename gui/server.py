@@ -27,13 +27,19 @@ sys.path.insert(0, str(REPO / "agent"))
 
 from forge.brief_parser import list_briefs, parse_brief_text
 from forge.building import RESIDUAL_LIMIT_M
-from forge.policy import forge_design
-from forge.report import REVIEW_NOTICE_TEXT, write_outputs
-from forge.simulate import assess
-from tools import TOOL_DEFINITIONS, ForgeTools, dispatch
+from forge.report import REVIEW_NOTICE_TEXT
+from session import MODES, run_session
+
+# How each mode is described in the conclusion's evidence basis.
+MODE_BASIS = {
+    "offline": "deterministic parser, scripted search",
+    "assisted": "the model read the brief, scripted search",
+    "agent": "the model read the brief and drove the search",
+}
 
 GUI_DIR = Path(__file__).resolve().parent
 RUN_ROOT = REPO / "outputs" / "gui"
+TRAJECTORY_ROOT = REPO / "trajectories" / "gui"
 
 JOBS: dict[str, dict] = {}
 JOBS_LOCK = threading.Lock()
@@ -115,98 +121,10 @@ def compose_conclusion(payload: dict, llm_summary: str, mode: str) -> dict:
         "basis": (
             f"Every number comes from OpenSees nonlinear response-history "
             f"analysis on a deterministic site-consistent record suite "
-            f"({payload['simulations']} design evaluations run"
-            + (", agent-driven" if mode == "llm" else ", offline engine")
-            + "); the verdict is locked to that evidence and cannot be "
-            "overwritten by narrative."
+            f"({payload['simulations']} design evaluations run; "
+            f"{MODE_BASIS.get(mode, mode)}); the verdict is locked to that "
+            "evidence and cannot be overwritten by narrative."
         ),
-    }
-
-
-def run_offline(job: dict, spec, out_dir: Path) -> None:
-    _log(job, f"parsed brief '{spec.name}': {spec.n_stories}-story "
-              f"{spec.occupancy}, PGA {spec.site.pga_g} g")
-    _log(job, "offline engine: rule-of-thumb -> coarse screen -> refinement")
-    result = forge_design(spec, assess)
-    for entry in result["history"]:
-        _log(job, f"{entry['stage']}: {entry['design']['system']} -> "
-                  f"{'PASS' if entry['passed'] else 'fail'} "
-                  f"(worst utilization {entry['worst_utilization']:.2f})")
-    verdict = "proceed" if result["report"]["passed"] else "not_buildable_within_brief"
-    write_outputs(out_dir, spec, result["design"], result["assessment"],
-                  result["report"], verdict, result["history"])
-    payload = json.loads((out_dir / "design.json").read_text(encoding="utf-8"))
-    job["result"] = {
-        "conclusion": compose_conclusion(payload, "", "offline"),
-        "design": payload["design"],
-        "acceptance": payload["acceptance"],
-        "report_markdown": (out_dir / "design_report.md").read_text(encoding="utf-8"),
-    }
-
-
-def run_llm(job: dict, spec, out_dir: Path, brief_dir: Path,
-            model: str, api_key: str) -> None:
-    import anthropic
-
-    client = anthropic.Anthropic(api_key=api_key)
-    tools = ForgeTools(out_dir.parent, brief_dir=brief_dir)
-    system_prompt = (REPO / "agent" / "system_prompt.md").read_text(encoding="utf-8")
-    messages = [{
-        "role": "user",
-        "content": (
-            f"Forge the prototype design for brief {spec.name!r}: follow the "
-            "workflow, write the report, verify it, then give the client-facing "
-            "summary paragraph."
-        ),
-    }]
-    final_text = ""
-    for _turn in range(30):
-        try:
-            response = client.beta.messages.create(
-                model=model, max_tokens=16000, system=system_prompt,
-                tools=TOOL_DEFINITIONS, messages=messages,
-                betas=["server-side-fallback-2026-07-01"], fallbacks="default",
-            )
-        except (TypeError, anthropic.BadRequestError):
-            response = client.messages.create(
-                model=model, max_tokens=16000, system=system_prompt,
-                tools=TOOL_DEFINITIONS, messages=messages,
-            )
-        if response.stop_reason == "refusal":
-            _log(job, "model declined the request (refusal stop reason)")
-            break
-        for block in response.content:
-            if block.type == "text" and block.text.strip():
-                final_text = block.text
-                _log(job, f"agent: {block.text.strip()[:300]}")
-        tool_blocks = [b for b in response.content if b.type == "tool_use"]
-        if response.stop_reason != "tool_use" or not tool_blocks:
-            break
-        messages.append({"role": "assistant", "content": response.content})
-        results = []
-        for block in tool_blocks:
-            _log(job, f"tool call: {block.name}")
-            try:
-                result = dispatch(tools, block.name, dict(block.input))
-                content, is_error = json.dumps(result, default=str), False
-            except Exception as error:
-                content, is_error = f"{type(error).__name__}: {error}", True
-                _log(job, f"tool error: {content}")
-            results.append({
-                "type": "tool_result", "tool_use_id": block.id,
-                "content": content,
-                **({"is_error": True} if is_error else {}),
-            })
-        messages.append({"role": "user", "content": results})
-    payload_path = out_dir / "design.json"
-    if not payload_path.is_file():
-        raise RuntimeError("the agent finished without writing design.json")
-    payload = json.loads(payload_path.read_text(encoding="utf-8"))
-    job["result"] = {
-        "conclusion": compose_conclusion(payload, final_text, "llm"),
-        "design": payload["design"],
-        "acceptance": payload["acceptance"],
-        "report_markdown": (out_dir / "design_report.md").read_text(encoding="utf-8"),
     }
 
 
@@ -219,34 +137,47 @@ def start_job(brief_text: str, mode: str, provider: str, model: str,
 
     def work() -> None:
         try:
-            run_dir = RUN_ROOT / job_id
-            brief_dir = run_dir / "brief"
-            brief_dir.mkdir(parents=True, exist_ok=True)
-            name = "user_brief"
-            spec = parse_brief_text(name, brief_text)  # validate before running
-            (brief_dir / f"{name}.md").write_text(brief_text, encoding="utf-8")
-            out_dir = run_dir / name
+            if mode not in MODES:
+                raise RuntimeError(f"unknown mode {mode!r}; expected one of {MODES}")
+            if mode != "offline":
+                if provider != "anthropic":
+                    raise RuntimeError(
+                        f"provider {provider!r} is on the roadmap; this build "
+                        "runs the Anthropic API (or the offline engine)"
+                    )
+                if model not in ANTHROPIC_MODELS:
+                    raise RuntimeError(f"unknown model {model!r}")
+                if not api_key:
+                    raise RuntimeError(f"an API key is required for {mode} mode")
             if not ENGINE_LOCK.acquire(blocking=False):
                 _log(job, "another design run holds the simulation engine; queued")
                 ENGINE_LOCK.acquire()
             try:
-                if mode == "llm":
-                    if provider != "anthropic":
-                        raise RuntimeError(
-                            f"provider {provider!r} is on the roadmap; this build "
-                            "runs the Anthropic API (or the offline engine)"
-                        )
-                    if model not in ANTHROPIC_MODELS:
-                        raise RuntimeError(f"unknown model {model!r}")
-                    if not api_key:
-                        raise RuntimeError("an API key is required for LLM mode")
-                    _log(job, f"LLM agent mode: {model}")
-                    run_llm(job, spec, out_dir, brief_dir, model, api_key)
-                else:
-                    run_offline(job, spec, out_dir)
+                # One shared entry point: the GUI runs exactly what the CLI
+                # and the evaluation harness run, and leaves the same
+                # trajectory behind.
+                outcome = run_session(
+                    brief_text,
+                    mode=mode,
+                    run_dir=RUN_ROOT / job_id,
+                    trajectory_path=TRAJECTORY_ROOT / f"{job_id}.jsonl",
+                    model=model,
+                    api_key=api_key or None,
+                    progress=lambda line: _log(job, line),
+                )
             finally:
                 ENGINE_LOCK.release()
-            _log(job, "run complete")
+            payload = outcome["payload"]
+            job["result"] = {
+                "conclusion": compose_conclusion(
+                    payload, outcome["outcome"].get("summary", ""), mode
+                ),
+                "design": payload["design"],
+                "acceptance": payload["acceptance"],
+                "report_markdown": outcome["report_markdown"],
+                "trajectory": outcome["trajectory"],
+            }
+            _log(job, f"run complete; trajectory written to {outcome['trajectory']}")
         except Exception as error:  # surfaced to the UI
             with JOBS_LOCK:
                 job["error"] = f"{type(error).__name__}: {error}"
@@ -310,15 +241,19 @@ class Handler(BaseHTTPRequestHandler):
         if not brief_text:
             self._json({"error": "brief text is empty"}, 400)
             return
-        try:
-            # Fail fast with a helpful message before spawning the job.
-            parse_brief_text("user_brief", brief_text)
-        except ValueError as error:
-            self._json({"error": str(error)}, 400)
-            return
+        mode = str(payload.get("mode", "offline"))
+        if mode == "offline":
+            try:
+                # Offline intake is the strict parser, so fail fast here with
+                # a helpful message instead of spawning a job that cannot run.
+                # The other modes accept free prose and are checked in-session.
+                parse_brief_text("user_brief", brief_text)
+            except ValueError as error:
+                self._json({"error": str(error)}, 400)
+                return
         self._json(start_job(
             brief_text,
-            str(payload.get("mode", "offline")),
+            mode,
             str(payload.get("provider", "anthropic")),
             str(payload.get("model", ANTHROPIC_MODELS[0])),
             str(payload.get("api_key", "")),
