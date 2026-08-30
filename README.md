@@ -113,7 +113,11 @@ Reaching a defensible seismic concept is not a one-shot calculation. Depending o
 
 What consumes it is not writing formulas. It is the computational loop: build the model, select ground motions, run nonlinear response-history analyses, read the results, revise the design, repeat.
 
-SeismoForge does not claim to replace that work. It compresses **the computational and iterative portion** into seconds, and leaves the rest - engineering judgment, site investigation, and the signature - to the engineer.
+That loop is not overhead. It is where the trust comes from - which is why
+speeding up the *guess*, the thing a one-shot AI answer does, removes exactly
+the wrong part.
+
+SeismoForge does not claim to replace that work. It compresses **the computational and iterative portion** into seconds - verification included - and leaves the rest: engineering judgment, site investigation, and the signature.
 
 > On the numbers: conceptual design processes have been benchmarked in the literature - Gane and Haymaker's CIFE study of conceptual high-rise design analyses team size, composition, and time investment ([CIFE TR174, Stanford, 2008](https://purl.stanford.edu/xm514gk6039); peer-reviewed as *Benchmarking Current Conceptual High-Rise Design Processes*, ASCE Journal of Architectural Engineering 16(3)). No published figure exists for engineering hours on this specific decision, so this document quotes a range from practice rather than inventing one. A full seismic evaluation under ASCE/SEI 41 - site investigation, material testing, drawing verification, peer review - is a larger activity again, and is not what SeismoForge does.
 

@@ -92,7 +92,7 @@ SeismoForge tidak mengklaim menggantikan pekerjaan itu. Ia memampatkan **bagian 
 
 ## Kenapa menyelesaikannya bernilai?
 
-AI membuat jawaban pertama lebih cepat. Tapi kecepatan tidak pernah menjadi bagian yang sulit.
+Lingkaran itu bukan pemborosan. Di situlah kepercayaannya dibangun - dan itulah sebabnya AI yang hanya mempercepat **tebakannya** justru membuang bagian yang paling penting.
 
 > **Bagian yang sulit adalah mengetahui kapan jawaban itu tidak boleh dipercaya.**
 
