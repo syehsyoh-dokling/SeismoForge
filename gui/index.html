@@ -57,6 +57,8 @@
   details pre{background:#0a0d12;border:1px solid var(--line);border-radius:8px;
     padding:14px;font-size:12px;overflow-x:auto;white-space:pre-wrap}
   .muted{color:var(--muted)} .narr{font-style:italic;color:#c6d2e4}
+  .notice{font-size:12.5px;color:var(--accent2);border-top:1px solid var(--line);
+    padding-top:10px;margin-bottom:0}
   #err{color:var(--bad);font-weight:600;margin-top:8px;white-space:pre-wrap}
 </style>
 </head>
@@ -124,6 +126,7 @@
       <div id="cBody"></div>
       <p id="cNarr" class="narr"></p>
       <p id="cBasis" class="muted" style="font-size:12.5px"></p>
+      <p id="cReview" class="notice"></p>
     </div>
     <div class="card"><h3>Selected system</h3><div id="cDesign"></div></div>
     <div class="card"><h3>Acceptance checks (suite envelope)</h3>
@@ -164,14 +167,22 @@ $("run").onclick=async()=>{
   const data=await resp.json();
   if(data.error){$("err").textContent=data.error;$("run").disabled=false;
     $("spin").style.display="none";return;}
+  const stop=msg=>{clearInterval(timer);$("run").disabled=false;
+    $("spin").style.display="none";if(msg)$("err").textContent=msg;};
   const timer=setInterval(async()=>{
-    const s=await(await fetch("/api/status?id="+data.job_id)).json();
-    $("console").textContent=s.log.join("\n");
-    $("console").scrollTop=$("console").scrollHeight;
+    // Never let a bad poll strand the spinner: any failure ends the run.
+    let s;
+    try{s=await(await fetch("/api/status?id="+data.job_id)).json();}
+    catch(e){stop("lost contact with the design center: "+e.message);return;}
+    if(Array.isArray(s.log)){
+      $("console").textContent=s.log.join("\n");
+      $("console").scrollTop=$("console").scrollHeight;
+    }
     if(!s.done)return;
-    clearInterval(timer);$("run").disabled=false;$("spin").style.display="none";
-    if(s.error){$("err").textContent=s.error;return;}
-    render(s.result);
+    stop(s.error||"");
+    if(s.error||!s.result)return;
+    try{render(s.result);}
+    catch(e){$("err").textContent="could not render the result: "+e.message;}
   },700);
 };
 function render(r){
@@ -181,6 +192,7 @@ function render(r){
   $("cBody").textContent=c.body;
   $("cNarr").textContent=c.agent_narrative?("Agent engineer's note: "+c.agent_narrative):"";
   $("cBasis").textContent=c.basis;
+  $("cReview").textContent=c.review||"";
   const d=r.design;
   $("cDesign").innerHTML=d.system==="base_isolated"
     ?`Lead-rubber base isolation — Qd <b>${fmt(d.isolation.qd_kn)} kN</b>,
@@ -194,9 +206,12 @@ function render(r){
         <td>${ch.satisfied?"yes":"no"}</td><td>required</td><td>—</td>
         <td class="${ch.satisfied?"ok":"bad"}">${ch.satisfied?"OK":"FAIL"}</td></tr>`);
       continue;}
+    const util=typeof ch.utilization==="number"
+      ?(ch.utilization*100).toFixed(0)+"%":"—";
     tb.insertAdjacentHTML("beforeend",`<tr><td>${ch.check}</td>
-      <td>${fmt(ch.value)}</td><td>${fmt(ch.limit)}</td>
-      <td>${(ch.utilization*100).toFixed(0)}%</td>
+      <td>${ch.value===null?"n/a":fmt(ch.value)}</td>
+      <td>${ch.limit===null?"n/a":fmt(ch.limit)}</td>
+      <td>${util}</td>
       <td class="${ch.satisfied?"ok":"bad"}">${ch.satisfied?"OK":"FAIL"}</td></tr>`);
   }
   $("cReport").textContent=r.report_markdown;

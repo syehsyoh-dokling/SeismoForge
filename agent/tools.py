@@ -18,8 +18,8 @@ if str(REPO) not in sys.path:
     sys.path.insert(0, str(REPO))
 
 from forge.brief_parser import list_briefs, parse_brief_file
-from forge.building import BuildingSpec, design_from_dict
-from forge.checks import acceptance_report
+from forge.building import BuildingSpec, Design, design_from_dict
+from forge.checks import acceptance_report, finite
 from forge.designer import (
     candidate_grid,
     clamp,
@@ -42,7 +42,14 @@ class ForgeTools:
         self._specs: dict[str, BuildingSpec] = {}
         # Evidence ledger: every simulation this session ran, per brief.
         self.history: dict[str, list[dict[str, Any]]] = {}
-        self._last: dict[str, dict[str, Any]] = {}
+        # Simulation results keyed by (brief, exact design), so a refinement
+        # move is always read off the design it was asked about - not off
+        # whichever design happened to be simulated last.
+        self._sims: dict[str, dict[str, Any]] = {}
+
+    @staticmethod
+    def _sim_key(brief: str, design: Design) -> str:
+        return json.dumps([brief, design.as_dict()], sort_keys=True)
 
     # -- brief access ---------------------------------------------------
     def list_briefs(self) -> list[str]:
@@ -76,11 +83,17 @@ class ForgeTools:
         out = []
         for design in candidate_grid(spec):
             design = clamp(design, spec)
-            entry = design.as_dict()
-            entry["isolated_period_sec"] = isolation_period(
-                spec, design.isolation.kd_kn_m
+            # The design object is kept whole under its own key: the other
+            # tools accept a strict design schema, so a candidate must be
+            # copyable into them verbatim, without stripping annotations.
+            out.append(
+                {
+                    "design": design.as_dict(),
+                    "isolated_period_sec": isolation_period(
+                        spec, design.isolation.kd_kn_m
+                    ),
+                }
             )
-            out.append(entry)
         return out
 
     # -- simulation -----------------------------------------------------
@@ -89,16 +102,19 @@ class ForgeTools:
         parsed = clamp(design_from_dict(design), spec)
         assessment = assess(spec, parsed)
         report = acceptance_report(spec, parsed, assessment)
+        # A non-converged suite has no comparable utilization; it is reported
+        # as null rather than infinity so the value stays valid JSON.
+        worst = finite(worst_utilization(report))
         entry = {
             "stage": "agent",
             "design": parsed.as_dict(),
             "envelope": assessment["envelope"],
             "passed": report["passed"],
             "failed_checks": report["failed_checks"],
-            "worst_utilization": worst_utilization(report),
+            "worst_utilization": worst,
         }
         self.history.setdefault(brief, []).append(entry)
-        self._last[brief] = {
+        self._sims[self._sim_key(brief, parsed)] = {
             "design": parsed,
             "assessment": assessment,
             "report": report,
@@ -111,20 +127,26 @@ class ForgeTools:
             "failed_checks": report["failed_checks"],
             "governing_check": report["governing_check"],
             "governing_utilization": report["governing_utilization"],
+            "worst_utilization": worst,
             "checks": report["checks"],
         }
 
     def suggest_refinement(self, brief: str, design: dict[str, Any]) -> dict[str, Any]:
         spec = self._spec(brief)
         parsed = clamp(design_from_dict(design), spec)
-        last = self._last.get(brief)
-        if last is None:
-            return {"error": "simulate the design first"}
-        moved = refine(spec, parsed, last["report"])
+        simulated = self._sims.get(self._sim_key(brief, parsed))
+        if simulated is None:
+            return {
+                "error": (
+                    "simulate this exact design first: a refinement move is "
+                    "read off that design's own failed checks"
+                )
+            }
+        moved = refine(spec, parsed, simulated["report"])
         return {
             "suggestion": moved.as_dict() if moved else None,
             "note": (
-                "failure-driven move from the last simulated result; "
+                "failure-driven move from this design's own simulated result; "
                 "None means no further move inside the buildable space"
             ),
         }
@@ -280,7 +302,9 @@ TOOL_DEFINITIONS: list[dict[str, Any]] = [
             "A coarse screening grid over the buildable isolation space "
             "(strength fraction x isolated period x yield displacement). Use "
             "when the first guess fails: acceptance constraints are coupled and "
-            "pure local moves oscillate."
+            "pure local moves oscillate. Each entry is {design, "
+            "isolated_period_sec}; pass the 'design' object straight to "
+            "simulate_design."
         ),
         "input_schema": _obj({"brief": _BRIEF}, ["brief"]),
     },
@@ -299,9 +323,11 @@ TOOL_DEFINITIONS: list[dict[str, Any]] = [
     {
         "name": "suggest_refinement",
         "description": (
-            "Failure-driven local design move based on the last simulation of "
-            "this brief (e.g. transmitted force too high -> lengthen period, "
-            "soften yield transition). Returns null when no move remains."
+            "Failure-driven local design move for a design you have already "
+            "simulated (e.g. transmitted force too high -> lengthen period, "
+            "soften yield transition). Pass the same design you want moved: "
+            "the move is read off that design's own failed checks. Returns "
+            "null when no move remains."
         ),
         "input_schema": _obj(
             {"brief": _BRIEF, "design": _DESIGN_SCHEMA}, ["brief", "design"]

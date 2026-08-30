@@ -67,17 +67,19 @@ def run_scripted(tools: ForgeTools, log: TrajectoryLogger, briefs: list[str]) ->
         best = (design, outcome)
 
         def utilization(entry: dict) -> float:
-            values = [
-                c["utilization"] for c in entry["checks"]
-                if c["utilization"] is not None
-                and c["check"] != "all_records_converged"
-            ]
-            return max(values) if values else float("inf")
+            """Rank designs by the tool's own worst-utilization verdict.
+
+            The tool reports null for a non-converged suite (JSON has no
+            infinity); a design the model could not solve ranks last.
+            """
+            value = entry.get("worst_utilization")
+            return float(value) if value is not None else float("inf")
 
         if not outcome["passed"] and design["system"] == "base_isolated":
             for candidate in call("candidate_designs", brief=brief):
-                candidate = {k: candidate[k] for k in ("system", "isolation")}
-                candidate_outcome = call("simulate_design", brief=brief, design=candidate)
+                candidate_outcome = call(
+                    "simulate_design", brief=brief, design=candidate["design"]
+                )
                 if utilization(candidate_outcome) < utilization(best[1]):
                     best = (candidate_outcome["design_as_clamped"], candidate_outcome)
             design, outcome = best
@@ -97,9 +99,11 @@ def run_scripted(tools: ForgeTools, log: TrajectoryLogger, briefs: list[str]) ->
             design, outcome = best
 
         verdict = "proceed" if outcome["passed"] else "not_buildable_within_brief"
+        governing = outcome["governing_utilization"]
         notes = (
             f"Governing check: {outcome['governing_check']} at utilization "
-            f"{outcome['governing_utilization']:.2f}."
+            + (f"{governing:.2f}." if governing is not None
+               else "n/a - the record suite did not converge on this design.")
         )
         call(
             "write_report", brief=brief, design=design, verdict=verdict,

@@ -74,6 +74,33 @@ def clamp(design: Design, spec: BuildingSpec) -> Design:
     return Design(system="base_isolated", isolation=IsolationDesign(qd, kd, dy))
 
 
+def bound_violations(design: Design, spec: BuildingSpec) -> list[str]:
+    """Buildability bounds a submitted design must already satisfy.
+
+    ``clamp`` repairs a design on the way in; a *judge* must not, or it grades
+    a design nobody submitted. Reviewers use this to reject out-of-bounds
+    submissions instead.
+    """
+    if design.system == "fixed_base":
+        return []
+    iso = design.isolation
+    weight = spec.seismic_weight_kn
+    bounds = (
+        ("qd_kn", iso.qd_kn,
+         QD_FRACTION_RANGE[0] * weight, QD_FRACTION_RANGE[1] * weight),
+        ("kd_kn_m", iso.kd_kn_m,
+         kd_for_period(spec, ISOLATION_PERIOD_RANGE_S[1]),
+         kd_for_period(spec, ISOLATION_PERIOD_RANGE_S[0])),
+        ("dy_m", iso.dy_m, DY_RANGE_M[0], DY_RANGE_M[1]),
+    )
+    problems = []
+    for name, value, low, high in bounds:
+        slack = 1.0e-9 * max(abs(high), 1.0)
+        if value < low - slack or value > high + slack:
+            problems.append(f"{name}={value:.4g} outside [{low:.4g}, {high:.4g}]")
+    return problems
+
+
 def refine(spec: BuildingSpec, design: Design, report: dict[str, Any]) -> Design | None:
     """One failure-driven design move; None when no move is available.
 
@@ -85,6 +112,13 @@ def refine(spec: BuildingSpec, design: Design, report: dict[str, Any]) -> Design
     - residual offset over the limit -> more restoring force per strength:
       stiffer rubber and smaller yield displacement;
     - a fixed-base frame failing drift/acceleration -> switch to isolation.
+
+    Combinations are resolved before single failures, because the moves for
+    two failed checks can be opposites: transmitted force wants a softer
+    rubber, recentring wants a stiffer one. Ordering force ahead of residual
+    (rather than reconciling them) makes the search oscillate between the two
+    limits, so the shared move - less lead strength, which lowers transmitted
+    force *and* frees the restoring force to recentre - is taken instead.
     """
     failed = set(report.get("failed_checks", ()))
     if not failed:
@@ -93,23 +127,30 @@ def refine(spec: BuildingSpec, design: Design, report: dict[str, Any]) -> Design
         return clamp(rule_of_thumb_isolated(spec), spec)
     iso = design.isolation
     qd, kd, dy = iso.qd_kn, iso.kd_kn_m, iso.dy_m
+    force = "peak_floor_accel_g" in failed or "base_shear_coeff" in failed
+    travel = "peak_isolator_disp_m" in failed
+    residual = "residual_disp_m" in failed
     if "all_records_converged" in failed:
         # Numerically hard corner: soften the nonlinearity slightly.
         dy *= 1.4
-    elif "peak_floor_accel_g" in failed or "base_shear_coeff" in failed:
+    elif force and residual:
+        # Opposed period moves; Qd is the axis that relieves both.
+        qd *= 0.85
+        dy *= 0.8
+    elif force:
         # Transmitted force governs first: lengthen the period and soften the
         # yield transition before worrying about travel.
         kd *= 0.85
         dy = min(dy * 1.2, DY_RANGE_M[1])
-        if "peak_isolator_disp_m" in failed:
+        if travel:
             qd *= 1.10  # a little more dissipation to hold travel meanwhile
-    elif "peak_isolator_disp_m" in failed and "residual_disp_m" in failed:
+    elif travel and residual:
         qd *= 1.20
         kd *= 1.25
         dy *= 0.8
-    elif "peak_isolator_disp_m" in failed:
+    elif travel:
         qd *= 1.25  # dissipation controls travel; leave the period alone
-    elif "residual_disp_m" in failed:
+    elif residual:
         kd *= 1.30
         dy *= 0.75
     elif "peak_drift_ratio" in failed:

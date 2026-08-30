@@ -114,7 +114,7 @@
     ],
     "correct": 3,
     "total": 10,
-    "wall_time_sec": 0.4
+    "wall_time_sec": 0.8
   },
   "agent": {
     "rows": [
@@ -225,12 +225,12 @@
         "design_passes": false,
         "governing_check": "peak_floor_accel_g",
         "governing_utilization": 2.2179047179234304,
-        "simulations_claimed": 24,
+        "simulations_claimed": 27,
         "outcome": "correctly flagged infeasible brief"
       }
     ],
     "correct": 10,
     "total": 10,
-    "wall_time_sec": 39.8
+    "wall_time_sec": 39.7
   }
 }

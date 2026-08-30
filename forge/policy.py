@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import Any, Callable
 
 from .building import BuildingSpec, Design
-from .checks import acceptance_report
+from .checks import acceptance_report, finite
 from .designer import (
     candidate_grid,
     clamp,
@@ -36,7 +36,9 @@ def forge_design(spec: BuildingSpec, assess_fn: AssessFn) -> dict[str, Any]:
             "envelope": assessment["envelope"],
             "passed": report["passed"],
             "failed_checks": report["failed_checks"],
-            "worst_utilization": worst_utilization(report),
+            # Recorded JSON-safe: a non-converged suite has no comparable
+            # utilization, and infinity is not representable in JSON.
+            "worst_utilization": finite(worst_utilization(report)),
         }
         history.append(entry)
         return {"assessment": assessment, "report": report}

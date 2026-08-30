@@ -28,7 +28,7 @@ sys.path.insert(0, str(REPO / "agent"))
 from forge.brief_parser import list_briefs, parse_brief_text
 from forge.building import RESIDUAL_LIMIT_M
 from forge.policy import forge_design
-from forge.report import write_outputs
+from forge.report import REVIEW_NOTICE_TEXT, write_outputs
 from forge.simulate import assess
 from tools import TOOL_DEFINITIONS, ForgeTools, dispatch
 
@@ -38,12 +38,28 @@ RUN_ROOT = REPO / "outputs" / "gui"
 JOBS: dict[str, dict] = {}
 JOBS_LOCK = threading.Lock()
 
+# OpenSees keeps its model in process-global state, so two simulations running
+# at once would interleave into one corrupt model. Jobs queue here and run one
+# at a time; the browser keeps polling and sees the wait in the run log.
+ENGINE_LOCK = threading.Lock()
+
 ANTHROPIC_MODELS = ("claude-opus-5", "claude-sonnet-5", "claude-haiku-4-5")
 
 
 def _log(job: dict, line: str) -> None:
     with JOBS_LOCK:
         job["log"].append(f"[{time.strftime('%H:%M:%S')}] {line}")
+
+
+def _snapshot(job: dict) -> dict:
+    """A consistent copy for the poller: the log list is appended to live."""
+    return {
+        "id": job["id"],
+        "log": list(job["log"]),
+        "done": job["done"],
+        "error": job["error"],
+        "result": job["result"],
+    }
 
 
 def compose_conclusion(payload: dict, llm_summary: str, mode: str) -> dict:
@@ -56,6 +72,10 @@ def compose_conclusion(payload: dict, llm_summary: str, mode: str) -> dict:
         f"{c['check']} at {c['utilization']:.0%} of its limit"
         for c in checks if c["check"] != "all_records_converged"
     ]
+    governing = acceptance["governing_check"] or "not determined"
+    utilization = acceptance["governing_utilization"]
+    # A non-converged suite leaves no comparable utilization to quote.
+    util_text = f"{utilization:.0%}" if utilization is not None else "n/a"
     if design["system"] == "base_isolated":
         iso = design["isolation"]
         system_line = (
@@ -66,22 +86,22 @@ def compose_conclusion(payload: dict, llm_summary: str, mode: str) -> dict:
         system_line = "a conventional fixed-base frame (isolation not required)"
     if verdict == "proceed":
         headline = "PROCEED - a verified design exists"
+        margin = (
+            f"{max(0.0, 1.0 - utilization):.0%}" if utilization is not None else "n/a"
+        )
         body = (
             f"The recommended system is {system_line}. Every performance target "
             f"holds across the full 5-record nonlinear simulation suite; the "
-            f"governing criterion is {acceptance['governing_check']} at "
-            f"{acceptance['governing_utilization']:.0%} utilization, so the "
-            f"design carries a "
-            f"{max(0.0, 1.0 - acceptance['governing_utilization']):.0%} working "
-            f"margin on its tightest constraint."
+            f"governing criterion is {governing} at {util_text} utilization, so "
+            f"the design carries a {margin} working margin on its tightest "
+            f"constraint."
         )
     else:
         headline = "NOT BUILDABLE WITHIN BRIEF - the site/brief must change, not the evidence"
         body = (
             f"No buildable design met every target; the best candidate was "
             f"{system_line}, still failing {acceptance['failed_checks']} "
-            f"(governing: {acceptance['governing_check']} at "
-            f"{acceptance['governing_utilization']:.0%}). The honest engineering "
+            f"(governing: {governing} at {util_text}). The honest engineering "
             f"recommendation is to revisit the brief - site, moat clearance, or "
             f"supplemental damping - rather than accept an unverified design."
         )
@@ -90,6 +110,7 @@ def compose_conclusion(payload: dict, llm_summary: str, mode: str) -> dict:
         "verdict": verdict,
         "body": body,
         "margins": margins,
+        "review": REVIEW_NOTICE_TEXT,
         "agent_narrative": llm_summary.strip(),
         "basis": (
             f"Every number comes from OpenSees nonlinear response-history "
@@ -205,26 +226,34 @@ def start_job(brief_text: str, mode: str, provider: str, model: str,
             spec = parse_brief_text(name, brief_text)  # validate before running
             (brief_dir / f"{name}.md").write_text(brief_text, encoding="utf-8")
             out_dir = run_dir / name
-            if mode == "llm":
-                if provider != "anthropic":
-                    raise RuntimeError(
-                        f"provider {provider!r} is on the roadmap; this build "
-                        "runs the Anthropic API (or the offline engine)"
-                    )
-                if model not in ANTHROPIC_MODELS:
-                    raise RuntimeError(f"unknown model {model!r}")
-                if not api_key:
-                    raise RuntimeError("an API key is required for LLM mode")
-                _log(job, f"LLM agent mode: {model}")
-                run_llm(job, spec, out_dir, brief_dir, model, api_key)
-            else:
-                run_offline(job, spec, out_dir)
+            if not ENGINE_LOCK.acquire(blocking=False):
+                _log(job, "another design run holds the simulation engine; queued")
+                ENGINE_LOCK.acquire()
+            try:
+                if mode == "llm":
+                    if provider != "anthropic":
+                        raise RuntimeError(
+                            f"provider {provider!r} is on the roadmap; this build "
+                            "runs the Anthropic API (or the offline engine)"
+                        )
+                    if model not in ANTHROPIC_MODELS:
+                        raise RuntimeError(f"unknown model {model!r}")
+                    if not api_key:
+                        raise RuntimeError("an API key is required for LLM mode")
+                    _log(job, f"LLM agent mode: {model}")
+                    run_llm(job, spec, out_dir, brief_dir, model, api_key)
+                else:
+                    run_offline(job, spec, out_dir)
+            finally:
+                ENGINE_LOCK.release()
             _log(job, "run complete")
         except Exception as error:  # surfaced to the UI
-            job["error"] = f"{type(error).__name__}: {error}"
+            with JOBS_LOCK:
+                job["error"] = f"{type(error).__name__}: {error}"
             _log(job, f"ERROR: {job['error']}")
         finally:
-            job["done"] = True
+            with JOBS_LOCK:
+                job["done"] = True
 
     threading.Thread(target=work, daemon=True).start()
     return {"job_id": job_id}
@@ -259,9 +288,9 @@ class Handler(BaseHTTPRequestHandler):
             job_id = parse_qs(parsed.query).get("id", [""])[0]
             with JOBS_LOCK:
                 job = JOBS.get(job_id)
-                snapshot = dict(job) if job else None
+                snapshot = _snapshot(job) if job else None
             if snapshot is None:
-                self._json({"error": "unknown job"}, 404)
+                self._json({"error": "unknown job", "done": True, "log": []}, 404)
             else:
                 self._json(snapshot)
         else:

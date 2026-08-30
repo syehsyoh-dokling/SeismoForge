@@ -24,6 +24,7 @@ sys.path.insert(0, str(REPO))
 
 from forge.brief_parser import list_briefs, parse_brief_file
 from forge.designer import clamp, isolation_period, rule_of_thumb
+from forge.report import REVIEW_NOTICE
 
 
 def main() -> int:
@@ -69,6 +70,8 @@ def main() -> int:
             "",
             "Sized to standard practice targets; expected to meet the brief's "
             "performance intent. (No response-history verification performed.)",
+            "",
+            REVIEW_NOTICE,
             "",
         ]
         (out_dir / "design_report.md").write_text("\n".join(lines), encoding="utf-8")

@@ -96,5 +96,5 @@
     "governing_check": "peak_floor_accel_g",
     "governing_utilization": 2.2179047179234304
   },
-  "simulations": 24
+  "simulations": 27
 }

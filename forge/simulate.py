@@ -208,13 +208,18 @@ def assess(spec: BuildingSpec, design: Design) -> dict[str, Any]:
         outcome = analyze_record(spec, design, record["seed"])
         outcome["record_id"] = record["record_id"]
         records.append(outcome)
-    envelope: dict[str, float] = {}
+    # A metric with no finite sample across the suite (e.g. residual offset
+    # when a record never converged) has no envelope. It is reported as None,
+    # not as infinity: the acceptance layer treats a missing demand as an
+    # unmet check, and JSON has no representation for infinity - emitting one
+    # would produce artifacts no client (or browser) can parse.
+    envelope: dict[str, float | None] = {}
     for key in METRICS:
         values = [
             float(item[key]) for item in records
             if isinstance(item.get(key), (int, float)) and math.isfinite(float(item[key]))
         ]
-        envelope[key] = max(values) if values else float("inf")
+        envelope[key] = max(values) if values else None
     return {
         "all_converged": all(item["converged"] for item in records),
         "per_record": records,

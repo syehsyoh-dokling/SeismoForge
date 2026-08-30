@@ -30,7 +30,7 @@ sys.path.insert(0, str(REPO))
 from forge.brief_parser import list_briefs, parse_brief_file
 from forge.building import design_from_dict
 from forge.checks import acceptance_report
-from forge.designer import clamp
+from forge.designer import bound_violations
 from forge.simulate import assess
 
 
@@ -46,10 +46,24 @@ def judge(out_dir: Path, feasible: dict[str, bool]) -> list[dict]:
             continue
         try:
             payload = json.loads(payload_path.read_text(encoding="utf-8"))
-            design = clamp(design_from_dict(payload["design"]), spec)
+            # Judged exactly as submitted: clamping here would repair the
+            # design into a different one and grade that instead.
+            design = design_from_dict(payload["design"])
             verdict = payload["verdict"]
         except (json.JSONDecodeError, KeyError, ValueError, TypeError) as error:
             row["outcome"] = f"invalid submission: {error}"
+            rows.append(row)
+            continue
+        violations = bound_violations(design, spec)
+        if violations:
+            row["outcome"] = f"submission outside the buildable space: {violations}"
+            rows.append(row)
+            continue
+        if spec.name not in feasible:
+            row["outcome"] = (
+                "no feasibility ground truth for this brief; add it to "
+                "evaluation/ground_truth.json before judging"
+            )
             rows.append(row)
             continue
         report = acceptance_report(spec, design, assess(spec, design))
