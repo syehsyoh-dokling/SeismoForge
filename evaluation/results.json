@@ -114,7 +114,7 @@
     ],
     "correct": 3,
     "total": 10,
-    "wall_time_sec": null
+    "wall_time_sec": 0.4
   },
   "offline": {
     "rows": [
@@ -231,7 +231,7 @@
     ],
     "correct": 10,
     "total": 10,
-    "wall_time_sec": null
+    "wall_time_sec": 38.6
   },
   "assisted": {
     "rows": [
@@ -348,6 +348,123 @@
     ],
     "correct": 10,
     "total": 10,
-    "wall_time_sec": null
+    "wall_time_sec": 71.3
+  },
+  "agent": {
+    "rows": [
+      {
+        "brief": "brief_01_coastal_hospital",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_isolator_disp_m",
+        "governing_utilization": 0.9892665655724496,
+        "simulations_claimed": 6,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_02_valley_office",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 0.798823974217303,
+        "simulations_claimed": 2,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_03_hillside_warehouse",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "fixed_base",
+        "design_passes": true,
+        "governing_check": "base_shear_coeff",
+        "governing_utilization": 0.8814411402274767,
+        "simulations_claimed": 1,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_04_metro_datacenter",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_isolator_disp_m",
+        "governing_utilization": 0.8653611783448723,
+        "simulations_claimed": 8,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_05_riverside_school",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_isolator_disp_m",
+        "governing_utilization": 0.8792010072893663,
+        "simulations_claimed": 7,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_06_downtown_residential",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 0.7918948803050672,
+        "simulations_claimed": 5,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_07_plains_office",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 0.5256720972093929,
+        "simulations_claimed": 5,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_08_lakeside_hospital",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "base_shear_coeff",
+        "governing_utilization": 0.7784508621501076,
+        "simulations_claimed": 1,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_09_port_warehouse",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_isolator_disp_m",
+        "governing_utilization": 0.6982288727376211,
+        "simulations_claimed": 7,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_10_cliffside_clinic",
+        "correct": true,
+        "verdict": "not_buildable_within_brief",
+        "system": "base_isolated",
+        "design_passes": false,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 2.2179047179234304,
+        "simulations_claimed": 25,
+        "outcome": "correctly flagged infeasible brief"
+      }
+    ],
+    "correct": 10,
+    "total": 10,
+    "wall_time_sec": 337.8
   }
 }

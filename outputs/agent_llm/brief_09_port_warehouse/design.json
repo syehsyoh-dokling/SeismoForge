@@ -1,0 +1,95 @@
+{
+  "brief": "brief_09_port_warehouse",
+  "spec": {
+    "name": "brief_09_port_warehouse",
+    "occupancy": "warehouse",
+    "n_stories": 3,
+    "floor_mass_t": 450.0,
+    "story_stiffness_kn_m": 200000.0,
+    "story_height_m": 4.2,
+    "site": {
+      "pga_g": 0.24,
+      "soil_period_sec": 0.9,
+      "duration_sec": 23.0,
+      "records": 5,
+      "seed_base": 7562
+    },
+    "moat_clearance_m": 0.45,
+    "limits": {
+      "peak_drift_ratio": 0.015,
+      "peak_floor_accel_g": 0.7,
+      "base_shear_coeff": 0.55
+    },
+    "seismic_weight_kn": 13243.5
+  },
+  "design": {
+    "system": "base_isolated",
+    "isolation": {
+      "qd_kn": 1059.48,
+      "kd_kn_m": 5204.674195886966,
+      "dy_m": 0.03
+    }
+  },
+  "verdict": "proceed",
+  "envelope": {
+    "peak_isolator_disp_m": 0.31420299273192953,
+    "peak_drift_ratio": 0.003121414691826926,
+    "peak_floor_accel_g": 0.3318385633219807,
+    "base_shear_coeff": 0.20348127070202993,
+    "residual_disp_m": 0.031457925901018674
+  },
+  "acceptance": {
+    "passed": true,
+    "checks": [
+      {
+        "check": "all_records_converged",
+        "value": 1.0,
+        "limit": 1.0,
+        "satisfied": true,
+        "utilization": 1.0,
+        "note": "every record in the suite must complete under the convergence test"
+      },
+      {
+        "check": "peak_drift_ratio",
+        "value": 0.003121414691826926,
+        "limit": 0.015,
+        "satisfied": true,
+        "utilization": 0.20809431278846174
+      },
+      {
+        "check": "peak_floor_accel_g",
+        "value": 0.3318385633219807,
+        "limit": 0.7,
+        "satisfied": true,
+        "utilization": 0.47405509045997246
+      },
+      {
+        "check": "base_shear_coeff",
+        "value": 0.20348127070202993,
+        "limit": 0.55,
+        "satisfied": true,
+        "utilization": 0.36996594673096345
+      },
+      {
+        "check": "peak_isolator_disp_m",
+        "value": 0.31420299273192953,
+        "limit": 0.45,
+        "satisfied": true,
+        "utilization": 0.6982288727376211,
+        "note": "isolator travel must stay inside the moat clearance"
+      },
+      {
+        "check": "residual_disp_m",
+        "value": 0.031457925901018674,
+        "limit": 0.12,
+        "satisfied": true,
+        "utilization": 0.26214938250848896,
+        "note": "the building must recentre after the event"
+      }
+    ],
+    "failed_checks": [],
+    "governing_check": "peak_isolator_disp_m",
+    "governing_utilization": 0.6982288727376211
+  },
+  "simulations": 7
+}

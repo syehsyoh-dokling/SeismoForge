@@ -108,6 +108,8 @@ def main() -> int:
                         help="session mode to run: offline, assisted or agent")
     parser.add_argument("--brief-dir", default=str(REPO / "briefs"),
                         help="brief set to run (e.g. briefs_prose)")
+    parser.add_argument("--model", default=None,
+                        help="model id passed through to the session")
     parser.add_argument("--label", default=None,
                         help="column name for this system in results "
                              "(default: the mode name)")
@@ -124,7 +126,8 @@ def main() -> int:
             ("baseline", [sys.executable, str(REPO / "baselines" / "oneshot.py")]),
             (label, [sys.executable, str(REPO / "agent" / "run_agent.py"),
                      "--mode", args.mode, "--brief-dir", args.brief_dir,
-                     "--out", args.agent_out, "--quiet"]),
+                     "--out", args.agent_out, "--quiet"]
+                    + (["--model", args.model] if args.model else [])),
         ):
             print(f"== running {name} ==", flush=True)
             started = time.monotonic()
@@ -154,7 +157,11 @@ def main() -> int:
             "rows": rows,
             "correct": sum(1 for r in rows if r["correct"]),
             "total": len(rows),
-            "wall_time_sec": timings.get(name),
+            # Keep a previously measured wall time when this pass only judged
+            # existing outputs, so re-judging one column does not blank another.
+            "wall_time_sec": timings.get(
+                name, results.get(name, {}).get("wall_time_sec")
+            ),
         }
         print(f"{name}: {results[name]['correct']}/{results[name]['total']} correct")
 

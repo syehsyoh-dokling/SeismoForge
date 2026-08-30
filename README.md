@@ -57,26 +57,33 @@ genuinely not buildable, the baseline happily says "proceed".
 Measured on 10 briefs, judged by independent re-simulation of every
 submitted design:
 
-| Metric | One-shot baseline | `offline` | `assisted` |
-|---|---|---|---|
-| Brief the system can read | labelled datasheet | labelled datasheet | **free prose** |
-| Briefs resolved correctly (primary) | **3/10** | **10/10** | **10/10** |
-| Infeasible brief handled honestly | no ("proceed") | yes (flagged, with evidence) | yes (flagged, with evidence) |
-| Wall time, full portfolio | 0.4 s (unverified) | 37.8 s | 80.5 s |
-| Simulation done | none | 110 design evaluations, 550 nonlinear RHAs | same |
-| Model tokens, full portfolio | none | none | 8,291 in / 2,201 out (`gpt-5.5`) |
-| Human time per brief today | ~a day of engineering study | minutes of review | minutes of review |
+| Metric | baseline | `offline` | `assisted` | `agent` |
+|---|---|---|---|---|
+| Who reads the brief | - | strict parser | **model** | **model** |
+| Who picks the next design | - | rule of thumb, unverified | scripted policy | **model** |
+| Brief the system can read | labelled datasheet | labelled datasheet | **free prose** | **free prose** |
+| Briefs resolved correctly (primary) | **3/10** | **10/10** | **10/10** | **10/10** |
+| Infeasible brief flagged honestly | no ("proceed") | yes | yes | yes |
+| Wall time, full portfolio | 0.4 s | 38.6 s | 71.3 s | 337.8 s |
+| Model tokens, full portfolio | none | none | **8,421** in / 2,081 out | **518,386** in / 17,272 out |
+| Human time per brief today | ~a day of engineering study | minutes of review | minutes of review | minutes of review |
 
-`offline` and `assisted` reach the identical designs - the model's reading of
-the prose lands on the same nine values the strict parser reads out of the
-datasheet, brief for brief. What changes is what the system will accept as
-input: the strict parser scores **0/10** on `briefs_prose/`, failing all nine
-fields on all ten briefs. That is the axis the model earns its place on.
+Measured on `gpt-5.5`. Two results, and the second one is the interesting one.
 
-`agent` mode (the model also drives the search) runs end to end and reproduces
-the offline design on the coastal hospital - Qd 2158 kN, Kd 6785 kN/m, Dy 45 mm,
-verification clean - but has not been scored across the portfolio yet, and this
-table will not carry a number until it has been.
+**Reading the brief is where the model is indispensable.** The strict parser
+scores **0/10** on `briefs_prose/` - the same ten projects in ordinary prose -
+failing all nine fields on all ten briefs. No policy loop closes that gap; it
+is a language problem. `assisted` closes it completely for 8,421 input tokens
+across the whole portfolio, and lands on the same nine values the parser reads
+out of the datasheet, brief for brief.
+
+**Driving the search is where it is not.** `agent` also scores 10/10 - and
+spends **62x the input tokens** and **4.7x the wall time** of `assisted` to
+get there, on a problem where a fixed rule-of-thumb -> screen -> refine policy
+already succeeds. The extra agency buys nothing measurable here. That is not a
+failure of the model; it is a statement about the problem: the design space is
+small enough and the constraint coupling regular enough that the strategy can
+be written down once.
 
 The architecture is a deliberate division of labor:
 
@@ -194,7 +201,8 @@ correctly.
 | Unification | One session for every entry point, after finding the GUI ran a second code path that skipped the tool layer and logged no trajectory; the search strategy and the LLM tool loop each existed twice and had already drifted | **10/10 unchanged**, and a GUI run now reproduces the CLI's 19 design evaluations on brief 01 | Kept. A demo that does not exercise the measured path is not evidence of anything |
 | Intake | Asked what the model does that the scripted policy cannot, and found the answer was: read. The strict parser rejects the same ten projects written as prose on all nine fields, 10/10 (`briefs_prose/`) | 10/10 rejected by the parser; source-lock and round-trip checks in `tests/selftest.py` | Kept. This is the axis where the model's contribution is real rather than substitutable - and it is measured separately from the search axis, so the two do not hide behind each other |
 | Provider layer | The design center advertised a provider choice and shipped one vendor, hard-wired in three places. Pulled the wire-format difference into `agent/llm.py` so the tool surface is declared once | `assisted` and `agent` both run on `gpt-5.5`; the same code path takes `claude-opus-5` | Kept. A tool surface that only one vendor can drive is a claim about the vendor, not about the design |
-| Intake measured | Ran `assisted` over the prose set - the model reads, the scripted policy searches | **10/10**, 80.5 s, 8,291 in / 2,201 out tokens; the strict parser scores 0/10 on the same input | The model's contribution is real and it is *specific*: it changes what the system can read, not how well it searches. Both reach the same designs |
+| Intake measured | Ran `assisted` over the prose set - the model reads, the scripted policy searches | **10/10**, 71.3 s, 8,421 in / 2,081 out tokens; the strict parser scores 0/10 on the same input | The model's contribution is real and it is *specific*: it changes what the system can read, not how well it searches. Both reach the same designs |
+| Search measured | Ran `agent` over the same prose set, giving the model the search as well - the question the whole project turns on | **10/10**, 337.8 s, **518,386** in / 17,272 out tokens: the same score for 62x the input tokens | The honest answer to "which design choice helped": the reading did, the driving did not. Kept `agent` in the repository because the negative result is the finding, and removing it would hide it |
 | Hardening | Adversarial pass over the harness itself, after the result was in: the judge now grades submissions exactly as submitted instead of clamping them into bounds first, a suite that produced no usable demand degrades into unmet checks rather than an unparseable infinity, refinement moves read the design they were asked about instead of whichever was simulated last, and the GUI runs one simulation at a time | **10/10 unchanged**, same evaluator and same briefs | Kept. None of it moved the score - which is the point: the result survives a stricter harness, and the two paths that could have flattered it (a repairing judge, a stale refinement source) are closed |
 
 The challenging case: `brief_10_cliffside_clinic` is deliberately not
@@ -240,6 +248,17 @@ problems have solutions and infeasible ones don't, and only then let the
 agent optimize. And give the reporting layer veto power - the single change
 that contributed most here was a report writer that refuses to write a
 verdict the physics contradicts.
+
+**Second hot take, and it cost us 518,386 tokens to learn:** put the model
+where the ambiguity is, not where the search is. Measured on the identical
+ten cases, letting the model read the brief was worth everything - it is the
+only thing standing between free prose and a parser that rejects it 10/10 -
+and letting the model also drive the design search was worth nothing, at 62x
+the tokens. The instinct to hand an agent the whole loop is expensive and,
+on a problem whose strategy you can already write down, unnecessary. Split
+your workflow at the seams where judgment actually differs, then measure each
+seam on its own. If we had reported one "agentic vs baseline" number, we would
+have credited the search for a win the reading earned.
 
 ## Solution video
 
