@@ -1,0 +1,15 @@
+{
+  "note": "Feasibility ground truth per brief, established by exhaustive 75-point sweep over the buildable isolation space (tools/sweep_brief.py) plus the policy search. 'feasible' means at least one buildable design passes every acceptance check on the brief's deterministic 5-record suite.",
+  "briefs": {
+    "brief_01_coastal_hospital": true,
+    "brief_02_valley_office": true,
+    "brief_03_hillside_warehouse": true,
+    "brief_04_metro_datacenter": true,
+    "brief_05_riverside_school": true,
+    "brief_06_downtown_residential": true,
+    "brief_07_plains_office": true,
+    "brief_08_lakeside_hospital": true,
+    "brief_09_port_warehouse": true,
+    "brief_10_cliffside_clinic": false
+  }
+}

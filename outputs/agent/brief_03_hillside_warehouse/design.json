@@ -1,0 +1,75 @@
+{
+  "brief": "brief_03_hillside_warehouse",
+  "spec": {
+    "name": "brief_03_hillside_warehouse",
+    "occupancy": "warehouse",
+    "n_stories": 2,
+    "floor_mass_t": 400.0,
+    "story_stiffness_kn_m": 150000.0,
+    "story_height_m": 4.5,
+    "site": {
+      "pga_g": 0.15,
+      "soil_period_sec": 0.5,
+      "duration_sec": 20.0,
+      "records": 5,
+      "seed_base": 9117
+    },
+    "moat_clearance_m": 0.35,
+    "limits": {
+      "peak_drift_ratio": 0.015,
+      "peak_floor_accel_g": 0.7,
+      "base_shear_coeff": 0.55
+    },
+    "seismic_weight_kn": 7848.0
+  },
+  "design": {
+    "system": "fixed_base",
+    "isolation": null
+  },
+  "verdict": "proceed",
+  "envelope": {
+    "peak_isolator_disp_m": 0.0,
+    "peak_drift_ratio": 0.005636522278041304,
+    "peak_floor_accel_g": 0.5854390384288879,
+    "base_shear_coeff": 0.4847926271251122,
+    "residual_disp_m": 0.0
+  },
+  "acceptance": {
+    "passed": true,
+    "checks": [
+      {
+        "check": "all_records_converged",
+        "value": 1.0,
+        "limit": 1.0,
+        "satisfied": true,
+        "utilization": 1.0,
+        "note": "every record in the suite must complete under the convergence test"
+      },
+      {
+        "check": "peak_drift_ratio",
+        "value": 0.005636522278041304,
+        "limit": 0.015,
+        "satisfied": true,
+        "utilization": 0.3757681518694203
+      },
+      {
+        "check": "peak_floor_accel_g",
+        "value": 0.5854390384288879,
+        "limit": 0.7,
+        "satisfied": true,
+        "utilization": 0.8363414834698399
+      },
+      {
+        "check": "base_shear_coeff",
+        "value": 0.4847926271251122,
+        "limit": 0.55,
+        "satisfied": true,
+        "utilization": 0.8814411402274767
+      }
+    ],
+    "failed_checks": [],
+    "governing_check": "base_shear_coeff",
+    "governing_utilization": 0.8814411402274767
+  },
+  "simulations": 1
+}

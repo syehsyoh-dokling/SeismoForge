@@ -1,0 +1,32 @@
+{
+  "brief": "brief_03_hillside_warehouse",
+  "spec": {
+    "name": "brief_03_hillside_warehouse",
+    "occupancy": "warehouse",
+    "n_stories": 2,
+    "floor_mass_t": 400.0,
+    "story_stiffness_kn_m": 150000.0,
+    "story_height_m": 4.5,
+    "site": {
+      "pga_g": 0.15,
+      "soil_period_sec": 0.5,
+      "duration_sec": 20.0,
+      "records": 5,
+      "seed_base": 9117
+    },
+    "moat_clearance_m": 0.35,
+    "limits": {
+      "peak_drift_ratio": 0.015,
+      "peak_floor_accel_g": 0.7,
+      "base_shear_coeff": 0.55
+    },
+    "seismic_weight_kn": 7848.0
+  },
+  "design": {
+    "system": "fixed_base",
+    "isolation": null
+  },
+  "verdict": "proceed",
+  "basis": "rule-of-thumb sizing; not simulation-verified",
+  "simulations": 0
+}

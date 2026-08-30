@@ -1,0 +1,36 @@
+{
+  "brief": "brief_10_cliffside_clinic",
+  "spec": {
+    "name": "brief_10_cliffside_clinic",
+    "occupancy": "hospital",
+    "n_stories": 6,
+    "floor_mass_t": 700.0,
+    "story_stiffness_kn_m": 400000.0,
+    "story_height_m": 3.6,
+    "site": {
+      "pga_g": 0.38,
+      "soil_period_sec": 1.3,
+      "duration_sec": 28.0,
+      "records": 5,
+      "seed_base": 6325
+    },
+    "moat_clearance_m": 0.4,
+    "limits": {
+      "peak_drift_ratio": 0.007,
+      "peak_floor_accel_g": 0.4,
+      "base_shear_coeff": 0.3
+    },
+    "seismic_weight_kn": 41202.0
+  },
+  "design": {
+    "system": "base_isolated",
+    "isolation": {
+      "qd_kn": 2472.12,
+      "kd_kn_m": 21149.152288048623,
+      "dy_m": 0.02
+    }
+  },
+  "verdict": "proceed",
+  "basis": "rule-of-thumb sizing; not simulation-verified",
+  "simulations": 0
+}

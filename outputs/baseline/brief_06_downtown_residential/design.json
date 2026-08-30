@@ -1,0 +1,36 @@
+{
+  "brief": "brief_06_downtown_residential",
+  "spec": {
+    "name": "brief_06_downtown_residential",
+    "occupancy": "residential",
+    "n_stories": 12,
+    "floor_mass_t": 650.0,
+    "story_stiffness_kn_m": 550000.0,
+    "story_height_m": 3.0,
+    "site": {
+      "pga_g": 0.26,
+      "soil_period_sec": 0.8,
+      "duration_sec": 22.0,
+      "records": 5,
+      "seed_base": 3904
+    },
+    "moat_clearance_m": 0.5,
+    "limits": {
+      "peak_drift_ratio": 0.012,
+      "peak_floor_accel_g": 0.55,
+      "base_shear_coeff": 0.45
+    },
+    "seismic_weight_kn": 76518.0
+  },
+  "design": {
+    "system": "base_isolated",
+    "isolation": {
+      "qd_kn": 4591.08,
+      "kd_kn_m": 39276.99710637602,
+      "dy_m": 0.02
+    }
+  },
+  "verdict": "proceed",
+  "basis": "rule-of-thumb sizing; not simulation-verified",
+  "simulations": 0
+}

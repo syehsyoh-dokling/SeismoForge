@@ -1,0 +1,36 @@
+{
+  "brief": "brief_01_coastal_hospital",
+  "spec": {
+    "name": "brief_01_coastal_hospital",
+    "occupancy": "hospital",
+    "n_stories": 5,
+    "floor_mass_t": 550.0,
+    "story_stiffness_kn_m": 450000.0,
+    "story_height_m": 3.6,
+    "site": {
+      "pga_g": 0.32,
+      "soil_period_sec": 1.1,
+      "duration_sec": 25.0,
+      "records": 5,
+      "seed_base": 2196
+    },
+    "moat_clearance_m": 0.9,
+    "limits": {
+      "peak_drift_ratio": 0.007,
+      "peak_floor_accel_g": 0.4,
+      "base_shear_coeff": 0.3
+    },
+    "seismic_weight_kn": 26977.5
+  },
+  "design": {
+    "system": "base_isolated",
+    "isolation": {
+      "qd_kn": 1618.6499999999999,
+      "kd_kn_m": 13847.659236222313,
+      "dy_m": 0.02
+    }
+  },
+  "verdict": "proceed",
+  "basis": "rule-of-thumb sizing; not simulation-verified",
+  "simulations": 0
+}

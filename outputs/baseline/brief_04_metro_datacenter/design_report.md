@@ -1,0 +1,10 @@
+# Baseline design note - brief 04 metro datacenter
+
+**Verdict: PROCEED** (rule-of-thumb basis)
+
+- System: base_isolated
+- Qd = 1,413 kN (6.0% of W)
+- Kd = 12,085 kN/m (target period 2.80 s)
+- Dy = 20 mm
+
+Sized to standard practice targets; expected to meet the brief's performance intent. (No response-history verification performed.)

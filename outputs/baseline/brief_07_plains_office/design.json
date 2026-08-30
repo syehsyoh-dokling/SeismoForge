@@ -1,0 +1,32 @@
+{
+  "brief": "brief_07_plains_office",
+  "spec": {
+    "name": "brief_07_plains_office",
+    "occupancy": "office",
+    "n_stories": 6,
+    "floor_mass_t": 580.0,
+    "story_stiffness_kn_m": 320000.0,
+    "story_height_m": 3.5,
+    "site": {
+      "pga_g": 0.18,
+      "soil_period_sec": 0.6,
+      "duration_sec": 20.0,
+      "records": 5,
+      "seed_base": 3036
+    },
+    "moat_clearance_m": 0.45,
+    "limits": {
+      "peak_drift_ratio": 0.012,
+      "peak_floor_accel_g": 0.55,
+      "base_shear_coeff": 0.45
+    },
+    "seismic_weight_kn": 34138.8
+  },
+  "design": {
+    "system": "fixed_base",
+    "isolation": null
+  },
+  "verdict": "proceed",
+  "basis": "rule-of-thumb sizing; not simulation-verified",
+  "simulations": 0
+}
