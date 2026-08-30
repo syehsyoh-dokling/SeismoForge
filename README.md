@@ -1,290 +1,610 @@
 # SeismoForge
 
-**Prompt in a building, get out a prototype seismic design that survived the
-simulator.** SeismoForge is an agentic design center for earthquake-resilient
-buildings: it reads a natural-language project brief, forges a structural
-protection concept (conventional fixed-base or lead-rubber base isolation),
-verifies it with nonlinear response-history analysis in OpenSees, iterates
-until every performance target holds - and refuses to sign anything the
-physics contradicts.
+## An Evidence-Gated AI Design Engineer for Seismic Concept Design
 
-- Design-center GUI: `python3 gui/server.py` then open http://127.0.0.1:8765
-- Reproduction: [REPRODUCTION.md](REPRODUCTION.md)
-- Measured results: [evaluation/results.md](evaluation/results.md)
-- Agent trajectories: [trajectories/](trajectories/)
-- Example deliverable: `outputs/agent/brief_01_coastal_hospital/design_report.md`
-- Scope and limits: [Scope, review and safety](#scope-review-and-safety) -
-  [Known modelling limitations](#known-modelling-limitations)
+**From a natural-language building brief to a simulation-verified seismic concept — where every reported number comes from physics, and no verdict may contradict it.**
 
-> **Concept-stage prototype studies, not construction documents.** Every
-> report SeismoForge writes requires review and sign-off by a licensed
-> structural engineer before it informs a real decision. See
-> [Scope, review and safety](#scope-review-and-safety).
+SeismoForge is an agentic design center for early-stage seismic engineering. It reads a project brief written in ordinary language, develops a structural protection concept — either a conventional fixed-base frame or lead-rubber base isolation — verifies candidate designs through nonlinear response-history analysis in OpenSees, iterates when performance targets are not met, and refuses to publish an engineering verdict that the simulation evidence contradicts.
 
-## One brief in, one report out
+> **The model handles ambiguity. The tools handle physics. The evidence gate decides what can be claimed.**
 
-A user hands SeismoForge **one** project and gets **one** engineering
-conclusion back. That is the product, and it is what `gui/server.py` does.
+SeismoForge is a **concept-stage prototype, not a construction design system**. Every report is intended for review and sign-off by a licensed structural engineer before it informs any real-world design, procurement, or construction decision.
 
-The ten briefs in `briefs/` are not part of a session - they are the exam.
-Ten different buildings, run independently, so the claim "this works" can be
-checked instead of asserted. `briefs_prose/` holds the same ten projects
-written as ordinary prose, which is how the intake step is measured.
+### Quick links
+
+- **Local GUI:** run `python3 gui/server.py`, then open `http://127.0.0.1:8765`
+- **Reproduction guide:** `REPRODUCTION.md`
+- **Measured results:** `evaluation/results.md`
+- **Representative agent trajectories:** `trajectories/`
+- **Example deliverable:** `outputs/agent/brief_01_coastal_hospital/design_report.md`
+- **Evaluation cases:** `briefs/` (strict format) and `briefs_prose/` (the same ten as free-form prose)
+- **Scope and safety:** see [Scope, Review, and Safety](#scope-review-and-safety)
+- **Known modeling limitations:** see [Known Modeling Limitations](#known-modeling-limitations)
+
+---
+
+# The result in one screen
+
+## **3/10 → 10/10 correct engineering outcomes**
+
+Measured on the same fixed 10-building benchmark and judged by independent re-simulation of every submitted design.
+
+| Metric | Unverified baseline | Deterministic Forge (`offline`) | Hybrid Evidence Agent (`assisted`) | Full-Agent Experimental Mode (`agent`) |
+|---|---:|---:|---:|---:|
+| Who reads the brief | — | strict parser | **model** | **model** |
+| Who chooses the next design | — | written policy | written policy | **model** |
+| Input format supported | labeled datasheet | labeled datasheet | **free-form prose** | **free-form prose** |
+| Correctly resolved briefs — primary metric | **3/10** | **10/10** | **10/10** | **10/10** |
+| Correctly identifies infeasible brief | no — says "proceed" | yes | yes | yes |
+| Full-portfolio runtime | 0.4 s | 38.6 s | 71.3 s | 337.8 s |
+| Model tokens, full portfolio | — | — | **8,421 in / 2,081 out** | **518,386 in / 17,272 out** |
+| Human effort per brief | full day-scale study still required | review | review | review |
+
+Measured on `gpt-5.5` for the model-driven modes.
+
+The headline result is 3/10 → 10/10. But the more important finding is what happened **between the two 10/10 systems**:
+
+> **Full model control of the design search produced the same engineering score with 62× more input tokens and 4.7× more runtime than the hybrid workflow.**
+
+That experiment changed the architecture.
+
+---
+
+# Why this problem is worth solving
 
 ## Who has this problem?
 
-Structural design offices doing early-phase seismic protection studies. At
-concept stage someone must answer: does this building need base isolation on
-this site, what bearing parameters, does the moat clearance suffice, and is
-the client's brief even buildable as posed? Each answer is a day-scale study
-per building - model, ground motions, nonlinear analyses, iteration, report.
+Structural engineering teams performing early-stage seismic protection studies.
+
+At concept stage, an engineer may need to answer:
+
+- Does this building need base isolation at this site?
+- What bearing parameters should be considered?
+- Is the available moat gap sufficient?
+- Will the selected protection strategy satisfy the coupled performance limits?
+- Is the client brief even feasible as proposed?
+
+A serious answer requires more than one formula. It involves a model, ground motions, nonlinear analysis, iteration across competing constraints, and an engineering report. In the workflow represented by this benchmark, that is approximately a **day-scale study per building** before review.
 
 ## What bottleneck makes it worth solving?
 
-The dangerous failure mode of AI-assisted (and hurried human) engineering is
-identical: **convincing, unverified designs.** A one-shot answer - from a
-textbook rule of thumb or a raw LLM - reads plausibly and is wrong most of
-the time, because seismic isolation lives inside coupled constraints: more
-energy dissipation shrinks isolator travel but raises the force transmitted
-into the building; a longer isolation period lowers force but eats moat
-clearance; softer soils punish exactly the long periods that help elsewhere.
-Our measured baseline makes this concrete: confident rule-of-thumb designs
-are **correct on only 3 of 10 briefs**, and on the one brief that is
-genuinely not buildable, the baseline happily says "proceed".
+The dangerous failure mode of AI-assisted engineering — and of rushed manual engineering — is the same:
 
-## Does the agent solve it well?
+> **A plausible design that has not actually been verified.**
 
-Measured on 10 briefs, judged by independent re-simulation of every
-submitted design:
+One-shot sizing can look convincing while still being wrong because seismic isolation sits inside a coupled design space:
 
-| Metric | baseline | `offline` | `assisted` | `agent` |
-|---|---|---|---|---|
-| Who reads the brief | - | strict parser | **model** | **model** |
-| Who picks the next design | - | rule of thumb, unverified | scripted policy | **model** |
-| Brief the system can read | labelled datasheet | labelled datasheet | **free prose** | **free prose** |
-| Briefs resolved correctly (primary) | **3/10** | **10/10** | **10/10** | **10/10** |
-| Infeasible brief flagged honestly | no ("proceed") | yes | yes | yes |
-| Wall time, full portfolio | 0.4 s | 38.6 s | 71.3 s | 337.8 s |
-| Model tokens, full portfolio | none | none | **8,421** in / 2,081 out | **518,386** in / 17,272 out |
-| Human time per brief today | ~a day of engineering study | minutes of review | minutes of review | minutes of review |
+- more energy dissipation can reduce isolator displacement while increasing force transferred to the superstructure;
+- a longer isolation period can reduce force while consuming more moat clearance;
+- softer soil can penalize the same long-period behavior that helps elsewhere.
 
-Measured on `gpt-5.5`. Two results, and the second one is the interesting one.
+Our simple rule-of-thumb baseline makes that problem measurable. It resolves only **3 of 10** benchmark briefs correctly and, on one deliberately infeasible project, confidently recommends proceeding.
 
-**Reading the brief is where the model is indispensable.** The strict parser
-scores **0/10** on `briefs_prose/` - the same ten projects in ordinary prose -
-failing all nine fields on all ten briefs. No policy loop closes that gap; it
-is a language problem. `assisted` closes it completely for 8,421 input tokens
-across the whole portfolio, and lands on the same nine values the parser reads
-out of the datasheet, brief for brief.
+SeismoForge exists to close the gap between **plausible** and **defensible**.
 
-**Driving the search is where it is not.** `agent` also scores 10/10 - and
-spends **62x the input tokens** and **4.7x the wall time** of `assisted` to
-get there, on a problem where a fixed rule-of-thumb -> screen -> refine policy
-already succeeds. The extra agency buys nothing measurable here. That is not a
-failure of the model; it is a statement about the problem: the design space is
-small enough and the constraint coupling regular enough that the strategy can
-be written down once.
+---
 
-The architecture is a deliberate division of labor:
+# The product
 
-- **Whoever decides, the tools compute.** The driver - a model in a tool loop,
-  or the scripted policy - chooses the system, walks the design space, and
-  writes the engineering narrative; every response number comes from the
-  OpenSees simulation tool, and neither driver can produce one any other way. Ground motions are synthesized deterministically from the
-  brief file (soil-filtered spectral process, Clough-Penzien high-pass), so
-  the entire evidence chain reproduces byte-for-byte from this repository -
-  no downloads, no record database, nothing to drift.
-- **Search shaped like engineering.** Rule-of-thumb first; when it fails, a
-  coarse screen over the buildable space, then failure-driven refinement
-  moves that encode the coupled physics ("transmitted force too high ->
-  lengthen period, soften yield transition").
-- **The report can say no.** `write_report` re-simulates the submitted design
-  and rejects any verdict the evidence contradicts - "proceed" on a failing
-  design is not writable, and neither is "not buildable" on a passing one.
-  `verify_output` then re-checks the written deliverable the way the
-  evaluator will.
-- **A design-center GUI** (`gui/`, standard library only - no extra
-  dependencies): type or load a brief, pick the run mode (offline needs no
-  key; assisted and agent take your own Anthropic or OpenAI key), watch the
-  live run log - which names the design being tried, the record suite going
-  into OpenSees, and every demand against its limit - and read one combined
-  engineering conclusion: verdict banner, the selected system, per-check
-  margins, the agent's engineer note, and the evidence basis. Keys stay in
-  memory only.
-- **One session, three modes.** Every entry point - CLI, GUI, evaluation
-  harness - runs a brief through `agent/session.py`. There is no second code
-  path, so what a demo shows is what the evaluation measures, and every run
-  leaves a trajectory. Two things vary, independently:
+## One brief in. One engineering conclusion out.
 
-  | Mode | Who reads the brief | Who picks the next design | API key |
-  |---|---|---|---|
-  | `offline` | strict parser | scripted policy | no |
-  | `assisted` | the model | scripted policy | yes |
-  | `agent` | the model | the model | yes |
+A user submits **one project** and receives **one concept-stage engineering conclusion**.
 
-  Either provider drives them. `agent/llm.py` holds the one place the wire
-  formats differ - Anthropic carries tool results as content blocks inside a
-  user turn, OpenAI as separate `tool` messages keyed by call id - so the 9
-  tools are declared once and the session never learns which vendor answered.
-  Measured here on `gpt-5.5`; `claude-opus-5` runs the same code path.
+That is the product, and that is what `gui/server.py` runs.
 
-  Splitting intake from search is deliberate: it makes the model's
-  contribution measurable one axis at a time rather than asserted as a whole.
-- **The model's own job: reading the brief.** The strict parser wants nine
-  labelled datasheet lines and rejects everything else - including the same
-  project written as prose, which it fails on all nine fields, ten times out
-  of ten (`tests/selftest.py` asserts this). No policy loop can fix that; it
-  is a language problem. So `assisted` and `agent` put the model in front of
-  the parser, and hold it to the same standard the output side is held to:
-  every extracted value must quote the span of the brief it came from, that
-  quote is checked against the source text, and the assembled datasheet is
-  handed back to the strict parser for validation. A value the brief does not
-  state is reported missing, never assumed. Evidence lock on the way out,
-  source lock on the way in.
-- **Same flow for every building.** The model class is parameterized
-  (1-20 story shear frames, any occupancy class, any site in the hazard
-  band); all 10 briefs - hospitals to warehouses, 2 to 12 stories - run
-  through the same unmodified pipeline.
+The 10 files in `briefs/` are not one giant session. They are **evaluation cases**: ten different buildings, each run independently so the claim "this works" can be tested instead of asserted.
 
-## Scope, review and safety
+`briefs_prose/` contains those same ten projects rewritten as ordinary prose. That second set isolates a different question: can the system understand a human brief without requiring a rigid machine-readable template?
 
-SeismoForge produces **concept-stage prototype studies, not construction
-documents.** Every deliverable it writes - CLI, GUI, and the baseline - carries
-that notice, and the intended workflow keeps a qualified human in the loop:
+---
 
-- A **licensed structural engineer reviews and signs off** every report before
-  it informs any design, procurement, or construction decision. The agent's job
-  is to bring that reviewer a defensible starting point and the evidence behind
-  it, not to replace their judgment or their seal.
-- The system takes **no consequential action.** It reads briefs, runs
-  simulations, and writes files under `outputs/`. Nothing is ordered, filed,
-  submitted, or sent anywhere.
-- Acceptance limits, the model class, and the ground motions are SeismoForge's
-  **own benchmark basis** (`forge/building.py`, `forge/motions.py`), inspired
-  by performance-based-design practice but not a code-compliant hazard
-  analysis for any real site.
-- All ten briefs are **synthetic**. No client, site, or personal data is in
-  this repository; the model modes send only brief text and tool results to the
-  API, and API keys are read from the environment or held in memory, never
-  written to disk.
-- Reports are built to be **audited**: every table cell traces to a simulation,
-  the agent's prose is labelled as unverified commentary, and the search
-  history lists every design tried and rejected on the way to the verdict.
+# The core design principle: Evidence-Gated Agency
 
-## What existed before the competition vs what we added
+SeismoForge does not ask an LLM to be its own calculator, simulator, and judge.
 
-Pre-existing: the open-source stack (OpenSeesPy, NumPy, and the Anthropic and
-OpenAI SDKs) and the author's structural-engineering domain knowledge.
-Everything in this repository - physics core, motion synthesis, briefs, the
-agents and their instructions, baseline, evaluation harness, docs - was
-written during the hackathon.
+It separates the work according to what each component is actually good at.
 
-Two agents are used, and both have their instructions in the repository:
-`agent/system_prompt.md` shapes the design agent, `agent/intake_prompt.md`
-shapes the brief reader. Their trajectories are in `trajectories/`.
+```text
+                 HUMAN ENGINEER
+                       │
+                       ▼
+              Natural-language brief
+                       │
+                       ▼
+              ┌──────────────────┐
+              │   INTAKE AGENT   │
+              │ Understand intent│
+              │ Extract + cite   │
+              └────────┬─────────┘
+                       │
+                  SOURCE LOCK
+                       │
+                       ▼
+              ┌──────────────────┐
+              │  DESIGN ENGINE   │
+              │ Generate/search  │
+              │ candidates       │
+              └────────┬─────────┘
+                       │
+                       ▼
+              ┌──────────────────┐
+              │     OPENSEES     │
+              │ Nonlinear RHA    │
+              └────────┬─────────┘
+                       │
+                       ▼
+              ┌──────────────────┐
+              │  EVIDENCE GATE   │
+              │ Pass / Reject /  │
+              │ Iterate          │
+              └────────┬─────────┘
+                       │
+                       ▼
+              VERIFIED DESIGN REPORT
+                       │
+                       ▼
+                 HUMAN APPROVAL
+```
 
-Coding-agent disclosure: this project was built with Claude Code; development
-trajectories are available on request.
+## Source-Locked In. Evidence-Locked Out.
 
-## Improvement changelog
+**Source lock on the way in:** every value extracted from free-form prose must cite the exact source text that supports it. The citation is checked against the original brief, and the reconstructed datasheet must pass the same strict parser used by the deterministic path. Values that are not stated are reported missing rather than invented.
 
-Same evaluator, same 10 briefs throughout. Primary metric: briefs resolved
-correctly.
+**Evidence lock on the way out:** every quantitative response value comes from the engineering toolchain. `write_report` re-simulates the submitted design and refuses a verdict contradicted by the evidence. `verify_output` then checks the written deliverable again using the same logic as the evaluator.
 
-| Stage | What was tried and why | Evidence | Decision / learning |
+The result is a deliberately asymmetric system:
+
+> **AI may interpret. AI may propose. AI may explain. But AI cannot overrule the physics evidence.**
+
+---
+
+# How SeismoForge works
+
+## 1. Read the brief
+
+The model converts free-form project prose into the nine required engineering fields.
+
+This is where model capability is genuinely valuable. The strict parser gets **0/10** on `briefs_prose/`: on every one of the ten projects it fails all nine fields because the information is not expressed in the required labeled format.
+
+The Hybrid Evidence Agent closes that gap completely, using **8,421 input tokens for the full 10-case portfolio**.
+
+The strongest evidence that this reading is faithful is not the score — both modes reach 10/10 — but the designs underneath it. **On all ten briefs, the Hybrid Evidence Agent and the Deterministic Forge submit identical designs.** The model's reading of ordinary prose lands on exactly the nine values the strict parser extracts from the labeled datasheet, project after project. What changed is what the system will accept as input, not what it concludes.
+
+## 2. Generate a first engineering concept
+
+The workflow begins with a rule-of-thumb concept rather than an expensive blind search.
+
+## 3. Challenge it with physics
+
+Every candidate goes through the OpenSees simulation toolchain. Ground motions are synthesized deterministically from the brief using a soil-filtered spectral process with a Clough-Penzien high-pass stage.
+
+Each design evaluation runs a five-record suite, so a single candidate costs five nonlinear response-history analyses. The full deterministic portfolio performs 110 design evaluations — 550 nonlinear analyses — in 38.6 seconds.
+
+No design driver — deterministic or model-based — gets to manufacture response values directly.
+
+## 4. Search only when needed
+
+If the first concept fails, the deterministic workflow moves through:
+
+**rule of thumb → coarse feasible-space screening → failure-informed refinement**
+
+The refinement rules encode coupled engineering behavior, for example: if transmitted force is too high, lengthen the period or soften the yield transition rather than blindly changing one scalar at a time.
+
+## 5. Let the report say "no"
+
+The reporting layer has veto power.
+
+A submitted design that fails the acceptance checks cannot be reported as "proceed." A design that passes cannot be reported as infeasible. The final deliverable is re-simulated before the verdict is written.
+
+## 6. Keep a qualified human in control
+
+The final output is a reviewable engineering starting point with a traceable basis of evidence. It is not a substitute for professional judgment or a licensed engineering stamp.
+
+---
+
+# The most important experiment: Where should the agent actually think?
+
+We initially let the model control both parts of the workflow:
+
+1. interpret the human brief;
+2. drive the engineering design search.
+
+It worked: **10/10**.
+
+Then we measured it against a hybrid system in which the model handled the ambiguous language but a written engineering policy handled the structured search.
+
+That also scored **10/10**.
+
+But the resource profile was radically different:
+
+| Workflow | Correct cases | Runtime | Model input tokens |
+|---|---:|---:|---:|
+| Hybrid Evidence Agent | **10/10** | 71.3 s | **8,421** |
+| Full-Agent Experimental Mode | **10/10** | 337.8 s | **518,386** |
+
+Full agency bought **no measurable improvement in engineering outcome** on this design space.
+
+That is not a failure of the model. It is evidence about the shape of the problem.
+
+The design space is small enough and the constraint coupling regular enough that the search strategy can be written once. Natural-language intake, by contrast, is genuinely ambiguous and cannot be replaced by the strict parser.
+
+## The architectural lesson
+
+> **Use AI where ambiguity requires judgment. Use deterministic tools where the problem already has physics.**
+
+The most agentic architecture was not the best architecture.
+
+The best architecture was the one that gave the model responsibility **only where model capability changed the result**.
+
+---
+
+# A challenging case: sometimes the correct design is no design
+
+`brief_10_cliffside_clinic` is intentionally infeasible within the benchmark assumptions: a severe near-fault soft-soil site combined with a 0.40 m moat limit.
+
+An exhaustive 75-point sweep found **zero feasible designs** under the benchmark rules.
+
+This case matters because a conventional "success rate" metric can be gamed. If a system is rewarded only for producing a passing design, it is incentivized to force one into existence.
+
+SeismoForge scores honest infeasibility as correct and a forced "proceed" as wrong.
+
+> **Sometimes the safest and most useful engineering answer is: the brief must change.**
+
+That is why 10/10 is meaningful here: one of those ten correct answers is a refusal to pretend a feasible design exists.
+
+---
+
+# Three operating modes, one execution path
+
+Every entry point — CLI, GUI, and evaluation harness — sends a brief through `agent/session.py`. There is no separate demo implementation. The path shown in the GUI is the path measured in evaluation, and each run leaves a trajectory.
+
+Two responsibilities can vary independently: who reads the brief, and who chooses the next design.
+
+| Mode | Brief reader | Design-search driver | API key required |
 |---|---|---|---|
-| Baseline | One-shot rule-of-thumb sizing (what a competent engineer or raw LLM writes down before analysis), submitted unverified | **3/10**; says "proceed" on the infeasible brief | The bottleneck is real: confident sizing is usually wrong on demanding sites |
-| Iteration 1 | First physics loop with a plain Kanai-Tajimi motion synthesis | 50-point design sweep on the hospital brief: **0 designs pass** - every candidate fails everywhere | The examiner was broken, not the designs: unfiltered K-T carries unphysical long-period energy that no isolation system can survive. Added a Clough-Penzien high-pass. Lesson: when an agent verifies against simulation, the simulation itself must be calibrated first |
-| Iteration 2 | Pure failure-driven local refinement (fix the worst failed check, re-run) | Hard hospital brief oscillated for 15 iterations without converging | Removed as the sole strategy: the constraints are coupled, so single-failure moves chase each other. Replaced with coarse screen -> refine; the same brief then converges (screen + 1 refinement step) |
-| Iteration 3 | 5-record suites with per-brief seeds for honest record-to-record variability | Residual (permanent) displacement envelope blew past its limit on every candidate while all peak demands were fine | Residual offset is realization-dominated: once the lead core yields it has no restoring force, so where it stops is chance. Re-based the residual criterion for an envelope-over-suite check instead of a single-record tolerance |
-| Iteration 4 | Evidence-locked reporting: `write_report` re-simulates and rejects contradicted verdicts; `verify_output` re-checks the deliverable independently | The infeasible brief (confirmed by 75-point exhaustive sweep: 0 buildable designs) can no longer be "proceed"-ed by anyone - agent or human | Kept: this is the change that turns convincing output into correct output |
-| Final | The scripted policy over the locked tool surface, kept as the path judges can reproduce with no API key | **10/10**, including the honest "not buildable within brief" verdict ([evaluation/results.md](evaluation/results.md)) | Main contribution: physics-in-the-loop + a report writer that can refuse. Stated plainly: this number is the deterministic search, not a model |
-| Unification | One session for every entry point, after finding the GUI ran a second code path that skipped the tool layer and logged no trajectory; the search strategy and the LLM tool loop each existed twice and had already drifted | **10/10 unchanged**, and a GUI run now reproduces the CLI's 19 design evaluations on brief 01 | Kept. A demo that does not exercise the measured path is not evidence of anything |
-| Intake | Asked what the model does that the scripted policy cannot, and found the answer was: read. The strict parser rejects the same ten projects written as prose on all nine fields, 10/10 (`briefs_prose/`) | 10/10 rejected by the parser; source-lock and round-trip checks in `tests/selftest.py` | Kept. This is the axis where the model's contribution is real rather than substitutable - and it is measured separately from the search axis, so the two do not hide behind each other |
-| Provider layer | The design center advertised a provider choice and shipped one vendor, hard-wired in three places. Pulled the wire-format difference into `agent/llm.py` so the tool surface is declared once | `assisted` and `agent` both run on `gpt-5.5`; the same code path takes `claude-opus-5` | Kept. A tool surface that only one vendor can drive is a claim about the vendor, not about the design |
-| Intake measured | Ran `assisted` over the prose set - the model reads, the scripted policy searches | **10/10**, 71.3 s, 8,421 in / 2,081 out tokens; the strict parser scores 0/10 on the same input | The model's contribution is real and it is *specific*: it changes what the system can read, not how well it searches. Both reach the same designs |
-| Search measured | Ran `agent` over the same prose set, giving the model the search as well - the question the whole project turns on | **10/10**, 337.8 s, **518,386** in / 17,272 out tokens: the same score for 62x the input tokens | The honest answer to "which design choice helped": the reading did, the driving did not. Kept `agent` in the repository because the negative result is the finding, and removing it would hide it |
-| Hardening | Adversarial pass over the harness itself, after the result was in: the judge now grades submissions exactly as submitted instead of clamping them into bounds first, a suite that produced no usable demand degrades into unmet checks rather than an unparseable infinity, refinement moves read the design they were asked about instead of whichever was simulated last, and the GUI runs one simulation at a time | **10/10 unchanged**, same evaluator and same briefs | Kept. None of it moved the score - which is the point: the result survives a stricter harness, and the two paths that could have flattered it (a repairing judge, a stale refinement source) are closed |
+| **Deterministic Forge** (`offline`) | strict parser | written policy | no |
+| **Hybrid Evidence Agent** (`assisted`) | model | written policy | yes |
+| **Full-Agent Experimental Mode** (`agent`) | model | model | yes |
 
-The challenging case: `brief_10_cliffside_clinic` is deliberately not
-buildable (severe near-fault soft-soil site, 0.40 m moat cap). It revealed
-that "success rate" alone is a corruptible metric - a system rewarded only
-for passing designs will force one. Scoring honesty (flagging infeasibility
-counts as correct; a forced "proceed" counts as wrong) is what makes the
-10/10 meaningful.
+The names above are documentation labels; the flags in parentheses are what the code, the CLI, and `evaluation/results.md` actually use.
 
-## Known modelling limitations
+The wire-format differences between providers live in one place: `agent/llm.py`. Anthropic tool results are represented as content blocks in a user turn; OpenAI tool results are separate tool messages keyed to a call id. The nine tools are declared once, and the session logic does not need vendor-specific branches.
 
-The 3/10 -> 10/10 result is a comparison *inside this benchmark*, and the
-benchmark is deliberately narrow. Below are the simplifications a reviewing
-engineer should know about. They are disclosed rather than fixed: each one
-shifts absolute demand numbers, and re-basing them this close to the deadline
-would invalidate the calibration the whole comparison rests on.
+The measured runs reported here use `gpt-5.5`. The same code path also accepts `claude-opus-5`.
 
-| Simplification | What it does to the numbers |
+---
+
+# Engineering choices that matter
+
+## Tools calculate; drivers decide
+
+Whether the driver is the model or the written policy, quantitative structural response comes from the toolchain. The decision layer can choose a candidate, but it cannot fabricate a demand value.
+
+## Search shaped like engineering practice
+
+The workflow does not begin with an unrestricted agentic exploration. It starts from a reasonable sizing rule, screens the feasible design region when necessary, and refines based on the failed constraints.
+
+## Reports are allowed to refuse
+
+`write_report` re-simulates the final submission and will not write a verdict that disagrees with the evidence. `verify_output` independently checks the completed deliverable.
+
+## One session implementation
+
+CLI, GUI, and evaluation share `agent/session.py`, preventing the common failure where the polished demo takes a different path from the measured system.
+
+## Deterministic evidence chain
+
+Ground-motion generation is deterministic from repository inputs. The evaluation chain can therefore be rerun without downloading external record databases or depending on mutable remote datasets.
+
+## Same pipeline across buildings
+
+The structural model is parameterized for shear-frame buildings from 1–20 stories, arbitrary occupancy class, and sites within the benchmark hazard bands. All ten cases — from hospital to warehouse, 2 to 12 stories — pass through the same workflow without per-case code modifications.
+
+---
+
+# Evaluation design
+
+## Primary metric
+
+**Number of briefs resolved correctly.**
+
+The same evaluator and the same 10 briefs are used throughout development.
+
+A final submission is independently re-simulated before it is scored. A brief counts as correct when a "proceed" verdict survives that re-simulation on a feasible brief, or when an infeasible brief is flagged rather than forced.
+
+## Why ten cases?
+
+The benchmark spans different building types and heights and includes one deliberately infeasible challenge case. The cases are synthetic so they can be shared and reproduced without client or personal data.
+
+## Fair-comparison principle
+
+Baseline and final systems face the same structural model, generated motions, performance limits, and evaluation rules. The comparison therefore measures workflow differences inside this benchmark rather than differences in underlying physics assumptions.
+
+---
+
+# Improvement Changelog
+
+The evaluator and ten benchmark briefs remain fixed throughout this progression. The primary metric is **briefs resolved correctly**.
+
+| Stage | What we tried and why | Evidence | Decision / learning |
+|---|---|---|---|
+| **Baseline** | One-shot rule-of-thumb sizing, representing a competent first pass or raw LLM-style answer before nonlinear verification | **3/10**; incorrectly says "proceed" on the infeasible case | Established the real bottleneck: confident sizing is often wrong on demanding sites |
+| **Iteration 1 — calibrate the verifier** | First physics loop using plain Kanai-Tajimi motion synthesis | 50-point hospital sweep: **0 passing designs**; every candidate failed everywhere | The verifier was wrong, not the design space. Unfiltered long-period energy made isolation effectively impossible. Added the Clough-Penzien high-pass stage |
+| **Iteration 2 — redesign the search** | Pure local failure-based refinement: fix the worst check and rerun | Difficult hospital case oscillated for 15 iterations without convergence | Removed as the sole strategy. Coupled constraints made single-failure steps chase each other. Replaced with coarse screening → refinement; the same case then converged after screening + 1 refinement step |
+| **Iteration 3 — make record variability honest** | Five-record suite with a per-brief deterministic seed | Residual displacement envelope exceeded its limit for every candidate even when peak demands were acceptable | Residual offset was realization-dominated. Rebased the criterion to an upper envelope across the suite rather than a per-record tolerance |
+| **Iteration 4 — evidence-gated reporting** | `write_report` re-simulates and vetoes contradictory verdicts; `verify_output` independently checks the deliverable | Exhaustive 75-point sweep confirms the infeasible brief has 0 feasible candidates; neither agent nor human path can write "proceed" for it | **Kept. This was the change that turned plausible output into defensible output** |
+| **Final deterministic path** | Written search policy over the locked simulation tool surface, retained so judges can reproduce the main result without an API key | **10/10**, including an honest "not feasible under the brief" verdict | Main contribution: physics-in-the-loop plus an evidence-gated report writer. Stated plainly: this number is the deterministic search, not a model claim |
+| **Unification** | Replaced separate GUI and CLI paths after discovering the GUI bypassed the tool layer and did not record trajectories; duplicated search and LLM loops had diverged | **10/10 unchanged**; GUI run now reproduces the 19 design evaluations made by CLI for brief 01 | **Kept. A demo that does not exercise the measured path is not evidence** |
+| **Intake experiment** | Asked what the model can do that a written policy cannot. Tested the same ten projects as ordinary prose | Strict parser rejects all ten prose briefs across all nine fields; source-lock and round-trip checks enforced in `tests/selftest.py` | **Kept. Language understanding is the axis where the model provides unique value** |
+| **Provider layer** | Removed vendor-specific logic that had been hard-coded in three places and centralized the wire-format difference in `agent/llm.py` | Hybrid and full-agent modes run on `gpt-5.5`; the same interface accepts `claude-opus-5` | **Kept. A tool surface that only works for one vendor is a vendor demo, not an architectural claim** |
+| **Measured intake** | Hybrid Evidence Agent: model reads prose, written policy searches | **10/10**, 71.3 s, **8,421 in / 2,081 out**; strict parser gets 0/10 on the same prose; submitted designs identical to the deterministic path on all ten briefs | Model contribution is real and specific: it changes what the system can read, not what it concludes |
+| **Measured full agency** | Full-Agent Experimental Mode: model reads the prose and drives the search | **10/10**, 337.8 s, **518,386 in / 17,272 out** | Same engineering score with 62× input tokens. Retained because the negative result is the architectural finding |
+| **Hardening** | Adversarial pass over the evaluation harness: judge exactly the submitted design rather than clamping inputs first; degraded motion suites become unmet checks rather than unparsable infinity; refinement reads the requested candidate rather than stale simulation state; GUI serializes simulations | **10/10 unchanged** on the same evaluator and briefs | **Kept. The result survives a stricter harness after two flattering failure paths were removed** |
+
+---
+
+# What failed — and why that matters
+
+The most important failures were not LLM hallucinations.
+
+Twice, every candidate looked wrong because the **verification harness itself was wrong**:
+
+1. the first motion generator carried nonphysical long-period energy that made every isolation candidate fail;
+2. the first residual-displacement criterion treated a realization-dependent end-state as though it were a stable repeatable quantity.
+
+This produced the central engineering-agent lesson of the project:
+
+> **The most dangerous agent is not one that fails. It is one that successfully optimizes against the wrong verifier.**
+
+Simulation-in-the-loop makes the simulator part of the system's attack surface. A capable agent facing a miscalibrated checker may not look broken at all — it may converge efficiently and confidently to the wrong place.
+
+So the correct sequence is:
+
+1. calibrate the test;
+2. sweep the design space;
+3. confirm feasible problems really have solutions and infeasible ones do not;
+4. only then allow the agent to optimize against that test.
+
+And after optimization, give the reporting layer the right to say **no**.
+
+---
+
+# The 518K-token lesson
+
+We spent **518,386 input tokens** to answer a question that became more valuable than another point on the benchmark:
+
+> **Where should agency live?**
+
+On these ten identical cases:
+
+- letting the model read the human brief was indispensable to handling free-form prose;
+- letting the model additionally steer a structured design search produced **zero additional correct cases**;
+- the extra agency cost 62× more input tokens and 4.7× more runtime than the hybrid path.
+
+The lesson is not "agents are bad."
+
+It is more useful:
+
+> **Put the model where the ambiguity is, not automatically where the loop is.**
+
+If the strategy can already be encoded reliably, deterministic search can be the more agentic choice in the systems sense: cheaper, auditable, reproducible, and easier to constrain.
+
+Had we reported only one number — "agentic vs baseline" — we would have credited design search for an improvement actually won by language understanding and verification.
+
+---
+
+# Scope, Review, and Safety
+
+SeismoForge produces **concept-stage prototype studies, not construction documents**.
+
+Every CLI, GUI, and baseline deliverable carries that notice.
+
+- **Licensed engineer review is required.** A structural engineer must review and sign off each report before it affects design, procurement, or construction. The system's job is to bring the reviewer a defensible starting point and its evidence, not replace professional judgment or stamping authority.
+- **No consequential action is automated.** SeismoForge reads a brief, runs simulations, and writes files under `outputs/`. It does not order equipment, submit permits, issue drawings, transmit instructions, or take physical action.
+- **Benchmark assumptions are internal to SeismoForge.** Acceptance limits, structural model classes, and ground motions in `forge/building.py` and `forge/motions.py` are inspired by performance-based engineering practice but are not a code-compliant site-specific hazard analysis for any real location.
+- **All ten benchmark briefs are synthetic.** The repository contains no client, private-location, or personal data. Model modes send only brief text and tool results to the selected API. API keys are read from the environment or held in memory and are never written to disk.
+- **Reports are designed to be auditable.** Each table value is traceable to a simulation, model-generated narrative is labeled as unverified commentary, and the search history records every candidate tried and rejected before the final verdict.
+
+---
+
+# Known Modeling Limitations
+
+The **3/10 → 10/10** result is a comparison **inside this intentionally narrow benchmark**.
+
+The following simplifications matter to the absolute demand values. They are disclosed rather than silently corrected because changing them at the end of the experiment would require recalibrating the benchmark and re-establishing the ground truth.
+
+| Simplification | Effect on the numbers |
 |---|---|
-| Rayleigh damping is anchored on **pre-yield** eigenvalues (`forge/simulate.py`) | The mass-proportional term over-damps the post-yield isolation mode - nearer 4-6% than the 2% the report states - so isolator displacement and residual offset are under-predicted. |
-| A **1-story fixed-base** frame returns one mode, so no Rayleigh damping is applied while the calibration block still claims 5% | Affects the 1-story fixed-base case only; every brief here is 2 stories or more. |
-| The isolated model carries **n+1 floor masses** (base mat plus n floors) while `isolation_period`, `kd_for_period`, and `seismic_weight` use n | The realized isolated period is sqrt((n+1)/n) longer than the reported one and the base-shear coefficient is inflated by that ratio - worst on low-rise buildings. |
-| **Residual offset** is sampled at the end of a 10 s free-vibration tail | It is a phase-dependent snapshot of a lightly damped long-period oscillation, so residual pass/fail carries record-to-record noise. This is exactly why the limit is an envelope over the suite instead of a per-record tolerance (see Iteration 3). |
-| The Clough-Penzien **high-pass corner (0.22 Hz)** and the spectral grid floor attenuate the 1.8-4.5 s isolation band | The suite slightly under-excites isolator travel - the very demand the moat check exists to bound. |
-| The record-suite **seed derives from the brief's file name** (`forge/brief_parser.py`) | Identical brief files reproduce byte-for-byte, but the same text under another name draws a different suite. GUI runs are all named `user_brief`, so a GUI run and a CLI run of the same brief are not the same suite. |
-| `evaluation/ground_truth.json` is a **hand-maintained** feasibility map | It was established by exhaustive sweeps (`tools/sweep_brief.py`; 75 points for brief 10), but it does not re-derive itself: change the physics or the limits and it has to be re-proven. |
+| Rayleigh damping is anchored to **pre-yield eigenvalues** in `forge/simulate.py` | The mass-proportional term over-damps the post-yield isolation mode — approximately 4–6% rather than the 2% stated in the report — so isolator displacement and residual offset are under-predicted |
+| A **1-story fixed-base frame** returns only one mode, so Rayleigh damping is not applied even though the calibration block still states 5% | Affects only 1-story fixed-base cases; every benchmark brief here is at least 2 stories |
+| The isolated model carries **n+1 floor masses** — base mat plus n floors — while `isolation_period`, `kd_for_period`, and `seismic_weight` use n | Realized isolation period is longer than reported by `sqrt((n+1)/n)`, and the base-shear coefficient is inflated by that ratio; effect is largest for low-rise buildings |
+| **Residual offset** is sampled at the end of a 10-second free-vibration tail | It is a phase-dependent snapshot of a lightly damped long-period oscillation, so record-to-record pass/fail carries noise. This is why the criterion uses an upper envelope across the suite rather than a per-record tolerance |
+| **0.22 Hz Clough-Penzien high-pass corner** and the lower bound of the spectral grid attenuate the 1.8–4.5 s isolation band | The suite slightly under-excites isolator displacement — the demand that the moat check is intended to constrain |
+| **Record-suite seed is derived from the brief filename** in `forge/brief_parser.py` | Identical brief files reproduce bit-for-bit, but identical text under a different filename receives a different suite. GUI runs are named `user_brief`, so GUI and CLI runs of identical text do not necessarily use the same suite |
+| `evaluation/ground_truth.json` is a **manually maintained feasibility map** | It was established through exhaustive sweeps — including 75 points for brief 10 — but does not regenerate itself. Change the physics or acceptance limits and the feasibility map must be proven again |
 
-None of these bias the comparison - baseline and agent face the identical
-model, motions, and limits - but they do bound what the absolute demands mean.
+These limitations constrain the meaning of the absolute engineering demands. They do **not** create an asymmetric advantage in the reported benchmark comparison because the baseline and the final systems face the same structural model, motions, and limits.
 
-## Main failure mode and hot take
+---
 
-**Failure mode:** trusting the examiner. Twice, every design failed and the
-defect was in the verification harness, not the designs - once in the ground
-motions (unphysical long-period energy), once in a criterion (residual drift
-treated as repeatable when it is chance).
+# Reproducibility
 
-**Hot take:** simulation-in-the-loop makes the simulator part of your attack
-surface. An agent that iterates against a miscalibrated check doesn't fail -
-it converges confidently to the wrong place, which is worse. Calibrate the
-exam before trusting the grades: sweep the space, check that feasible
-problems have solutions and infeasible ones don't, and only then let the
-agent optimize. And give the reporting layer veto power - the single change
-that contributed most here was a report writer that refuses to write a
-verdict the physics contradicts.
+A judge should be able to start from a clean environment and reproduce the main claim without trusting screenshots or a hosted demo.
 
-**Second hot take, and it cost us 518,386 tokens to learn:** put the model
-where the ambiguity is, not where the search is. Measured on the identical
-ten cases, letting the model read the brief was worth everything - it is the
-only thing standing between free prose and a parser that rejects it 10/10 -
-and letting the model also drive the design search was worth nothing, at 62x
-the tokens. The instinct to hand an agent the whole loop is expensive and,
-on a problem whose strategy you can already write down, unnecessary. Split
-your workflow at the seams where judgment actually differs, then measure each
-seam on its own. If we had reported one "agentic vs baseline" number, we would
-have credited the search for a win the reading earned.
+The repository contains:
 
-## Solution video
+- the deterministic physics and motion-generation code;
+- all ten evaluation briefs;
+- the equivalent ten free-form prose briefs;
+- the baseline;
+- the evaluation harness and committed results;
+- agent instructions;
+- representative trajectories;
+- example deliverables;
+- a no-API-key deterministic path for the main engineering result.
 
-`video/` - up to 5 minutes: problem and baseline, one full agent execution on
-the coastal-hospital brief, the 3/10 -> 10/10 comparison, the changelog
-highlight and the removed experiment. Outline in `video/README.md`.
+See **`REPRODUCTION.md`** for environment setup, exact commands, expected outputs, versions, approximate runtime, and model-dependent execution details.
 
-## Repository map
+Because the deterministic mode reproduces the 10/10 engineering result without an API key, judges can verify the primary outcome independently of model availability. Model access is only required to reproduce the free-form intake and full-agent experiments.
 
+**Cost note:** runs report their token counts, but a dollar figure is printed only for models with a published price recorded in `PRICES` (`agent/llm.py`). An unrecognized model reports tokens and states that no price is configured, rather than quoting a number that has not been checked.
+
+---
+
+# GUI Design Center
+
+The local GUI lives in `gui/` and uses only Python standard-library web serving — no additional web-framework dependency.
+
+Run:
+
+```bash
+python3 gui/server.py
 ```
-briefs/        10 project briefs in strict datasheet form (the exam)
-briefs_prose/  the same 10 projects as free prose (the intake exam)
-gui/           local design-center web app (stdlib http server + one page)
-forge/         physics core: building model, motion synthesis, OpenSees RHA,
-               acceptance checks, design rules, policy, report renderer
-agent/         session.py (the one entry point), tools.py (the 9 tools),
-               llm.py (provider layer), intake.py (free-prose reading),
-               system_prompt.md + intake_prompt.md (both agents' instructions)
-baselines/     one-shot unverified baseline
-evaluation/    ground truth + judge harness + committed results
-outputs/       per-brief deliverables (design_report.md + design.json)
-trajectories/  run trajectories (JSONL + Markdown); GUI runs land in gui/
-tests/         selftest.py (parser, physics, policy, evidence lock,
-               degraded-evidence and judge-integrity cases)
-tools/         development calibration utilities (sweeps, smoke tests)
-video/         solution video slot + outline
-LICENSE        MIT, plus the not-for-construction scope notice
+
+Then open:
+
+```text
+http://127.0.0.1:8765
 ```
+
+From one screen, a user can:
+
+- type or load a brief;
+- select `offline`, `assisted`, or `agent` mode;
+- supply an Anthropic or OpenAI API key for model-driven modes;
+- watch the live run log;
+- see each design candidate being tried;
+- see the record suite sent to OpenSees;
+- inspect each demand against its limit;
+- read the final verdict, selected system, margins, engineering notes, and evidence basis.
+
+API keys are kept in memory only.
+
+Most importantly, the GUI does not run a special demo path. It enters the same `agent/session.py` workflow used by CLI and evaluation, and records its trajectory under `trajectories/gui/`.
+
+---
+
+# What existed before the hackathon
+
+Existing components:
+
+- OpenSeesPy;
+- NumPy;
+- Anthropic SDK;
+- OpenAI SDK;
+- the author's pre-existing structural-engineering domain knowledge.
+
+Built during the hackathon:
+
+- structural physics core;
+- ground-motion synthesis;
+- benchmark briefs;
+- free-form prose intake set;
+- both agents and their instructions;
+- baseline;
+- design-search policy;
+- evidence-gated report generation;
+- verification harness;
+- evaluation framework;
+- GUI;
+- provider abstraction;
+- trajectories;
+- documentation.
+
+Two agents are used in the repository:
+
+- `agent/system_prompt.md` — design agent instructions;
+- `agent/intake_prompt.md` — brief-reading agent instructions.
+
+Their trajectories are included under `trajectories/`.
+
+**Coding-agent disclosure:** the project was built with Claude Code; the development trajectory is available on request.
+
+---
+
+# Repository Map
+
+```text
+briefs/              10 strict-format project briefs used as evaluation cases
+
+briefs_prose/        the same 10 projects written as ordinary prose for intake testing
+
+gui/                 local web design center
+
+forge/               core engineering physics:
+                     building model, ground-motion synthesis, OpenSees RHA,
+                     acceptance checks, sizing rules, design policy,
+                     report rendering
+
+agent/               session.py      single execution entry point
+                     tools.py        9 engineering tools
+                     llm.py          provider abstraction
+                     intake.py       free-form brief reader
+                     system_prompt.md
+                     intake_prompt.md
+
+baselines/           one-shot unverified baseline
+
+evaluation/          ground truth, judge harness, committed results
+
+outputs/             per-brief deliverables:
+                     design_report.md + design.json
+
+trajectories/        representative run trajectories in JSONL + Markdown;
+                     GUI runs are also recorded
+
+tests/               selftest.py:
+                     parser, physics, policy, source/evidence lock,
+                     degraded-evidence cases, judge integrity
+
+tools/               development calibration utilities:
+                     sweeps, smoke tests
+
+video/               <=5-minute solution video slot + outline
+
+LICENSE              MIT + concept-stage / not-for-construction notice
+```
+
+---
+
+# Solution Video Story
+
+The recommended <=5-minute story is intentionally simple:
+
+1. **The problem:** plausible seismic concepts can be wrong without nonlinear verification.
+2. **The baseline:** 3/10 and a false "proceed" on an infeasible brief.
+3. **One full run:** coastal hospital from human brief → candidate → OpenSees → iteration → evidence-gated report.
+4. **The result:** 3/10 → 10/10.
+5. **The experiment we removed from the optimal path:** full-agent design search.
+6. **The surprising finding:** same 10/10 result, but 518,386 input tokens vs 8,421.
+7. **The hot take:** reliable engineering agents need a calibrated verifier and a clear boundary for where agency actually adds value.
+
+An outline is available in `video/README.md`.
+
+---
+
+# Final Takeaway
+
+We started by asking:
+
+> **Can an agent design a seismic protection concept?**
+
+The more useful question turned out to be:
+
+> **What parts of engineering should an agent be allowed to own?**
+
+The benchmark produced three answers.
+
+**First:** a plausible one-shot design is not enough. The baseline scored **3/10**.
+
+**Second:** physics-in-the-loop plus evidence-gated reporting can turn that into **10/10** within this benchmark, including the ability to reject an infeasible brief.
+
+**Third:** more autonomy is not automatically more capability. Full model control of the design search matched the hybrid result but used **62× more input tokens**.
+
+So SeismoForge is not built around the idea that the AI should do everything.
+
+It is built around a stricter principle:
+
+> **Let the model resolve ambiguity. Let deterministic tools calculate. Let simulation challenge the proposal. Let evidence control the claim. And keep the engineer responsible for the decision.**
+
+That is the architecture SeismoForge is testing.
