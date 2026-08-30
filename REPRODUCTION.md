@@ -164,4 +164,9 @@ Expected final line: `ALL TESTS PASSED` (~20 s).
 ## Costs
 
 - Baseline, scripted agent, evaluation, tests: $0 (no network).
-- LLM driver: pay-per-use on the Anthropic API.
+- `assisted` and `agent` modes: pay-per-use on whichever provider you set.
+  The committed `assisted` run used 8,291 input / 2,201 output tokens on
+  `gpt-5.5` for the full 10-brief portfolio. Runs print their token counts;
+  a dollar figure is only reported for models listed in `PRICES`
+  (`agent/llm.py`), so add your provider's published price there rather than
+  trusting a number nobody checked.

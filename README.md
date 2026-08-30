@@ -156,7 +156,7 @@ that notice, and the intended workflow keeps a qualified human in the loop:
   by performance-based-design practice but not a code-compliant hazard
   analysis for any real site.
 - All ten briefs are **synthetic**. No client, site, or personal data is in
-  this repository; the LLM driver sends only brief text and tool results to the
+  this repository; the model modes send only brief text and tool results to the
   API, and API keys are read from the environment or held in memory, never
   written to disk.
 - Reports are built to be **audited**: every table cell traces to a simulation,
@@ -165,13 +165,18 @@ that notice, and the intended workflow keeps a qualified human in the loop:
 
 ## What existed before the competition vs what we added
 
-Pre-existing: the open-source stack (OpenSeesPy, NumPy, Anthropic SDK) and
-the author's structural-engineering domain knowledge. Everything in this
-repository - physics core, motion synthesis, briefs, agent, baseline,
-evaluation harness, docs - was written during the hackathon. Coding-agent
-disclosure: this project was built with Claude Code; development trajectories
-are available on request, and the solution agent's own trajectories are in
-`trajectories/`.
+Pre-existing: the open-source stack (OpenSeesPy, NumPy, and the Anthropic and
+OpenAI SDKs) and the author's structural-engineering domain knowledge.
+Everything in this repository - physics core, motion synthesis, briefs, the
+agents and their instructions, baseline, evaluation harness, docs - was
+written during the hackathon.
+
+Two agents are used, and both have their instructions in the repository:
+`agent/system_prompt.md` shapes the design agent, `agent/intake_prompt.md`
+shapes the brief reader. Their trajectories are in `trajectories/`.
+
+Coding-agent disclosure: this project was built with Claude Code; development
+trajectories are available on request.
 
 ## Improvement changelog
 
@@ -185,7 +190,7 @@ correctly.
 | Iteration 2 | Pure failure-driven local refinement (fix the worst failed check, re-run) | Hard hospital brief oscillated for 15 iterations without converging | Removed as the sole strategy: the constraints are coupled, so single-failure moves chase each other. Replaced with coarse screen -> refine; the same brief then converges (screen + 1 refinement step) |
 | Iteration 3 | 5-record suites with per-brief seeds for honest record-to-record variability | Residual (permanent) displacement envelope blew past its limit on every candidate while all peak demands were fine | Residual offset is realization-dominated: once the lead core yields it has no restoring force, so where it stops is chance. Re-based the residual criterion for an envelope-over-suite check instead of a single-record tolerance |
 | Iteration 4 | Evidence-locked reporting: `write_report` re-simulates and rejects contradicted verdicts; `verify_output` re-checks the deliverable independently | The infeasible brief (confirmed by 75-point exhaustive sweep: 0 buildable designs) can no longer be "proceed"-ed by anyone - agent or human | Kept: this is the change that turns convincing output into correct output |
-| Final | LLM driver over the locked tool surface; scripted driver kept for offline reproduction | **10/10**, including the honest "not buildable within brief" verdict ([evaluation/results.md](evaluation/results.md)) | Main contribution: physics-in-the-loop + a report writer that can refuse |
+| Final | The scripted policy over the locked tool surface, kept as the path judges can reproduce with no API key | **10/10**, including the honest "not buildable within brief" verdict ([evaluation/results.md](evaluation/results.md)) | Main contribution: physics-in-the-loop + a report writer that can refuse. Stated plainly: this number is the deterministic search, not a model |
 | Unification | One session for every entry point, after finding the GUI ran a second code path that skipped the tool layer and logged no trajectory; the search strategy and the LLM tool loop each existed twice and had already drifted | **10/10 unchanged**, and a GUI run now reproduces the CLI's 19 design evaluations on brief 01 | Kept. A demo that does not exercise the measured path is not evidence of anything |
 | Intake | Asked what the model does that the scripted policy cannot, and found the answer was: read. The strict parser rejects the same ten projects written as prose on all nine fields, 10/10 (`briefs_prose/`) | 10/10 rejected by the parser; source-lock and round-trip checks in `tests/selftest.py` | Kept. This is the axis where the model's contribution is real rather than substitutable - and it is measured separately from the search axis, so the two do not hide behind each other |
 | Provider layer | The design center advertised a provider choice and shipped one vendor, hard-wired in three places. Pulled the wire-format difference into `agent/llm.py` so the tool surface is declared once | `assisted` and `agent` both run on `gpt-5.5`; the same code path takes `claude-opus-5` | Kept. A tool surface that only one vendor can drive is a claim about the vendor, not about the design |

@@ -55,25 +55,7 @@ FIELDS: tuple[tuple[str, str, str, str], ...] = (
      "clearance available around the building for isolator travel, in metres"),
 )
 
-SYSTEM_PROMPT = """\
-You read structural project briefs and extract the nine parameters a seismic \
-prototyping engine needs. The brief is written by an engineer in ordinary \
-prose; the values may be scattered, phrased loosely, or given in units you \
-must convert.
-
-Rules you must not break:
-
-1. Every value you report must come from the brief. Never infer a typical \
-value, never carry one over from a similar project, never fill a gap with \
-engineering judgment. If a parameter is genuinely absent, list its name in \
-`missing` and omit it from `fields`.
-2. For each value, quote the exact span of the brief it came from, copied \
-character for character. The quote is checked against the source text; a \
-paraphrase will be rejected.
-3. If you convert units, report the converted value and say what you did in \
-`conversion`. The quote must still be the original phrase.
-
-Extract what is there. Report what is not."""
+PROMPT_PATH = Path(__file__).resolve().parent / "intake_prompt.md"
 
 
 def _tool_schema() -> dict[str, Any]:
@@ -147,6 +129,12 @@ def render_datasheet(values: dict[str, str], title: str = "Extracted brief") -> 
     return "\n".join(lines)
 
 
+def _record(log: Any, kind: str, **payload: Any) -> None:
+    """Write one intake step to the run trajectory, when there is one."""
+    if log is not None:
+        log.event(kind, agent="brief_intake", **payload)
+
+
 def _request(brief_text: str) -> str:
     wanted = "\n".join(
         f"- {name} ({label}): {description}"
@@ -164,6 +152,7 @@ def understand_brief(
     model: str | None = None,
     api_key: str | None = None,
     provider: str | None = None,
+    log: Any = None,
 ) -> dict[str, Any]:
     """Extract the nine parameters from free prose.
 
@@ -175,7 +164,7 @@ def understand_brief(
     from llm import open_conversation
 
     conversation = open_conversation(
-        system=SYSTEM_PROMPT,
+        system=PROMPT_PATH.read_text(encoding="utf-8"),
         tools=[_tool_schema()],
         model=model,
         api_key=api_key,
@@ -183,6 +172,9 @@ def understand_brief(
         max_tokens=4000,
         force_tool="submit_brief_fields",
     )
+    _record(log, "intake_start", model=conversation.model,
+            instructions=str(PROMPT_PATH.relative_to(REPO)),
+            brief_text=brief_text)
     reply = conversation.start(_request(brief_text))
 
     last_error = "the model returned no extraction"
@@ -191,10 +183,13 @@ def understand_brief(
             last_error = "the model did not call submit_brief_fields"
             break
         call = reply.tool_calls[0]
+        _record(log, "tool_call", name=call.name, input=call.arguments)
         fields = list(call.arguments.get("fields", []))
         missing = [name for name, _, _, _ in FIELDS
                    if name not in {entry.get("field") for entry in fields}]
         if missing:
+            _record(log, "intake_rejected", reason="missing fields",
+                    fields=missing)
             raise ValueError(
                 "the brief does not state: " + ", ".join(missing)
                 + ". Add them and run again - values are never assumed."
@@ -206,9 +201,13 @@ def understand_brief(
         if not unfounded:
             values = {entry["field"]: str(entry["value"]).replace(",", "").strip()
                       for entry in fields}
+            datasheet = render_datasheet(values)
+            _record(log, "tool_result", name=call.name,
+                    result={"accepted": True, "sources_verified": len(fields),
+                            "datasheet": datasheet})
             return {
                 "fields": fields,
-                "datasheet": render_datasheet(values),
+                "datasheet": datasheet,
                 "model": conversation.model,
                 "usage": dict(conversation.usage),
             }
@@ -217,6 +216,10 @@ def understand_brief(
             "these fields quote text that is not in the brief: "
             + ", ".join(unfounded)
         )
+        _record(log, "tool_result", name=call.name, is_error=True,
+                result={"accepted": False, "unfounded_fields": unfounded,
+                        "note": "source lock: quoted spans not found in the brief"})
+        _record(log, "intake_retry", feedback=last_error)
         reply = conversation.submit_tool_results(
             [
                 {

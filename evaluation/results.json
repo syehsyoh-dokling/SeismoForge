@@ -114,7 +114,7 @@
     ],
     "correct": 3,
     "total": 10,
-    "wall_time_sec": 0.4
+    "wall_time_sec": null
   },
   "offline": {
     "rows": [
@@ -231,7 +231,7 @@
     ],
     "correct": 10,
     "total": 10,
-    "wall_time_sec": 37.8
+    "wall_time_sec": null
   },
   "assisted": {
     "rows": [
@@ -348,6 +348,6 @@
     ],
     "correct": 10,
     "total": 10,
-    "wall_time_sec": 80.5
+    "wall_time_sec": null
   }
 }

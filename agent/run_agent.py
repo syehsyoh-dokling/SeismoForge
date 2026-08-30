@@ -83,7 +83,7 @@ def main() -> int:
             tools.adopt_spec(
                 brief,
                 resolve_spec(text, name=brief, mode=mode, model=args.model,
-                             provider=args.provider, record=intake,
+                             provider=args.provider, record=intake, log=log,
                              progress=progress),
             )
             models_used.add(intake.get("model", ""))

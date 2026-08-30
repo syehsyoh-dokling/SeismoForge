@@ -313,15 +313,15 @@ def run_session(
     brief_dir = run_dir / "brief"
     brief_dir.mkdir(parents=True, exist_ok=True)
 
+    log = TrajectoryLogger(Path(trajectory_path))
+    log.event("session_start", brief=name, mode=mode)
+
     intake: dict[str, Any] = {}
     spec = resolve_spec(brief_text, name=name, mode=mode, model=model,
                         api_key=api_key, provider=provider,
-                        record=intake, progress=progress)
+                        record=intake, log=log, progress=progress)
     canonical = canonical_brief(spec, name)
     (brief_dir / f"{name}.md").write_text(canonical, encoding="utf-8")
-
-    log = TrajectoryLogger(Path(trajectory_path))
-    log.event("session_start", brief=name, mode=mode)
     tools = ForgeTools(run_dir, brief_dir=brief_dir)
     outcome = run_brief(tools, log, name, mode=mode, model=model,
                         api_key=api_key, provider=provider, progress=progress)
@@ -360,6 +360,7 @@ def resolve_spec(
     api_key: str | None = None,
     provider: str | None = None,
     record: dict[str, Any] | None = None,
+    log: TrajectoryLogger | None = None,
     progress: Progress = _noop,
 ) -> BuildingSpec:
     """Turn brief text into a BuildingSpec.
@@ -376,7 +377,7 @@ def resolve_spec(
 
     progress("reading the brief with the language model")
     extraction = understand_brief(
-        brief_text, model=model, api_key=api_key, provider=provider
+        brief_text, model=model, api_key=api_key, provider=provider, log=log
     )
     if record is not None:
         record["model"] = extraction["model"]
@@ -389,6 +390,9 @@ def resolve_spec(
     )
     spec = parse_brief_text(name, extraction["datasheet"])
     progress("extraction validated by the deterministic parser")
+    if log is not None:
+        log.event("intake_validated", agent="brief_intake", brief=name,
+                  spec=spec.as_dict())
     return spec
 
 
