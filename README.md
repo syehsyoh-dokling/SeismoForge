@@ -51,8 +51,9 @@ submitted design:
 |---|---|---|
 | Briefs resolved correctly (primary) | **3/10** | **10/10** |
 | Infeasible brief handled honestly | no ("proceed") | yes (flagged, with evidence) |
-| Wall time, full portfolio (offline) | 0.4 s (unverified) | ~40 s (~200 nonlinear RHAs) |
+| Wall time, full portfolio (offline) | 0.8 s (unverified) | 39.7 s (~200 nonlinear RHAs) |
 | Human time per brief today | ~a day of engineering study | minutes of review |
+| Cost per brief | $0 | $0 offline; API cost only for the LLM driver |
 
 The architecture is a deliberate division of labor:
 
