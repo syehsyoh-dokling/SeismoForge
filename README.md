@@ -469,16 +469,22 @@ http://127.0.0.1:8765
 
 From one screen, a user can:
 
-- type or load a brief;
-- select `offline`, `assisted`, or `agent` mode;
-- supply an Anthropic or OpenAI API key for model-driven modes;
-- watch the live run log;
-- see each design candidate being tried;
-- see the record suite sent to OpenSees;
-- inspect each demand against its limit;
-- read the final verdict, selected system, margins, engineering notes, and evidence basis.
+- type or load a brief, and select `offline`, `assisted`, or `agent` mode;
+- follow a **stage tracker** — read the brief, first concept, screen the space, refine, write the report, verify — that advances as the run does;
+- watch **live counters**: elapsed time, designs simulated, nonlinear analyses run;
+- inspect the **brief intake evidence**: every extracted value beside the exact phrase of the brief it was quoted from, and any unit conversion applied;
+- follow the **candidate table**: each design tried, its governing demand against its limit, and whether it passed;
+- read the **agent trajectory** as it happens — tool calls, stages, timings, and any source-lock retry;
+- read the final verdict, selected system, margins, engineering notes, evidence basis, and the path to the machine-readable trajectory with model and token counts.
 
-API keys are kept in memory only.
+Nothing on that screen is a re-enactment. The stage tracker, the candidate
+table, and the trajectory panel are all rendered from the run's own trajectory
+file while it is being written, so the screen cannot claim a step the run did
+not take.
+
+API keys are kept in memory only. Leaving the key field blank falls back to the
+key in the server's own environment — which is also how you record a demo
+without a key on screen.
 
 Most importantly, the GUI does not run a special demo path. It enters the same `agent/session.py` workflow used by CLI and evaluation, and records its trajectory under `trajectories/gui/`.
 

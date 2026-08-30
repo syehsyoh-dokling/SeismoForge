@@ -25,6 +25,8 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(REPO / "agent"))
 
+import os
+
 from forge.brief_parser import list_briefs, parse_brief_text
 from forge.building import RESIDUAL_LIMIT_M
 from forge.report import REVIEW_NOTICE_TEXT
@@ -57,10 +59,196 @@ PROVIDER_MODELS = {
 }
 DEFAULT_PROVIDER = "anthropic"
 
+# Leaving the key field blank falls back to the server's own environment.
+# That is the sane default for local work, and it means a screen recording
+# never has to show a key being typed.
+PROVIDER_ENV = {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY"}
+
+
+# The stages a run passes through, in order. The UI shows this as a tracker
+# and derives the current stage from the trajectory, so what the screen claims
+# is happening is read from the same record the judges get.
+STAGES = (
+    ("intake", "Read the brief"),
+    ("concept", "First concept"),
+    ("screen", "Screen the space"),
+    ("refine", "Refine"),
+    ("report", "Write the report"),
+    ("verify", "Verify"),
+)
+
+# Which stage each tool call belongs to.
+TOOL_STAGE = {
+    "read_brief": "intake",
+    "parse_brief": "intake",
+    "submit_brief_fields": "intake",
+    "propose_rule_of_thumb": "concept",
+    "candidate_designs": "screen",
+    "suggest_refinement": "refine",
+    "write_report": "report",
+    "verify_output": "verify",
+}
+
 
 def _log(job: dict, line: str) -> None:
     with JOBS_LOCK:
         job["log"].append(f"[{time.strftime('%H:%M:%S')}] {line}")
+
+
+def _describe_design(design: dict | None) -> str:
+    if not design:
+        return ""
+    if design.get("system") == "fixed_base":
+        return "fixed-base frame"
+    iso = design.get("isolation") or {}
+    return (
+        f"Qd {iso.get('qd_kn', 0):,.0f} kN | Kd {iso.get('kd_kn_m', 0):,.0f} kN/m "
+        f"| Dy {iso.get('dy_m', 0) * 1000:.0f} mm"
+    )
+
+
+def _read_trajectory(path: Path) -> list[dict]:
+    """Parse the run's trajectory. The file is appended to while we read it,
+    so a torn final line is expected and skipped rather than treated as an
+    error."""
+    records = []
+    try:
+        with path.open(encoding="utf-8") as handle:
+            for line in handle:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    records.append(json.loads(line))
+                except json.JSONDecodeError:
+                    break  # partial write; it will be complete next poll
+    except FileNotFoundError:
+        return []
+    return records
+
+
+def ui_events(path: Path) -> dict:
+    """A compact, screen-shaped view of the trajectory.
+
+    The UI never invents progress: every stage, candidate, and extracted field
+    below is read out of the trajectory file the run is writing.
+    """
+    events: list[dict] = []
+    pending: dict | None = None
+    stage = None
+    simulations = 0
+    records_per_sim = 0
+
+    for record in _read_trajectory(path):
+        kind = record.get("kind")
+        name = record.get("name")
+        moment = record.get("t_sec", 0)
+
+        if kind == "intake_start":
+            stage = "intake"
+            events.append({
+                "t": moment, "stage": stage, "kind": "note",
+                "title": f"reading the brief with {record.get('model', 'the model')}",
+                "detail": f"instructions: {record.get('instructions', '')}",
+            })
+        elif kind == "intake_retry":
+            events.append({
+                "t": moment, "stage": "intake", "kind": "retry",
+                "title": "source lock rejected the extraction",
+                "detail": record.get("feedback", ""),
+            })
+        elif kind == "intake_validated":
+            spec = record.get("spec", {})
+            records_per_sim = (spec.get("site") or {}).get("records", 0)
+            events.append({
+                "t": moment, "stage": "intake", "kind": "validated",
+                "title": "extraction validated by the deterministic parser",
+                "detail": (
+                    f"{spec.get('occupancy', '?')}, {spec.get('n_stories', '?')} storeys, "
+                    f"{spec.get('floor_mass_t', '?')} t/floor, PGA "
+                    f"{(spec.get('site') or {}).get('pga_g', '?')} g"
+                ),
+            })
+        elif kind == "tool_call":
+            pending = record
+            stage = TOOL_STAGE.get(name, stage)
+            if name == "simulate_design":
+                stage = (record.get("input") or {}).get("stage", stage)
+            if name == "submit_brief_fields":
+                fields = (record.get("input") or {}).get("fields", [])
+                events.append({
+                    "t": moment, "stage": "intake", "kind": "extraction",
+                    "title": f"{len(fields)} fields extracted, each with its source",
+                    "fields": [
+                        {"field": f.get("field"), "value": f.get("value"),
+                         "source": f.get("source"),
+                         "conversion": f.get("conversion", "")}
+                        for f in fields
+                    ],
+                })
+            elif name in ("candidate_designs", "write_report", "verify_output",
+                          "suggest_refinement", "propose_rule_of_thumb"):
+                events.append({
+                    "t": moment, "stage": stage, "kind": "tool",
+                    "title": name, "detail": "",
+                })
+        elif kind == "tool_result" and pending is not None:
+            result = record.get("result")
+            if name == "parse_brief" and isinstance(result, dict):
+                # Suite size comes from the spec, which every mode parses -
+                # the intake path is not the only place it is available.
+                records_per_sim = (result.get("site") or {}).get(
+                    "records", records_per_sim
+                )
+            if name == "simulate_design" and isinstance(result, dict):
+                simulations += 1
+                checks = [
+                    c for c in result.get("checks", [])
+                    if c.get("check") != "all_records_converged"
+                    and c.get("value") is not None
+                ]
+                events.append({
+                    "t": moment,
+                    "stage": (pending.get("input") or {}).get("stage", stage),
+                    "kind": "simulation",
+                    "title": _describe_design(
+                        (pending.get("input") or {}).get("design")
+                    ),
+                    "passed": bool(result.get("passed")),
+                    "failed": result.get("failed_checks", []),
+                    "checks": [
+                        {"check": c["check"], "value": c["value"],
+                         "limit": c["limit"], "satisfied": c["satisfied"]}
+                        for c in checks
+                    ],
+                })
+            elif name == "candidate_designs" and isinstance(result, list):
+                events.append({
+                    "t": moment, "stage": "screen", "kind": "note",
+                    "title": f"{len(result)} candidate designs to simulate",
+                    "detail": "",
+                })
+            elif name == "write_report" and isinstance(result, dict):
+                events.append({
+                    "t": moment, "stage": "report", "kind": "tool",
+                    "title": "report written",
+                    "detail": f"verdict: {result.get('verdict', '?')}",
+                })
+            elif name == "verify_output" and isinstance(result, dict):
+                events.append({
+                    "t": moment, "stage": "verify", "kind": "tool",
+                    "title": "independent verification",
+                    "detail": "clean" if result.get("ok") else str(result.get("problems")),
+                })
+            pending = None
+
+    return {
+        "stages": [{"key": k, "label": label} for k, label in STAGES],
+        "stage": stage,
+        "events": events,
+        "simulations": simulations,
+        "analyses": simulations * records_per_sim if records_per_sim else None,
+    }
 
 
 def _snapshot(job: dict) -> dict:
@@ -71,6 +259,9 @@ def _snapshot(job: dict) -> dict:
         "done": job["done"],
         "error": job["error"],
         "result": job["result"],
+        "mode": job.get("mode"),
+        "elapsed": round(time.monotonic() - job["started"], 1),
+        "progress": ui_events(Path(job["trajectory"])) if job.get("trajectory") else None,
     }
 
 
@@ -137,7 +328,18 @@ def compose_conclusion(payload: dict, llm_summary: str, mode: str) -> dict:
 def start_job(brief_text: str, mode: str, provider: str, model: str,
               api_key: str) -> dict:
     job_id = uuid.uuid4().hex[:12]
-    job = {"id": job_id, "log": [], "done": False, "error": None, "result": None}
+    job = {
+        "id": job_id,
+        "log": [],
+        "done": False,
+        "error": None,
+        "result": None,
+        "mode": mode,
+        "started": time.monotonic(),
+        # Recorded up front so the poller can read the run's own trajectory
+        # while it is still being written.
+        "trajectory": str(TRAJECTORY_ROOT / f"{job_id}.jsonl"),
+    }
     with JOBS_LOCK:
         JOBS[job_id] = job
 
@@ -155,8 +357,11 @@ def start_job(brief_text: str, mode: str, provider: str, model: str,
                     raise RuntimeError(
                         f"model {model!r} is not offered for {provider}"
                     )
-                if not api_key:
-                    raise RuntimeError(f"an API key is required for {mode} mode")
+                if not api_key and not os.environ.get(PROVIDER_ENV[provider]):
+                    raise RuntimeError(
+                        f"{mode} mode needs a key: paste one above, or start the "
+                        f"server with {PROVIDER_ENV[provider]} set"
+                    )
             if not ENGINE_LOCK.acquire(blocking=False):
                 _log(job, "another design run holds the simulation engine; queued")
                 ENGINE_LOCK.acquire()
@@ -168,7 +373,7 @@ def start_job(brief_text: str, mode: str, provider: str, model: str,
                     brief_text,
                     mode=mode,
                     run_dir=RUN_ROOT / job_id,
-                    trajectory_path=TRAJECTORY_ROOT / f"{job_id}.jsonl",
+                    trajectory_path=Path(job["trajectory"]),
                     model=model,
                     api_key=api_key or None,
                     provider=provider if mode != "offline" else None,
@@ -185,6 +390,9 @@ def start_job(brief_text: str, mode: str, provider: str, model: str,
                 "acceptance": payload["acceptance"],
                 "report_markdown": outcome["report_markdown"],
                 "trajectory": outcome["trajectory"],
+                "summary": outcome["outcome"].get("summary", ""),
+                "usage": outcome["outcome"].get("usage"),
+                "model": outcome["outcome"].get("model"),
             }
             _log(job, f"run complete; trajectory written to {outcome['trajectory']}")
         except Exception as error:  # surfaced to the UI
@@ -227,6 +435,9 @@ class Handler(BaseHTTPRequestHandler):
                 "briefs": briefs,
                 "providers": {name: list(models)
                               for name, models in PROVIDER_MODELS.items()},
+                # So the page can say which providers need no key pasted in.
+                "env_keys": [name for name, var in PROVIDER_ENV.items()
+                             if os.environ.get(var)],
             })
         elif parsed.path == "/api/status":
             job_id = parse_qs(parsed.query).get("id", [""])[0]
@@ -234,7 +445,8 @@ class Handler(BaseHTTPRequestHandler):
                 job = JOBS.get(job_id)
                 snapshot = _snapshot(job) if job else None
             if snapshot is None:
-                self._json({"error": "unknown job", "done": True, "log": []}, 404)
+                self._json({"error": "unknown job", "done": True, "log": [],
+                            "progress": None}, 404)
             else:
                 self._json(snapshot)
         else:

@@ -141,8 +141,14 @@ $PY gui/server.py --port 8765
 
 Open http://127.0.0.1:8765. Load an example brief or write your own, pick a
 mode - Offline needs the labelled datasheet lines and no key; Assisted and
-Agent read ordinary prose and need your Anthropic API key, which is held in
-memory only - and press "Forge the design". The page shows the live run log, the verdict
+Agent read ordinary prose and need an Anthropic or OpenAI key - and press
+"Forge the design". Leave the key box empty to use whichever of
+`ANTHROPIC_API_KEY` / `OPENAI_API_KEY` the server was started with; pasted
+keys are held in memory only.
+
+The page then shows a stage tracker, live counters, the intake evidence table
+(each extracted value beside the phrase it was quoted from), every simulated
+candidate against its limits, and the run trajectory as it is written. The page shows the live run log, the verdict
 banner, the acceptance table, and the combined engineering conclusion. GUI runs write their deliverables under `outputs/gui/<run-id>/` and their
 trajectory under `trajectories/gui/<run-id>.{jsonl,md}` - the same record the
 CLI leaves.

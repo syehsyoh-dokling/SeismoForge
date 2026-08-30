@@ -26,7 +26,7 @@
   .pill{font-size:10px;padding:2px 7px;border-radius:99px;white-space:nowrap}
   .pill.on{background:rgba(255,122,26,.15);color:var(--accent2)}
   .pill.off{background:#232b39;color:#5f6b80}
-  main{flex:1;padding:26px 34px;max-width:1050px}
+  main{flex:1;padding:26px 34px;max-width:1120px}
   h2{font-size:16px;margin:26px 0 10px;color:var(--accent2)}
   .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
   label{display:block;font-size:11.5px;color:var(--muted);margin-bottom:4px;
@@ -35,37 +35,80 @@
     border:1px solid var(--line);border-radius:8px;padding:9px 11px;
     font-size:14px;outline:none}
   select:focus,input:focus,textarea:focus{border-color:var(--accent)}
-  textarea{width:100%;min-height:230px;font-family:var(--mono);font-size:13px}
+  textarea{width:100%;min-height:200px;font-family:var(--mono);font-size:13px}
   button{background:var(--accent);color:#14100b;font-weight:700;border:0;
     border-radius:8px;padding:11px 26px;font-size:15px;cursor:pointer}
   button:disabled{opacity:.45;cursor:not-allowed}
   .hint{color:var(--muted);font-size:12.5px;margin-top:6px}
+
+  /* stage tracker */
+  .track{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+  .step{flex:1;min-width:120px;background:var(--panel);border:1px solid var(--line);
+    border-radius:10px;padding:10px 12px;transition:.2s}
+  .step .n{font-size:10.5px;color:var(--muted);letter-spacing:1px;
+    text-transform:uppercase}
+  .step .t{font-size:13.5px;font-weight:600;margin-top:3px;color:var(--muted)}
+  .step.done{border-color:rgba(46,204,113,.45)}
+  .step.done .t{color:var(--ok)}
+  .step.done .n::after{content:" ✓";color:var(--ok)}
+  .step.active{border-color:var(--accent);background:var(--panel2);
+    box-shadow:0 0 0 1px var(--accent) inset}
+  .step.active .t{color:var(--accent2)}
+  .step.active .n::after{content:" ● running";color:var(--accent)}
+
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:10px 16px;min-width:118px}
+  .stat b{display:block;font-size:21px;font-family:var(--mono);color:var(--accent2)}
+  .stat span{font-size:11px;color:var(--muted);text-transform:uppercase;
+    letter-spacing:.7px}
+
   #console{background:#0a0d12;border:1px solid var(--line);border-radius:8px;
-    padding:12px 14px;font-family:var(--mono);font-size:12.5px;min-height:70px;
-    max-height:260px;overflow-y:auto;white-space:pre-wrap;color:#9fd0a5}
+    padding:12px 14px;font-family:var(--mono);font-size:12.5px;min-height:60px;
+    max-height:240px;overflow-y:auto;white-space:pre-wrap;color:#9fd0a5}
   .banner{border-radius:10px;padding:14px 18px;font-size:17px;font-weight:800;
     margin-bottom:14px}
   .banner.ok{background:rgba(46,204,113,.12);border:1px solid var(--ok);color:var(--ok)}
   .banner.bad{background:rgba(231,76,60,.10);border:1px solid var(--bad);color:var(--bad)}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
     padding:16px 20px;margin-bottom:14px}
-  .card h3{margin:0 0 8px;font-size:14px;color:var(--accent2)}
+  .card h3{margin:0 0 10px;font-size:14px;color:var(--accent2)}
   table{border-collapse:collapse;width:100%;font-size:13.5px}
-  th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left}
+  th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;
+    vertical-align:top}
   th{color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.6px}
   td.ok{color:var(--ok)} td.bad{color:var(--bad);font-weight:700}
+  td.mono,.mono{font-family:var(--mono);font-size:12.5px}
+  .quote{color:var(--accent2);font-family:var(--mono);font-size:12px}
   details pre{background:#0a0d12;border:1px solid var(--line);border-radius:8px;
     padding:14px;font-size:12px;overflow-x:auto;white-space:pre-wrap}
   .muted{color:var(--muted)} .narr{font-style:italic;color:#c6d2e4}
   .notice{font-size:12.5px;color:var(--accent2);border-top:1px solid var(--line);
     padding-top:10px;margin-bottom:0}
   #err{color:var(--bad);font-weight:600;margin-top:8px;white-space:pre-wrap}
+
+  /* trajectory */
+  #traj{max-height:340px;overflow-y:auto;border:1px solid var(--line);
+    border-radius:8px;background:#0a0d12}
+  .ev{display:flex;gap:12px;padding:8px 12px;border-bottom:1px solid #161d29;
+    font-size:13px;align-items:baseline}
+  .ev:last-child{border-bottom:0}
+  .ev .ts{font-family:var(--mono);font-size:11.5px;color:#5f6b80;min-width:56px}
+  .ev .sg{font-size:10px;text-transform:uppercase;letter-spacing:.7px;
+    padding:2px 7px;border-radius:99px;background:#1c2330;color:var(--muted);
+    min-width:66px;text-align:center}
+  .ev .bd{flex:1}
+  .ev .dt{color:var(--muted);font-size:12px}
+  .ev.simulation .sg{background:rgba(255,122,26,.15);color:var(--accent2)}
+  .ev.retry .sg{background:rgba(231,76,60,.15);color:var(--bad)}
+  .ev.extraction .sg,.ev.validated .sg{background:rgba(46,204,113,.13);color:var(--ok)}
 </style>
 </head>
 <body>
 <aside>
   <div class="logo">Seismo<span>Forge</span></div>
-  <div class="tag">Prompt in a building.<br>Get out a prototype that survived the simulator.</div>
+  <div class="tag">The model handles ambiguity.<br>The tools handle physics.<br>
+    The evidence gate decides what can be claimed.</div>
   <div class="domL">Engineering domains</div>
   <div class="dom active">Seismic base-isolation prototyping <span class="pill on">ACTIVE</span></div>
   <div class="dom">Wind &amp; vibration serviceability <span class="pill off">ROADMAP</span></div>
@@ -94,7 +137,8 @@
       </select></div>
     <div><label>Model</label><select id="model"></select></div>
     <div style="flex:1;min-width:230px"><label>API key (kept in memory only)</label>
-      <input id="apikey" type="password" placeholder="sk-ant-... or sk-proj-..." style="width:100%"></div>
+      <input id="apikey" type="password" placeholder="sk-ant-... or sk-proj-..." style="width:100%">
+      <div class="hint" id="keyHint" style="margin-top:4px"></div></div>
   </div>
   <div class="hint">Every mode runs the same 9 tools, the same OpenSees engine,
     and leaves the same trajectory. Offline needs no key and reproduces every
@@ -119,11 +163,38 @@
   </div>
   <div id="err"></div>
 
-  <h2>3 · Run log</h2>
-  <div id="console">ready.</div>
+  <h2>3 · Progress</h2>
+  <div class="track" id="track"></div>
+  <div class="stats" id="stats"></div>
+
+  <div id="live" style="display:none">
+    <h2>4 · What the system did</h2>
+
+    <div class="card" id="cIntake" style="display:none">
+      <h3>Brief intake — every value carries the phrase it came from</h3>
+      <table><thead><tr><th>Field</th><th>Value</th><th>Quoted from your brief</th>
+        <th>Conversion</th></tr></thead><tbody id="tIntake"></tbody></table>
+      <p class="hint" style="margin-bottom:0">Each quote is checked against your
+        text before the value is accepted. A value the brief does not state is
+        reported missing, never assumed.</p>
+    </div>
+
+    <div class="card" id="cCands" style="display:none">
+      <h3>Design candidates simulated <span class="muted" id="candCount"></span></h3>
+      <table><thead><tr><th>#</th><th>Stage</th><th>Design</th>
+        <th>Worst demand</th><th>Result</th></tr></thead><tbody id="tCands"></tbody></table>
+    </div>
+
+    <div class="card">
+      <h3>Agent trajectory <span class="muted" style="font-weight:400">— read live
+        from the run's own record</span></h3>
+      <div id="traj"></div>
+      <p class="hint" id="trajPath" style="margin-bottom:0"></p>
+    </div>
+  </div>
 
   <div id="results" style="display:none">
-    <h2>4 · Engineering conclusion</h2>
+    <h2>5 · Engineering conclusion</h2>
     <div id="banner" class="banner"></div>
     <div class="card"><h3>Conclusion</h3>
       <div id="cBody"></div>
@@ -139,21 +210,31 @@
     <details><summary class="muted">Full design report (client deliverable)</summary>
       <pre id="cReport"></pre></details>
   </div>
+
+  <details style="margin-top:18px"><summary class="muted">Raw run log</summary>
+    <div id="console">ready.</div></details>
 </main>
 <script>
 const $=id=>document.getElementById(id);
-let briefs=[],providers={};
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>
+  ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let briefs=[],providers={},envKeys=[];
+
 fetch("/api/briefs").then(r=>r.json()).then(data=>{
-  briefs=data.briefs;providers=data.providers||{};
+  briefs=data.briefs;providers=data.providers||{};envKeys=data.env_keys||[];
   $("examples").innerHTML='<option value="">— choose —</option>'+
-    briefs.map(b=>`<option value="${b.name}">${b.name.replace(/_/g," ")}</option>`).join("");
+    briefs.map(b=>`<option value="${esc(b.name)}">${esc(b.name.replace(/_/g," "))}</option>`).join("");
   fillModels();
   const first=briefs.find(b=>b.name.includes("coastal"))||briefs[0];
   if(first){$("brief").value=first.text;$("examples").value=first.name;}
 });
 function fillModels(){
   const list=providers[$("provider").value]||[];
-  $("model").innerHTML=list.map(m=>`<option>${m}</option>`).join("");
+  $("model").innerHTML=list.map(m=>`<option>${esc(m)}</option>`).join("");
+  const fromEnv=envKeys.indexOf($("provider").value)>=0;
+  $("keyHint").textContent=fromEnv
+    ?"leave blank to use the key already in the server's environment"
+    :"no key found in the server environment for this provider";
 }
 $("provider").onchange=fillModels;
 $("examples").onchange=()=>{
@@ -166,8 +247,88 @@ $("mode").onchange=()=>{
 };
 $("mode").onchange();
 function fmt(x,d=4){return typeof x==="number"?Number(x.toPrecision(d)).toString():x;}
+
+// ---- stage tracker -------------------------------------------------------
+// Stages come from the server and the active one is whatever the trajectory
+// last recorded, so the tracker cannot claim a step the run did not take.
+function renderTrack(p,finished){
+  const stages=(p&&p.stages)||[];
+  if(!stages.length){$("track").innerHTML="";return;}
+  const at=stages.findIndex(s=>s.key===(p&&p.stage));
+  $("track").innerHTML=stages.map((s,i)=>{
+    let cls="step";
+    if(finished)cls+=" done";
+    else if(i===at)cls+=" active";
+    else if(at>=0&&i<at)cls+=" done";
+    return `<div class="${cls}"><div class="n">Step ${i+1}</div>
+      <div class="t">${esc(s.label)}</div></div>`;
+  }).join("");
+}
+
+function renderStats(p,s){
+  const cells=[["Elapsed",s.elapsed!=null?s.elapsed+" s":"—"],["Mode",s.mode||"—"]];
+  if(p){
+    cells.push(["Designs simulated",p.simulations||0]);
+    if(p.analyses)cells.push(["Nonlinear analyses",p.analyses]);
+  }
+  $("stats").innerHTML=cells.map(([k,v])=>
+    `<div class="stat"><b>${esc(v)}</b><span>${esc(k)}</span></div>`).join("");
+}
+
+// ---- live panels ---------------------------------------------------------
+function renderLive(p){
+  if(!p||!p.events||!p.events.length){$("live").style.display="none";return;}
+  $("live").style.display="";
+
+  const extraction=[...p.events].reverse().find(e=>e.kind==="extraction");
+  if(extraction&&extraction.fields&&extraction.fields.length){
+    $("cIntake").style.display="";
+    $("tIntake").innerHTML=extraction.fields.map(f=>`<tr>
+      <td class="mono">${esc(f.field)}</td>
+      <td class="mono"><b>${esc(f.value)}</b></td>
+      <td class="quote">&ldquo;${esc(f.source)}&rdquo;</td>
+      <td class="muted mono">${esc(f.conversion||"—")}</td></tr>`).join("");
+  }else{$("cIntake").style.display="none";}
+
+  const sims=p.events.filter(e=>e.kind==="simulation");
+  if(sims.length){
+    $("cCands").style.display="";
+    $("candCount").textContent="— "+sims.length+" candidates"+
+      (p.analyses?", "+p.analyses+" nonlinear analyses":"");
+    $("tCands").innerHTML=sims.map((e,i)=>{
+      let worst=null;
+      for(const c of (e.checks||[])){
+        if(!c.limit)continue;
+        const u=c.value/c.limit;
+        if(!worst||u>worst.u)worst={u:u,c:c};
+      }
+      const w=worst?`${esc(worst.c.check)} ${fmt(worst.c.value)} / ${fmt(worst.c.limit)}
+        <span class="muted">(${(worst.u*100).toFixed(0)}%)</span>`:"—";
+      return `<tr><td class="mono">${i+1}</td>
+        <td class="mono">${esc(e.stage||"")}</td>
+        <td class="mono">${esc(e.title)}</td>
+        <td>${w}</td>
+        <td class="${e.passed?"ok":"bad"}">${e.passed?"PASSES":"fails "+esc((e.failed||[]).join(", "))}</td>
+        </tr>`;
+    }).join("");
+  }else{$("cCands").style.display="none";}
+
+  $("traj").innerHTML=p.events.map(e=>`<div class="ev ${esc(e.kind)}">
+    <div class="ts">t+${(e.t||0).toFixed(2)}s</div>
+    <div class="sg">${esc(e.stage||"—")}</div>
+    <div class="bd"><div>${esc(e.title)}</div>
+      ${e.detail?`<div class="dt">${esc(e.detail)}</div>`:""}
+      ${e.kind==="simulation"?`<div class="dt">${
+        (e.checks||[]).map(c=>esc(c.check)+" "+fmt(c.value)+"/"+fmt(c.limit)).join(" · ")
+      }</div>`:""}
+    </div></div>`).join("");
+  const box=$("traj");box.scrollTop=box.scrollHeight;
+}
+
+// ---- run -----------------------------------------------------------------
 $("run").onclick=async()=>{
   $("err").textContent="";$("results").style.display="none";
+  $("live").style.display="none";$("track").innerHTML="";$("stats").innerHTML="";
   $("console").textContent="";$("run").disabled=true;$("spin").style.display="";
   const body={brief_text:$("brief").value,mode:$("mode").value,
     provider:$("provider").value,model:$("model").value,api_key:$("apikey").value};
@@ -186,6 +347,9 @@ $("run").onclick=async()=>{
       $("console").textContent=s.log.join("\n");
       $("console").scrollTop=$("console").scrollHeight;
     }
+    renderTrack(s.progress,s.done&&!s.error);
+    renderStats(s.progress,s);
+    renderLive(s.progress);
     if(!s.done)return;
     stop(s.error||"");
     if(s.error||!s.result)return;
@@ -193,6 +357,7 @@ $("run").onclick=async()=>{
     catch(e){$("err").textContent="could not render the result: "+e.message;}
   },700);
 };
+
 function render(r){
   const c=r.conclusion,ok=c.verdict==="proceed";
   $("banner").className="banner "+(ok?"ok":"bad");
@@ -216,13 +381,18 @@ function render(r){
       continue;}
     const util=typeof ch.utilization==="number"
       ?(ch.utilization*100).toFixed(0)+"%":"—";
-    tb.insertAdjacentHTML("beforeend",`<tr><td>${ch.check}</td>
+    tb.insertAdjacentHTML("beforeend",`<tr><td>${esc(ch.check)}</td>
       <td>${ch.value===null?"n/a":fmt(ch.value)}</td>
       <td>${ch.limit===null?"n/a":fmt(ch.limit)}</td>
       <td>${util}</td>
       <td class="${ch.satisfied?"ok":"bad"}">${ch.satisfied?"OK":"FAIL"}</td></tr>`);
   }
   $("cReport").textContent=r.report_markdown;
+  const bits=[];
+  if(r.trajectory)bits.push("Full machine-readable record: "+r.trajectory);
+  if(r.model)bits.push("model: "+r.model);
+  if(r.usage)bits.push(`tokens: ${r.usage.input_tokens} in / ${r.usage.output_tokens} out`);
+  $("trajPath").textContent=bits.join("   ·   ");
   $("results").style.display="";
 }
 </script>
