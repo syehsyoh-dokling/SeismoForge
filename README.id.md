@@ -92,21 +92,82 @@ SeismoForge tidak mengklaim menggantikan pekerjaan itu. Ia memampatkan **bagian 
 
 ## Kenapa menyelesaikannya bernilai?
 
-Lingkaran itu bukan pemborosan. Di situlah kepercayaannya dibangun - dan itulah sebabnya AI yang hanya mempercepat **tebakannya** justru membuang bagian yang paling penting.
+Ada dua masalah di hadapan insinyur itu hari ini. Keduanya tampak tidak
+berhubungan. Padahal itu masalah yang sama, dilihat dari dua ujung.
 
-> **Bagian yang sulit adalah mengetahui kapan jawaban itu tidak boleh dipercaya.**
+### Masalah pertama - jalur teliti itu lambat, dan lambatnya ada di pemeriksaan
 
-Sizing satu-tembakan bisa terlihat meyakinkan dan tetap salah, karena isolasi seismik hidup di dalam ruang desain yang saling terkopel:
+Berhari-hari hingga berminggu-minggu per bangunan, seperti di atas. Yang perlu
+diperhatikan adalah **ke mana** waktunya pergi. Memilih konsep proteksi dan
+menuliskan set parameter bantalan yang pertama adalah pekerjaan satu sore bagi
+orang yang menguasai domainnya. Sisanya - menyusun model, memilih dan
+menskalakan rekaman gempa, menjalankan analisis, membaca envelope-nya,
+merevisi, menjalankannya lagi - bukan memutuskan. **Itu memeriksa.**
 
-- disipasi energi lebih besar memperkecil geseran isolator, tetapi **menaikkan** gaya yang diteruskan ke bangunan di atasnya;
-- periode isolasi lebih panjang menurunkan gaya, tetapi **memakan** celah moat;
-- tanah lunak menghukum justru perilaku periode-panjang yang di tempat lain membantu.
+Jadi biaya sebuah jawaban yang bisa dipertanggungjawabkan hampir seluruhnya
+adalah biaya memverifikasinya.
 
-Baseline rumus praktis kami membuat masalah itu terukur. Ia hanya menyelesaikan **3 dari 10** brief dengan benar, dan pada satu proyek yang sengaja dibuat mustahil, ia dengan percaya diri merekomendasikan "lanjutkan".
+### Masalah kedua - jalur cepat mengembalikan angka yang tidak bisa ditindaklanjuti
 
-Dan ia tidak ngawur. **Lima dari tujuh kegagalannya meleset 13% atau kurang.** Kamu tidak bisa melihat itu dari membaca laporannya.
+Respons yang wajar adalah bertanya kepada sebuah model. Ia menjawab dalam
+hitungan detik, dengan satuan yang benar, besaran yang masuk akal, dan prosa
+yang percaya diri.
 
-SeismoForge ada untuk menutup jarak antara **terdengar masuk akal** dan **bisa dipertanggungjawabkan**.
+Jawaban itu tidak bisa memikul keputusan teknik, karena tiga alasan yang
+saling menguatkan:
+
+**Angkanya tidak pernah dihitung.** Percepatan lantai puncak adalah solusi
+persamaan gerak nonlinear yang diintegrasikan atas ribuan langkah waktu. Apa
+yang dilakukan struktur pada detik ketiga belas bergantung pada seluruh
+riwayat pembebanan sebelumnya, dan pada apakah inti timbalnya sudah meleleh.
+Model yang ditanyai angka itu secara langsung **tidak mengintegrasikan apa
+pun**: ia mengembalikan nilai dari jenis yang biasanya muncul untuk bangunan
+yang dideskripsikan begitu. Itu angka yang masuk akal. Itu bukan respons
+bangunan **ini** terhadap gempa **ini**.
+
+**Dan kemiripan justru yang gagal di sini**, karena batas penerimaannya
+terkopel dan saling tarik-menarik:
+
+- disipasi energi lebih besar memperkecil geseran isolator, tetapi
+  **menaikkan** gaya yang diteruskan ke bangunan di atasnya;
+- periode isolasi lebih panjang menurunkan gaya itu, tetapi **memakan** celah
+  moat;
+- tanah lunak menghukum justru perilaku periode-panjang yang di tempat lain
+  membantu.
+
+Set parameter yang tepat pada bangunan serupa menjadi salah pada bangunan ini
+begitu periode tanahnya bergeser. Menginterpolasi dari "yang biasanya
+berhasil" persis metode yang dikalahkan ruang terkopel.
+
+**Dan kegagalannya senyap.** Drift puncak 0,0088 terlihat persis sama dengan
+0,0058. Terhadap batas rumah sakit 0,007, yang pertama gagal dan yang kedua
+lolos - tetapi tidak ada apa pun di laporan yang membedakannya. Tidak ada
+exception, tidak ada stack trace, tidak ada teks merah. Kode yang salah akan
+crash; angka teknik yang salah hanya duduk di sana terlihat wajar, sampai
+gempanya datang.
+
+Baseline kami **mengukur** ini, bukan menyatakannya. Sizing yang ditulis tanpa
+simulasi hanya menyelesaikan **3 dari 10** brief benchmark dengan benar, dan
+pada satu proyek yang sengaja dibuat mustahil ia dengan percaya diri
+merekomendasikan "lanjutkan". Empat dari tujuh kegagalannya meleset kurang
+dari sepuluh persen, dan yang terdekat kurang dari setengah persen - cukup
+dekat sehingga tidak ada reviewer yang menangkapnya dari membaca.
+
+### Kenapa keduanya satu masalah
+
+Hari-hari di masalah pertama bukan pemborosan. Hari-hari itu **adalah**
+verifikasinya - hal yang mengubah sekumpulan angka yang masuk akal menjadi
+angka yang bisa dipertanggungjawabkan.
+
+Dan jalur cepat dipakai untuk **melewati** hari-hari itu.
+
+Yang berarti ia melewati verifikasinya. Bagian termahal dari jalur teliti dan
+bagian yang hilang dari jalur cepat adalah bagian yang sama.
+
+Itulah jarak yang dibangun SeismoForge untuk ditutup: bukan dengan membuang
+verifikasi supaya lebih cepat, melainkan dengan membuat verifikasi cukup murah
+untuk dijalankan ratusan kali, sementara manusia tetap yang menandatangani
+hasilnya.
 
 ---
 

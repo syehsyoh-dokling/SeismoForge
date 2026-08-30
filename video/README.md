@@ -10,12 +10,12 @@ checked against the repository; the source for each is listed at the bottom.
 | # | Section | Words | Ends at | On screen |
 |---|---|---:|---:|---|
 | 1 | The problem | 86 | 0:41 | Building model shaking, then an engineer at a drawing |
-| 2 | The baseline | 60 | 1:10 | A tidy baseline report, then **3/10**, then one brief marked red |
-| 3 | One execution | 127 | 2:11 | The GUI: paste a prose brief, stage tracker advancing, intake evidence table, candidate table, verdict banner |
-| 4 | The comparison | 37 | 2:28 | `evaluation/results.md`, **3/10 → 10/10** |
-| 5 | Changelog | 105 | 3:19 | The changelog table, a 50-point sweep all failing, an oscillation trace, the evidence lock |
-| 6 | The agency experiment | 90 | 4:02 | Three mode columns; **8,421** beside **518,386** |
-| 7 | Hot take and close | 97 | 4:48 | The two harness defects, then an engineer signing, then the closing card |
+| 2 | The baseline | 65 | 1:12 | A tidy baseline report, then **3/10**, then one brief marked red |
+| 3 | One execution | 127 | 2:13 | The GUI: paste a prose brief, stage tracker advancing, intake evidence table, candidate table, verdict banner |
+| 4 | The comparison | 37 | 2:31 | `evaluation/results.md`, **3/10 → 10/10** |
+| 5 | Changelog | 105 | 3:21 | The changelog table, a 50-point sweep all failing, an oscillation trace, the evidence lock |
+| 6 | The agency experiment | 90 | 4:04 | Three mode columns; **8,421** beside **518,386** |
+| 7 | Hot take and close | 97 | 4:51 | The two harness defects, then an engineer signing, then the closing card |
 
 Record section 3 as one continuous screen capture. It is the only part that
 has to be real time, and it is the part that proves the rest.
@@ -52,10 +52,11 @@ has to be real time, and it is the part that proves the rest.
 >
 > On one brief that is genuinely impossible, it said: proceed.
 >
-> And it was not wildly wrong. Five of its seven failures missed by thirteen
-> percent or less. You cannot see that by reading the report.
+> And it was not wildly wrong. Four of its seven failures missed by under ten
+> percent, the closest by half a percent. A wrong number here does not look
+> wrong.
 
-### 3 · One execution — 1:10
+### 3 · One execution — 1:12
 
 *[GUI, one continuous take. Paste the prose brief → stage tracker → intake
 evidence table → candidate table filling → conclusion]*
@@ -82,7 +83,7 @@ evidence table → candidate table filling → conclusion]*
 >
 > Every limit met. The tightest sits at ninety-three percent.
 
-### 4 · The comparison — 2:11
+### 4 · The comparison — 2:13
 
 *[`evaluation/results.md` → 3/10 becomes 10/10]*
 
@@ -91,7 +92,7 @@ evidence table → candidate table filling → conclusion]*
 >
 > That result needs no API key. A judge reproduces it from a clean checkout.
 
-### 5 · Changelog, the biggest change, the removed experiment — 2:28
+### 5 · Changelog, the biggest change, the removed experiment — 2:31
 
 *[Changelog table → sweep of 50 candidates all failing → oscillating utilization
 trace → write_report rejecting a verdict]*
@@ -110,7 +111,7 @@ trace → write_report rejecting a verdict]*
 > **The single change that contributed most was giving the report writer a
 > veto.** That is what turned plausible output into defensible output.
 
-### 6 · The agency experiment — 3:19
+### 6 · The agency experiment — 3:21
 
 *[Three mode columns, all reading 10/10 → token counts side by side]*
 
@@ -127,7 +128,7 @@ trace → write_report rejecting a verdict]*
 > Same score. So we kept that mode in the repository, and did not make it the
 > default.
 
-### 7 · Hot take and close — 4:02
+### 7 · Hot take and close — 4:04
 
 *[The two harness defects → an engineer signing a report → closing card]*
 
@@ -203,7 +204,7 @@ Read the rest at an even pace and let these land:
 | Claim | Source |
 |---|---|
 | 3/10, 10/10, and the wall times | `evaluation/results.json` |
-| Five of seven baseline failures within 13% | Baseline utilizations 1.00, 1.04, 1.08, 1.09, 1.13, 1.32, 2.34 |
+| Four of seven baseline failures under 10%, closest 0.4% | Baseline governing utilizations: 1.004, 1.044, 1.080, 1.094, 1.133, 1.316, 2.341 |
 | Nine engineering parameters | `FIELDS` in `agent/intake.py` |
 | Five records per candidate | `RECORDS_PER_SUITE` in `forge/brief_parser.py` |
 | First concept fails on acceleration and base shear | 0.6166 against 0.40, and 0.3728 against 0.30 |

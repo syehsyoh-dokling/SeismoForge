@@ -123,19 +123,74 @@ SeismoForge does not claim to replace that work. It compresses **the computation
 
 ## What bottleneck makes it worth solving?
 
-The dangerous failure mode of AI-assisted engineering — and of rushed manual engineering — is the same:
+There are two problems in front of this engineer today. They look unrelated.
+They are the same problem seen from opposite ends.
 
-> **A plausible design that has not actually been verified.**
+### Problem one — the careful route is slow, and the slowness is the checking
 
-One-shot sizing can look convincing while still being wrong because seismic isolation sits inside a coupled design space:
+Days to weeks per building, as above. What is worth noticing is *where* the
+time goes. Choosing a protection concept and writing down a first set of
+bearing parameters is an afternoon's work for someone who knows the domain.
+The rest — building the model, selecting and scaling ground motions, running
+the analyses, reading the envelopes, revising, running them again — is not
+deciding. **It is checking.**
 
-- more energy dissipation can reduce isolator displacement while increasing force transferred to the superstructure;
-- a longer isolation period can reduce force while consuming more moat clearance;
-- softer soil can penalize the same long-period behavior that helps elsewhere.
+So the cost of a defensible answer is almost entirely the cost of verifying it.
 
-Our simple rule-of-thumb baseline makes that problem measurable. It resolves only **3 of 10** benchmark briefs correctly and, on one deliberately infeasible project, confidently recommends proceeding.
+### Problem two — the fast route returns numbers you cannot act on
 
-SeismoForge exists to close the gap between **plausible** and **defensible**.
+The obvious response is to ask a model. It answers in seconds, in correct
+units, with plausible magnitudes and confident prose.
+
+That answer cannot carry an engineering decision, for three reasons that
+compound:
+
+**It was never computed.** Peak floor acceleration is the solution of a
+nonlinear equation of motion integrated over thousands of time steps. What the
+structure does at second thirteen depends on the entire loading history before
+it, and on whether the lead core has already yielded. A model asked directly
+for that number integrates nothing: it returns a value of the kind that
+usually appears for buildings described that way. That is a plausible number.
+It is not *this* building's response to *this* ground motion.
+
+**Resemblance is exactly what fails here**, because the acceptance limits are
+coupled and pull against one another:
+
+- more energy dissipation reduces isolator displacement while **increasing**
+  the force transferred to the superstructure;
+- a longer isolation period lowers that force while **consuming** moat
+  clearance;
+- softer soil penalizes the very long-period behavior that helps elsewhere.
+
+A set of parameters that was right on a similar building is wrong on this one
+as soon as the site period moves. Interpolating from what usually works is
+precisely the method a coupled space defeats.
+
+**And the failure is silent.** A peak drift of 0.0088 looks exactly like one of
+0.0058. Against a hospital limit of 0.007 the first is a failure and the second
+is a pass, but nothing in the report distinguishes them. There is no exception,
+no stack trace, no red text. Wrong code crashes; a wrong engineering number
+just sits there looking reasonable until the earthquake arrives.
+
+Our baseline measures this rather than asserting it. Sizing written down
+without simulation resolves only **3 of 10** benchmark briefs correctly, and on
+one deliberately infeasible project it confidently recommends proceeding. Four
+of its seven failures miss by under ten percent, and the closest by less than
+half a percent — near enough that no reviewer catches them by reading.
+
+### Why they are one problem
+
+The days in problem one are not overhead. They *are* the verification — the
+thing that converts a plausible set of numbers into a defensible one.
+
+And the fast route is used to skip the days.
+
+Which means it skips the verification. The expensive part of the careful route
+and the missing part of the fast route are the same part.
+
+That is the gap SeismoForge is built to close: not by removing verification to
+go faster, but by making verification cheap enough to run hundreds of times
+while a human still signs the result.
 
 ---
 
