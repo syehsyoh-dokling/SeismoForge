@@ -21,6 +21,16 @@ physics contradicts.
 > structural engineer before it informs a real decision. See
 > [Scope, review and safety](#scope-review-and-safety).
 
+## One brief in, one report out
+
+A user hands SeismoForge **one** project and gets **one** engineering
+conclusion back. That is the product, and it is what `gui/server.py` does.
+
+The ten briefs in `briefs/` are not part of a session - they are the exam.
+Ten different buildings, run independently, so the claim "this works" can be
+checked instead of asserted. `briefs_prose/` holds the same ten projects
+written as ordinary prose, which is how the intake step is measured.
+
 ## Who has this problem?
 
 Structural design offices doing early-phase seismic protection studies. At
@@ -51,9 +61,9 @@ submitted design:
 |---|---|---|
 | Briefs resolved correctly (primary) | **3/10** | **10/10** |
 | Infeasible brief handled honestly | no ("proceed") | yes (flagged, with evidence) |
-| Wall time, full portfolio (offline) | 0.8 s (unverified) | 39.7 s (~200 nonlinear RHAs) |
+| Wall time, full portfolio (offline mode) | 0.8 s (unverified) | 39.7 s (110 design evaluations, 550 nonlinear RHAs) |
 | Human time per brief today | ~a day of engineering study | minutes of review |
-| Cost per brief | $0 | $0 offline; API cost only for the LLM driver |
+| Cost per brief | $0 | $0 in offline mode; API cost only when the model is in the loop |
 
 The architecture is a deliberate division of labor:
 
@@ -83,10 +93,27 @@ The architecture is a deliberate division of labor:
 - **One session, three modes.** Every entry point - CLI, GUI, evaluation
   harness - runs a brief through `agent/session.py`. There is no second code
   path, so what a demo shows is what the evaluation measures, and every run
-  leaves a trajectory. The modes differ in two independent places: who reads
-  the brief, and who decides the next design. `offline` (strict parser +
-  scripted search) needs no API key and reproduces the headline result;
-  `agent` puts Claude in both seats.
+  leaves a trajectory. Two things vary, independently:
+
+  | Mode | Who reads the brief | Who picks the next design | API key |
+  |---|---|---|---|
+  | `offline` | strict parser | scripted policy | no |
+  | `assisted` | the model | scripted policy | yes |
+  | `agent` | the model | the model | yes |
+
+  Splitting intake from search is deliberate: it makes the model's
+  contribution measurable one axis at a time rather than asserted as a whole.
+- **The model's own job: reading the brief.** The strict parser wants nine
+  labelled datasheet lines and rejects everything else - including the same
+  project written as prose, which it fails on all nine fields, ten times out
+  of ten (`tests/selftest.py` asserts this). No policy loop can fix that; it
+  is a language problem. So `assisted` and `agent` put the model in front of
+  the parser, and hold it to the same standard the output side is held to:
+  every extracted value must quote the span of the brief it came from, that
+  quote is checked against the source text, and the assembled datasheet is
+  handed back to the strict parser for validation. A value the brief does not
+  state is reported missing, never assumed. Evidence lock on the way out,
+  source lock on the way in.
 - **Same flow for every building.** The model class is parameterized
   (1-20 story shear frames, any occupancy class, any site in the hazard
   band); all 10 briefs - hospitals to warehouses, 2 to 12 stories - run
@@ -140,6 +167,8 @@ correctly.
 | Iteration 3 | 5-record suites with per-brief seeds for honest record-to-record variability | Residual (permanent) displacement envelope blew past its limit on every candidate while all peak demands were fine | Residual offset is realization-dominated: once the lead core yields it has no restoring force, so where it stops is chance. Re-based the residual criterion for an envelope-over-suite check instead of a single-record tolerance |
 | Iteration 4 | Evidence-locked reporting: `write_report` re-simulates and rejects contradicted verdicts; `verify_output` re-checks the deliverable independently | The infeasible brief (confirmed by 75-point exhaustive sweep: 0 buildable designs) can no longer be "proceed"-ed by anyone - agent or human | Kept: this is the change that turns convincing output into correct output |
 | Final | LLM driver over the locked tool surface; scripted driver kept for offline reproduction | **10/10**, including the honest "not buildable within brief" verdict ([evaluation/results.md](evaluation/results.md)) | Main contribution: physics-in-the-loop + a report writer that can refuse |
+| Unification | One session for every entry point, after finding the GUI ran a second code path that skipped the tool layer and logged no trajectory; the search strategy and the LLM tool loop each existed twice and had already drifted | **10/10 unchanged**, and a GUI run now reproduces the CLI's 19 design evaluations on brief 01 | Kept. A demo that does not exercise the measured path is not evidence of anything |
+| Intake | Asked what the model does that the scripted policy cannot, and found the answer was: read. The strict parser rejects the same ten projects written as prose on all nine fields, 10/10 (`briefs_prose/`) | 10/10 rejected by the parser; source-lock and round-trip checks in `tests/selftest.py` | Kept. This is the axis where the model's contribution is real rather than substitutable - and it is measured separately from the search axis, so the two do not hide behind each other |
 | Hardening | Adversarial pass over the harness itself, after the result was in: the judge now grades submissions exactly as submitted instead of clamping them into bounds first, a suite that produced no usable demand degrades into unmet checks rather than an unparseable infinity, refinement moves read the design they were asked about instead of whichever was simulated last, and the GUI runs one simulation at a time | **10/10 unchanged**, same evaluator and same briefs | Kept. None of it moved the score - which is the point: the result survives a stricter harness, and the two paths that could have flattered it (a repairing judge, a stale refinement source) are closed |
 
 The challenging case: `brief_10_cliffside_clinic` is deliberately not
@@ -195,16 +224,17 @@ highlight and the removed experiment. Outline in `video/README.md`.
 ## Repository map
 
 ```
-briefs/        10 natural-language project briefs (the evaluation cases)
+briefs/        10 project briefs in strict datasheet form (the exam)
+briefs_prose/  the same 10 projects as free prose (the intake exam)
 gui/           local design-center web app (stdlib http server + one page)
 forge/         physics core: building model, motion synthesis, OpenSees RHA,
                acceptance checks, design rules, policy, report renderer
-agent/         the agent: tool layer, LLM + scripted drivers, system prompt
+agent/         session.py (the one entry point), tools.py (the 9 tools),
+               intake.py (free-prose reading), system_prompt.md
 baselines/     one-shot unverified baseline
 evaluation/    ground truth + judge harness + committed results
 outputs/       per-brief deliverables (design_report.md + design.json)
 trajectories/  run trajectories (JSONL + Markdown); GUI runs land in gui/
-agent/session.py  the one entry point: intake -> search -> report -> verify
 tests/         selftest.py (parser, physics, policy, evidence lock,
                degraded-evidence and judge-integrity cases)
 tools/         development calibration utilities (sweeps, smoke tests)

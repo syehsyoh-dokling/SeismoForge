@@ -16,8 +16,9 @@ python3 -m venv ~/venvs/seismoforge
 ~/venvs/seismoforge/bin/pip install numpy openseespy anthropic
 ```
 
-`anthropic` is only needed for the LLM driver; the baseline, the scripted
-driver, and the evaluation run fully offline.
+`anthropic` is only needed for the two modes that put the model in the loop;
+the baseline, the offline mode, and the evaluation all run with no key and no
+network.
 
 All commands below run from the repository root:
 
@@ -28,9 +29,14 @@ PY=~/venvs/seismoforge/bin/python
 ## 2. Data
 
 No downloads and no external datasets. The 10 project briefs under `briefs/`
-are the evaluation cases; every ground-motion record is synthesized
-deterministically from the brief itself (same brief -> same suite, byte for
-byte), so all results are reproducible from this repository alone.
+are the evaluation cases, in the strict datasheet form the deterministic
+parser reads. `briefs_prose/` holds the same 10 projects written as ordinary
+prose - identical physical values, free wording - which is what the LLM
+intake is measured on.
+
+Every ground-motion record is synthesized deterministically from the brief
+(same brief -> same suite, byte for byte), so all results are reproducible
+from this repository alone.
 
 ## 3. One-shot comparison (the main result)
 
@@ -74,7 +80,33 @@ Judge existing outputs without re-running:
 $PY evaluation/run_matrix.py --skip-run
 ```
 
-## 5. LLM modes
+## 5. Modes
+
+Two things vary independently - who reads the brief, and who picks the next
+design:
+
+| Mode | Intake | Search | API key |
+|---|---|---|---|
+| `offline` | strict parser | scripted policy | no |
+| `assisted` | the model reads free prose | scripted policy | yes |
+| `agent` | the model reads free prose | the model | yes |
+
+Everything else is shared: the same 9 tools, the same OpenSees engine, the
+same evidence lock, and a trajectory from every run.
+
+The strict parser cannot read `briefs_prose/` at all - it fails on all nine
+fields for all ten briefs, which `tests/selftest.py` asserts. That 0/10 is
+the baseline the intake modes are measured against:
+
+```bash
+$PY agent/run_agent.py --mode assisted --brief-dir briefs_prose --out outputs/agent_assisted
+```
+
+```bash
+$PY evaluation/run_matrix.py --skip-run --agent-out outputs/agent_assisted
+```
+
+## 6. LLM agent mode
 
 Requires an Anthropic API key (`export ANTHROPIC_API_KEY=...`) or an active
 `ant auth login` profile. Keys never enter the repository.
@@ -93,20 +125,21 @@ The run prints token usage and estimated cost (model `claude-opus-5`;
 typically well under a few dollars for the full portfolio). Trajectory: `trajectories/trajectory_agent.{jsonl,md}`. Run a single brief
 with `--briefs brief_01_coastal_hospital`.
 
-## 6. Design-center GUI (optional, same engine)
+## 7. Design-center GUI (same engine, same session)
 
 ```bash
 $PY gui/server.py --port 8765
 ```
 
-Open http://127.0.0.1:8765. Load an example brief (or write your own with the
-labelled datasheet lines), pick "Offline verified engine" (no key) or "LLM
-design agent" (paste your Anthropic API key - it is held in memory only), and
-press "Forge the design". The page shows the live run log, the verdict
-banner, the acceptance table, and the combined engineering conclusion. GUI
-runs write their deliverables under `outputs/gui/<run-id>/`.
+Open http://127.0.0.1:8765. Load an example brief or write your own, pick a
+mode - Offline needs the labelled datasheet lines and no key; Assisted and
+Agent read ordinary prose and need your Anthropic API key, which is held in
+memory only - and press "Forge the design". The page shows the live run log, the verdict
+banner, the acceptance table, and the combined engineering conclusion. GUI runs write their deliverables under `outputs/gui/<run-id>/` and their
+trajectory under `trajectories/gui/<run-id>.{jsonl,md}` - the same record the
+CLI leaves.
 
-## 7. Self-tests
+## 8. Self-tests
 
 ```bash
 $PY tests/selftest.py
