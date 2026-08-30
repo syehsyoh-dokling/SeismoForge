@@ -1,5 +1,7 @@
 # SeismoForge
 
+*Dokumen ini juga tersedia dalam [bahasa Indonesia](README.id.md).*
+
 ## An Evidence-Gated AI Design Engineer for Seismic Concept Design
 
 **From a natural-language building brief to a simulation-verified seismic concept — where every reported number comes from physics, and no verdict may contradict it.**
@@ -10,16 +12,47 @@ SeismoForge is an agentic design center for early-stage seismic engineering. It 
 
 SeismoForge is a **concept-stage prototype, not a construction design system**. Every report is intended for review and sign-off by a licensed structural engineer before it informs any real-world design, procurement, or construction decision.
 
+---
+
+# What is SeismoForge?
+
+Imagine a client sends you this:
+
+> *"We are planning a five-storey hospital on reclaimed coastal ground, deep
+> soft soil. Each floor carries about 550 tonnes, design PGA 0.32 g. The site
+> leaves us 0.9 m of clearance around the building. Does this need base
+> isolation?"*
+
+SeismoForge reads that message, designs the earthquake protection system,
+**tests it against simulated earthquakes**, revises it when it fails, and
+returns one engineering conclusion - or refuses, if what the client is asking
+for cannot be built.
+
+## How it works, in four sentences
+
+1. **A language model reads the brief.** It pulls nine engineering parameters
+   out of ordinary prose, and may not invent any of them: every value has to
+   quote the phrase of your text it came from.
+2. **The design engine proposes a concept** - a conventional frame, or a
+   lead-rubber isolation layer under the building.
+3. **OpenSees shakes it.** Five synthetic ground-motion records, each a full
+   nonlinear response-history analysis, and every performance limit is checked
+   against the result.
+4. **The evidence gate decides.** Before the report is written the design is
+   re-simulated; if the evidence contradicts the conclusion, the report
+   **refuses to be written**.
+
 ### Quick links
 
 - **Local GUI:** run `python3 gui/server.py`, then open `http://127.0.0.1:8765`
 - **Reproduction guide:** `REPRODUCTION.md`
 - **Measured results:** `evaluation/results.md`
-- **Representative agent trajectories:** `trajectories/`
+- **Agent trajectories, with an index of what is in each:** [trajectories/README.md](trajectories/README.md)
 - **Example deliverable:** `outputs/agent/brief_01_coastal_hospital/design_report.md`
 - **Evaluation cases:** `briefs/` (strict format) and `briefs_prose/` (the same ten as free-form prose)
 - **Scope and safety:** see [Scope, Review, and Safety](#scope-review-and-safety)
 - **Known modeling limitations:** see [Known Modeling Limitations](#known-modeling-limitations)
+- **Solution video, script and scene plan:** [video/README.md](video/README.md)
 
 ---
 
@@ -54,7 +87,19 @@ That experiment changed the architecture.
 
 ## Who has this problem?
 
-Structural engineering teams performing early-stage seismic protection studies.
+Engineers - and specifically **civil and structural engineers** handling
+earthquake protection at concept stage:
+
+- **structural consultancies** screening several protection options before
+  committing to one concept;
+- **individual practising engineers** working without an analysis team behind
+  them;
+- **architects** who need to know early whether a protection concept fits
+  inside the site constraints - the moat gap in particular, because it moves
+  the floor plan and the setback line.
+
+What they share is a decision that has to be made *before* there is a budget
+for a full study.
 
 At concept stage, an engineer may need to answer:
 

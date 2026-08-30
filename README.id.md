@@ -1,5 +1,7 @@
 # SeismoForge
 
+*This document is also available in [English](README.md).*
+
 ## Insinyur Desain Seismik Berbasis AI dengan Gerbang Bukti
 
 **Dari brief proyek berbahasa manusia menjadi konsep desain tahan gempa yang sudah lolos simulasi — di mana setiap angka yang dilaporkan berasal dari fisika, dan tidak ada kesimpulan yang boleh membantahnya.**
@@ -30,11 +32,12 @@ SeismoForge adalah **prototipe tahap konsep, bukan sistem desain konstruksi.** S
 - **GUI lokal:** jalankan `python3 gui/server.py`, buka `http://127.0.0.1:8765`
 - **Panduan reproduksi:** `REPRODUCTION.md`
 - **Hasil terukur:** `evaluation/results.md`
-- **Trajectory agent:** `trajectories/`
+- **Trajectory agent, dengan indeks isi tiap berkas:** [trajectories/README.md](trajectories/README.md)
 - **Contoh deliverable:** `outputs/agent/brief_01_coastal_hospital/design_report.md`
 - **Kasus uji:** `briefs/` (format ketat) dan `briefs_prose/` (sepuluh proyek yang sama sebagai prosa bebas)
 - **Cakupan dan keselamatan:** lihat [Cakupan, Review, dan Keselamatan](#cakupan-review-dan-keselamatan)
 - **Keterbatasan pemodelan:** lihat [Keterbatasan Pemodelan yang Diketahui](#keterbatasan-pemodelan-yang-diketahui)
+- **Video solusi, naskah dan rencana adegan:** [video/README.md](video/README.md)
 
 ---
 
