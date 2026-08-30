@@ -53,7 +53,7 @@ Diukur pada benchmark sepuluh bangunan yang sama, dinilai lewat re-simulasi inde
 | Mengenali brief yang mustahil | tidak — bilang "lanjutkan" | ya | ya | ya |
 | Waktu, portofolio penuh | 0,4 s | 38,6 s | 71,3 s | 337,8 s |
 | Token model, portofolio penuh | — | — | **8.421 in / 2.081 out** | **518.386 in / 17.272 out** |
-| Peran manusia | studi berhari-hari tetap diperlukan | review | review | review |
+| Peran manusia | studi penuhnya tetap diperlukan | review | review | review |
 
 Diukur pada `gpt-5.5` untuk mode yang digerakkan model.
 
@@ -79,11 +79,13 @@ Yang mereka semua hadapi sama: sebuah keputusan yang harus diambil **sebelum** a
 
 ## Masalah apa yang mereka hadapi?
 
-Hari ini, desain seismik tahap awal untuk **satu** bangunan bisa menghabiskan waktu seorang insinyur **berhari-hari**: memahami brief, memilih konsep perlindungan, menentukan ukuran sistem, menjalankan analisis nonlinear, memeriksa setiap batas kinerja, lalu merevisi desain dan mengulang.
+Mencapai konsep seismik yang bisa dipertanggungjawabkan bukan perhitungan satu-tembakan. Bergantung pada bangunannya dan kelengkapan datanya, pekerjaan strukturnya bisa menghabiskan **beberapa hari hingga beberapa minggu** waktu insinyur sebelum masuk review.
 
-Bebannya bukan mengetik rumus. Bebannya adalah **analisis riwayat-respons nonlinear** — pemodelan, pemilihan rekaman gempa, iterasi, dan pembacaan hasil — yang menuntut usaha pemodelan jauh lebih besar daripada prosedur statis yang disederhanakan.
+Yang menyita bukan menuliskan rumusnya, melainkan **lingkaran komputasinya**: menyusun model, memilih rekaman gempa, menjalankan analisis riwayat-respons nonlinear, membaca hasilnya, merevisi desain, lalu mengulang.
 
-> Angka "berhari-hari" di atas adalah pernyataan praktik lapangan, bukan hasil pengukuran benchmark ini. Literatur membahas beban NLRHA secara kualitatif tetapi tidak menerbitkan angka jam kerja per bangunan, jadi kami tidak mengarang satu.
+SeismoForge tidak mengklaim menggantikan pekerjaan itu. Ia memampatkan **bagian komputasi dan iteratifnya** menjadi hitungan detik, dan menyerahkan sisanya - penilaian teknik, investigasi lokasi, dan tanda tangan - kepada insinyur.
+
+> Tentang angkanya: proses desain konsep sudah pernah di-benchmark dalam literatur - studi Gane dan Haymaker atas proses desain konsep gedung tinggi menganalisis ukuran tim, komposisinya, dan investasi waktunya ([CIFE TR174, Stanford, 2008](https://purl.stanford.edu/xm514gk6039); versi peer-review-nya terbit sebagai *Benchmarking Current Conceptual High-Rise Design Processes*, ASCE Journal of Architectural Engineering 16(3)). Tidak ada angka jam kerja yang diterbitkan untuk keputusan spesifik ini, jadi dokumen ini mengutip rentang dari praktik alih-alih mengarang satu. Evaluasi seismik penuh menurut ASCE/SEI 41 - investigasi lokasi, uji material, verifikasi gambar, peer review - adalah aktivitas yang lebih besar lagi, dan bukan itu yang dikerjakan SeismoForge.
 
 ## Kenapa menyelesaikannya bernilai?
 

@@ -38,7 +38,7 @@ Measured on the same fixed 10-building benchmark and judged by independent re-si
 | Correctly identifies infeasible brief | no — says "proceed" | yes | yes | yes |
 | Full-portfolio runtime | 0.4 s | 38.6 s | 71.3 s | 337.8 s |
 | Model tokens, full portfolio | — | — | **8,421 in / 2,081 out** | **518,386 in / 17,272 out** |
-| Human effort per brief | full day-scale study still required | review | review | review |
+| Human effort per brief | the full study still required | review | review | review |
 
 Measured on `gpt-5.5` for the model-driven modes.
 
@@ -64,7 +64,13 @@ At concept stage, an engineer may need to answer:
 - Will the selected protection strategy satisfy the coupled performance limits?
 - Is the client brief even feasible as proposed?
 
-A serious answer requires more than one formula. It involves a model, ground motions, nonlinear analysis, iteration across competing constraints, and an engineering report. In the workflow represented by this benchmark, that is approximately a **day-scale study per building** before review.
+Reaching a defensible seismic concept is not a one-shot calculation. Depending on the building and the information available, the structural work can take **days to weeks of engineering time** before review.
+
+What consumes it is not writing formulas. It is the computational loop: build the model, select ground motions, run nonlinear response-history analyses, read the results, revise the design, repeat.
+
+SeismoForge does not claim to replace that work. It compresses **the computational and iterative portion** into seconds, and leaves the rest - engineering judgment, site investigation, and the signature - to the engineer.
+
+> On the numbers: conceptual design processes have been benchmarked in the literature - Gane and Haymaker's CIFE study of conceptual high-rise design analyses team size, composition, and time investment ([CIFE TR174, Stanford, 2008](https://purl.stanford.edu/xm514gk6039); peer-reviewed as *Benchmarking Current Conceptual High-Rise Design Processes*, ASCE Journal of Architectural Engineering 16(3)). No published figure exists for engineering hours on this specific decision, so this document quotes a range from practice rather than inventing one. A full seismic evaluation under ASCE/SEI 41 - site investigation, material testing, drawing verification, peer review - is a larger activity again, and is not what SeismoForge does.
 
 ## What bottleneck makes it worth solving?
 
