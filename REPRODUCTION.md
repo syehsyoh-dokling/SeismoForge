@@ -121,11 +121,16 @@ new table instead. The committed table holds `baseline`, `offline` and
 
 ## 6. LLM agent mode
 
-Requires an Anthropic API key (`export ANTHROPIC_API_KEY=...`) or an active
-`ant auth login` profile. Keys never enter the repository.
+Requires an API key in the environment - `OPENAI_API_KEY` or
+`ANTHROPIC_API_KEY`. Keys never enter the repository. The committed results
+were produced on `gpt-5.5`; the same interface accepts `claude-opus-5`, and
+`--provider` makes the choice explicit.
+
+Agent mode reads free prose, so it runs against `briefs_prose/`. This is the
+command the committed trajectory came from:
 
 ```bash
-$PY agent/run_agent.py --mode agent --out outputs/agent_llm
+$PY agent/run_agent.py --mode agent --brief-dir briefs_prose --model gpt-5.5 --out outputs/agent_llm
 ```
 
 Then judge that run:
@@ -134,9 +139,11 @@ Then judge that run:
 $PY evaluation/run_matrix.py --skip-run --agent-out outputs/agent_llm
 ```
 
-The run prints token usage and estimated cost (model `claude-opus-5`;
-typically well under a few dollars for the full portfolio). Trajectory: `trajectories/trajectory_agent.{jsonl,md}`. Run a single brief
-with `--briefs brief_01_coastal_hospital`.
+The run prints its token usage. The committed run used 518,386 input / 17,272
+output tokens on `gpt-5.5` for the full ten-brief portfolio, in 337.8 s - see
+the `usage` event at `trajectories/trajectory_agent.jsonl:343`. Trajectory:
+`trajectories/trajectory_agent.{jsonl,md}`. Run a single brief with
+`--briefs brief_01_coastal_hospital`.
 
 ## 7. Design-center GUI (same engine, same session)
 
@@ -200,15 +207,20 @@ Expected final line: `ALL TESTS PASSED` (~20 s).
 ## Versions used for the committed results
 
 - Ubuntu 24.04 (WSL2), Python 3.12.3
-- numpy 2.x, openseespy 3.7.x (current wheels at run date)
+- numpy 2.5.2, openseespy 3.8.0.0 (openseespylinux 3.8.0.0), as pinned in
+  `requirements.txt`
+- Model runs on `gpt-5.5` via openai 3.6.0
 - Simulation and evaluation are deterministic: same repo, same numbers.
 
 ## Costs
 
 - Baseline, scripted agent, evaluation, tests: $0 (no network).
 - `assisted` and `agent` modes: pay-per-use on whichever provider you set.
-  The committed `assisted` run used 8,291 input / 2,201 output tokens on
-  `gpt-5.5` for the full 10-brief portfolio. Runs print their token counts;
+  The committed `assisted` run used 8,421 input / 2,081 output tokens on
+  `gpt-5.5` for the full 10-brief portfolio
+  (`trajectories/trajectory_assisted.jsonl:401`); the committed `agent` run
+  used 518,386 / 17,272 (`trajectories/trajectory_agent.jsonl:343`) - 62x the
+  input for the same score. Runs print their token counts;
   a dollar figure is only reported for models listed in `PRICES`
   (`agent/llm.py`), so add your provider's published price there rather than
   trusting a number nobody checked.

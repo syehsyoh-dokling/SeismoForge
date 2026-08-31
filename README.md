@@ -581,6 +581,7 @@ Every CLI, GUI, and baseline deliverable carries that notice.
 - **Benchmark assumptions are internal to SeismoForge.** Acceptance limits, structural model classes, and ground motions in `forge/building.py` and `forge/motions.py` are inspired by performance-based engineering practice but are not a code-compliant site-specific hazard analysis for any real location.
 - **All ten benchmark briefs are synthetic.** The repository contains no client, private-location, or personal data. Model modes send only brief text and tool results to the selected API. API keys are read from the environment or held in memory and are never written to disk.
 - **Reports are designed to be auditable.** Each table value is traceable to a simulation, model-generated narrative is labeled as unverified commentary, and the search history records every candidate tried and rejected before the final verdict.
+- **Third-party components are used under their own terms.** SeismoForge itself is MIT (see `LICENSE`). It runs on OpenSeesPy (the Python interface to OpenSees, BSD-style, distributed via PyPI as `openseespy` / `openseespylinux`) and NumPy (BSD). Nothing from either is vendored or modified — both are installed from `requirements.txt`. Model access is optional and used through the providers' own SDKs (`openai`, `anthropic`) under their API terms; the deterministic path needs neither.
 
 ---
 
@@ -756,17 +757,19 @@ LICENSE              MIT + concept-stage / not-for-construction notice
 
 # Solution Video Story
 
-The recommended <=5-minute story is intentionally simple:
+The submitted <=5-minute narration, its scene plan and the stills it cuts to
+are in [video/README.md](video/README.md). Its seven sections:
 
-1. **The problem:** plausible seismic concepts can be wrong without nonlinear verification.
-2. **The baseline:** 3/10 and a false "proceed" on an infeasible brief.
-3. **One full run:** coastal hospital from human brief → candidate → OpenSees → iteration → evidence-gated report.
-4. **The result:** 3/10 → 10/10.
-5. **The experiment we removed from the optimal path:** full-agent design search.
-6. **The surprising finding:** handing the model the design search too scored the same 10/10, for 518,386 input tokens against 8,421.
-7. **The hot take:** reliable engineering agents need a calibrated verifier and a clear boundary for where agency actually adds value.
+1. **The problem:** the verification loop, not the sizing, is what takes days or weeks.
+2. **The baseline:** rule-of-thumb sizing scores 3/10; a capable model asked directly scores 6/10, and all four of its errors say "proceed".
+3. **One complete run:** coastal hospital as ordinary prose → source-locked intake → OpenSees → 19 designs, 95 nonlinear analyses → evidence-locked report.
+4. **The comparison:** 3/10 → 10/10, reproducible without an API key.
+5. **The changelog:** the miscalibrated verifier, the refinement strategy we **removed** (pure failure-driven refinement — the constraints are coupled), and the change that mattered most (the report writer's veto).
+6. **The agency experiment:** full-agent mode scored the same 10/10 for 62× the input tokens. **Kept as a labelled experiment, not made the default.**
+7. **Close:** where the engineer's time goes, and who signs the report.
 
-An outline is available in `video/README.md`.
+The hot take is a README deliverable rather than a video one, and is above
+under [What failed — and why that matters](#what-failed--and-why-that-matters).
 
 ---
 
