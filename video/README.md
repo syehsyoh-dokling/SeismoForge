@@ -188,10 +188,20 @@ Read the rest at an even pace and let these land:
   The key field then says *"leave blank to use the key already in the server's
   environment"*, and the run works with it empty.
 
-- Use `assisted` mode for section 3. It is the mode that shows the intake
-  evidence table, which is the clearest single visual in the project, and it
-  finishes in about twelve seconds rather than the half-minute `agent` takes
-  per brief.
+- **Use `agent` mode for section 3** if the point of the shot is that an agent
+  is driving. It is the only mode where the model is called again after
+  OpenSees answers - the loop the narration describes. A verified run of
+  brief 01: the model reached at t+0, nine fields extracted and parser-accepted
+  by t+4.7 s, first OpenSees result at t+11.6 s, and at t+13.7 s the model
+  calls the next tool having read those numbers. Eleven tool calls driven by
+  the model, no human step anywhere, about thirty seconds end to end.
+
+  `assisted` mode also shows the intake evidence table and finishes in about
+  nine seconds, but the model is never called a second time: the scripted
+  policy runs the search. It fills more candidate rows - nineteen against five
+  - so it looks busier, and it is the honest choice only if the narration says
+  the search is deterministic. Agent mode shows everything assisted shows,
+  plus the loop.
 
 - Paste the prose brief from `briefs_prose/brief_01_coastal_hospital.md`. The
   strict parser cannot read that file at all, which is the point.

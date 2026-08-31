@@ -19,8 +19,17 @@ Each run produces two files with the same stem:
 | `trajectory_agent.{jsonl,md}` | `agent` | **brief intake agent** + **design agent** | 10 | 67 | `gpt-5.5` | 518,386 / 17,272 | 337.1 s |
 | `gui/<run-id>.{jsonl,md}` | whichever the GUI ran | as above | 1 | varies | as above | as above | varies |
 
-The committed GUI trajectory is an `offline` run of the coastal hospital brief:
-19 design evaluations, the same 19 the CLI performs for that brief.
+Three GUI runs are committed, chosen to cover a different thing each:
+
+| Run | Mode | Brief | What it shows |
+|---|---|---|---|
+| `gui/2ec8e66b2103` | `offline` | brief 01, strict form | The no-key path. 19 design evaluations - the same 19 the CLI performs for that brief |
+| `gui/9019b4900b87` | `assisted` | **a building not in the benchmark** | Generality. A nine-storey office written as loose prose, floor weight given in kN, which the intake agent converts to 700 t and cites. 27 evaluations, and the run **refuses**: no design in the buildable space met the limits |
+| `gui/a18b9af043ee` | `agent` | brief 01, prose form | The full loop. The model is called again after OpenSees answers: first result at t+11.6 s, and at t+13.7 s the model calls the next tool having read those numbers. Eleven tool calls driven by the model, no human step anywhere |
+
+The `agent` run is the one to read if the question is whether the loop is real.
+The `assisted` run is the one to read if the question is whether the system
+generalises past its own benchmark.
 
 The wall times above are the runs' own, measured inside the session. The
 figures in `evaluation/results.md` are a few tenths of a second longer because
