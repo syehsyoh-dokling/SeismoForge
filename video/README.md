@@ -2,20 +2,26 @@
 
 Place the submission video here. Up to 5 minutes.
 
-The script below is 602 words, which is 4:49 at 125 words per minute - leaving about 11 seconds for the three marked pauses. Every number in it is
-checked against the repository; the source for each is listed at the bottom.
+The script below is 625 words. Read at 130 words per minute - an ordinary
+presentation pace - that is 4:48, leaving about twelve seconds for the three
+marked pauses. The section timings in the table below assume 125 wpm, so they
+are the slow bound: if you land inside them you are comfortably under five
+minutes.
+
+Every number in it is checked against the repository; the source for each is
+listed at the bottom.
 
 ## Scene plan
 
 | # | Section | Words | Ends at | On screen |
 |---|---|---:|---:|---|
-| 1 | The problem | 86 | 0:41 | Building model shaking, then an engineer at a drawing |
-| 2 | The baseline | 65 | 1:12 | A tidy baseline report, then **3/10**, then one brief marked red |
-| 3 | One execution | 127 | 2:13 | The GUI: paste a prose brief, stage tracker advancing, intake evidence table, candidate table, verdict banner |
-| 4 | The comparison | 37 | 2:31 | `evaluation/results.md`, **3/10 → 10/10** |
-| 5 | Changelog | 105 | 3:21 | The changelog table, a 50-point sweep all failing, an oscillation trace, the evidence lock |
-| 6 | The agency experiment | 90 | 4:04 | Three mode columns; **8,421** beside **518,386** |
-| 7 | Hot take and close | 97 | 4:51 | The two harness defects, then an engineer signing, then the closing card |
+| 1 | The problem | 80 | 0:38 | Building model shaking, then an engineer at a drawing |
+| 2 | The baseline | 83 | 1:18 | A tidy baseline report, then **3/10**, then one brief marked red |
+| 3 | One execution | 118 | 2:14 | The GUI: paste a prose brief, stage tracker advancing, intake evidence table, candidate table, verdict banner |
+| 4 | The comparison | 37 | 2:32 | `evaluation/results.md`, **3/10 → 10/10** |
+| 5 | Changelog | 137 | 3:38 | The changelog table, a 50-point sweep all failing, an oscillation trace, the evidence lock |
+| 6 | The agency experiment | 86 | 4:19 | Three mode columns; **8,421** beside **518,386** |
+| 7 | Hot take and close | 84 | 4:59 | The two harness defects, then an engineer signing, then the closing card |
 
 Record section 3 as one continuous screen capture. It is the only part that
 has to be real time, and it is the part that proves the rest.
@@ -31,22 +37,24 @@ has to be real time, and it is the part that proves the rest.
 > What if an AI gives you an engineering answer that sounds completely
 > reasonable, and is physically wrong?
 >
-> Depending on the building, early-stage structural work takes days to weeks
-> of engineering time - and most of it is the computational loop: model,
-> ground motions, nonlinear analysis, read, revise, repeat.
+> Early-stage structural work takes days to weeks of engineering time, and
+> most of it is the computational loop: model, ground motions, nonlinear
+> analysis, revise, repeat.
 >
-> That loop is not overhead. It is where the trust comes from. An AI that only
-> speeds up the guess has skipped the part that mattered.
+> That loop is not overhead - it is where the trust comes from. An AI that
+> only speeds up the guess skips the part that mattered.
 >
 > **The hard part is knowing when an answer should not be trusted.**  ⏸
 
-### 2 · The baseline — 0:41
+### 2 · The fast route, measured — 0:41
 
-*[Baseline report, confident prose → 3/10 → brief 10 in red]*
+*[A confident-looking report with no simulation behind it → 3/10 → brief 10 in red]*
 
-> So we built a baseline: textbook rule-of-thumb sizing, submitted without
-> simulation. Ten building briefs, judged by independently re-simulating every
-> design.
+> So we measured the fast route: rule-of-thumb sizing, submitted without
+> simulation. It is also what a general assistant gives you - correct units,
+> plausible magnitudes, nothing computed behind them.
+>
+> Ten building briefs, judged by independently re-simulating every design.
 >
 > Three correct out of ten.
 >
@@ -56,7 +64,7 @@ has to be real time, and it is the part that proves the rest.
 > percent, the closest by half a percent. A wrong number here does not look
 > wrong.
 
-### 3 · One execution — 1:12
+### 3 · One execution — 1:18
 
 *[GUI, one continuous take. Paste the prose brief → stage tracker → intake
 evidence table → candidate table filling → conclusion]*
@@ -69,13 +77,12 @@ evidence table → candidate table filling → conclusion]*
 > Every value must quote the phrase it came from, checked against your text.
 > **Source lock.**
 >
-> Then the design engine proposes a concept, and OpenSees answers: five
-> synthetic records per candidate, each a full nonlinear response-history
-> analysis.
+> Then OpenSees answers: five synthetic records per candidate, each a full
+> nonlinear response-history analysis.
 >
-> The first concept fails. Floor acceleration and base shear are both over the
-> limit. So the workflow screens the buildable space, then refines. Nineteen
-> designs, ninety-five nonlinear analyses, twelve seconds.
+> The first concept fails: floor acceleration and base shear both over the
+> limit. So it screens the buildable space, then refines. Nineteen designs,
+> ninety-five nonlinear analyses, twelve seconds.
 >
 > Before the report is written, the submitted design is re-simulated once more.
 > If the evidence contradicted the verdict, the report would refuse to write
@@ -83,7 +90,7 @@ evidence table → candidate table filling → conclusion]*
 >
 > Every limit met. The tightest sits at ninety-three percent.
 
-### 4 · The comparison — 2:13
+### 4 · The comparison — 2:14
 
 *[`evaluation/results.md` → 3/10 becomes 10/10]*
 
@@ -92,31 +99,34 @@ evidence table → candidate table filling → conclusion]*
 >
 > That result needs no API key. A judge reproduces it from a clean checkout.
 
-### 5 · Changelog, the biggest change, the removed experiment — 2:31
+### 5 · Changelog, the biggest change, the removed experiment — 2:32
 
 *[Changelog table → sweep of 50 candidates all failing → oscillating utilization
 trace → write_report rejecting a verdict]*
 
-> The changelog shows how we got there. It was not a straight line.
+> The changelog is not a straight line.
 >
-> Our first physics loop failed everything. Fifty candidates, zero passing. The
-> defect was not in the designs. It was in our ground motions.
+> You might say: don't ask a model for numbers, ask it to run the analysis.
+> Right instinct - and where this gets dangerous.
+>
+> We did exactly that. Our first loop failed everything: fifty candidates, zero
+> passing. The defect was not in the designs - it was in our own ground motions.
+> The computation was correct. The test was wrong, and nothing said so.
 >
 > Then we tried pure failure-driven refinement: fix the worst failed check, run
-> again. On the hard hospital brief it oscillated for fifteen iterations and
-> never converged. The constraints are coupled, so every fix breaks something
-> else. **We removed it,** and replaced it with coarse screening, then
-> refinement.
+> again. On the hard hospital brief it oscillated fifteen times and never
+> converged. The constraints are coupled - every fix breaks something else.
+> **We removed it,** and replaced it with screening, then refinement.
 >
 > **The single change that contributed most was giving the report writer a
 > veto.** That is what turned plausible output into defensible output.
 
-### 6 · The agency experiment — 3:21
+### 6 · The agency experiment — 3:38
 
 *[Three mode columns, all reading 10/10 → token counts side by side]*
 
-> One last experiment. The deterministic path already scored ten out of ten. So
-> what does a model add that a written policy cannot?
+> One last experiment. The deterministic path already scored ten out of ten -
+> so what does a model add that a policy cannot?
 >
 > Let the model read the brief: ten out of ten, on prose the strict parser
 > fails on all nine fields. And its designs matched the deterministic path on
@@ -125,17 +135,14 @@ trace → write_report rejecting a verdict]*
 > Give the model the design search as well: also ten out of ten, for sixty-two
 > times the input tokens.
 >
-> Same score. So we kept that mode in the repository, and did not make it the
-> default.
+> Same score. We kept that mode, and did not make it the default.
 
-### 7 · Hot take and close — 4:04
+### 7 · Hot take and close — 4:19
 
 *[The two harness defects → an engineer signing a report → closing card]*
 
-> Twice during development, every design failed, and the fault was in our
-> verifier, not our designs.
->
-> Simulation-in-the-loop makes the simulator part of your attack surface. An
+> That happened twice. Simulation-in-the-loop makes the simulator part of your
+> attack surface. An
 > agent optimizing against a broken test does not look broken. It converges
 > confidently to the wrong answer.
 >
