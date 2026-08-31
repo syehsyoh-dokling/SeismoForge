@@ -119,6 +119,54 @@ the wrong part.
 
 SeismoForge does not claim to replace that work. It compresses **the computational and iterative portion** into seconds - verification included - and leaves the rest: engineering judgment, site investigation, and the signature.
 
+### So why not just ask ChatGPT, Gemini, or Claude?
+
+That question has three levels, and the third is the one that matters.
+
+**Ask a general assistant directly for the numbers.** It does not compute them.
+Peak floor acceleration is the solution of a nonlinear equation of motion
+integrated over thousands of steps; a model answering in prose returns a value
+of the kind that usually appears for buildings described that way. Plausible,
+and not this building's response.
+
+**Ask it to write and run the analysis instead.** Now it can compute - a
+capable assistant with a code interpreter will produce an OpenSees model and
+numbers that are genuinely calculated. This is where it gets dangerous, and
+where our own logs are the evidence. Our first physics loop produced ground
+motions that looked correct and were not: unfiltered long-period energy that no
+isolation system can survive. Fifty candidate designs, **zero passing**. The
+designs were fine. The examiner was broken - and nothing in the output said so.
+An assistant optimising against a checker like that does not fail visibly. It
+converges, efficiently and confidently, to the wrong place.
+
+**Ask it to write the report.** Nothing stops the conclusion from contradicting
+the evidence above it. A general assistant will write "the design meets the
+performance targets" over a table showing 0.518 g against a 0.40 g limit,
+because prose and tables are the same kind of output to it. In SeismoForge that
+report cannot be written: `write_report` re-simulates the submitted design and
+rejects the verdict.
+
+What this project adds is not intelligence. It is constraint:
+
+| | A general assistant, prompted well | SeismoForge |
+|---|---|---|
+| Where response numbers come from | the model, or code the model wrote that session | one simulation tool, the only source, every time |
+| Who validated the ground motions | nobody | calibrated by sweep before any design was trusted (Iteration 1) |
+| Same question asked twice | different numbers | identical - motions are deterministic from the brief |
+| A verdict the evidence contradicts | can be written | **cannot be written** |
+| A brief with no feasible answer | produces one anyway | refuses, and is scored correct for refusing |
+| What the reviewer receives | a conversation | a report where every table cell traces to a simulation, plus the full search history including designs tried and rejected |
+
+The last row is the one an engineer cares about. A chat transcript is not an
+engineering record. `outputs/agent/*/design_report.md` is: it carries the
+acceptance table, the per-record results, the seeds those records were
+synthesised from, and every candidate the search rejected on the way to the
+answer.
+
+None of this requires a better model. It requires the model to be placed where
+its judgment helps and fenced out of where evidence must rule - which is the
+finding the rest of this document measures.
+
 > On the numbers: conceptual design processes have been benchmarked in the literature - Gane and Haymaker's CIFE study of conceptual high-rise design analyses team size, composition, and time investment ([CIFE TR174, Stanford, 2008](https://purl.stanford.edu/xm514gk6039); peer-reviewed as *Benchmarking Current Conceptual High-Rise Design Processes*, ASCE Journal of Architectural Engineering 16(3)). No published figure exists for engineering hours on this specific decision, so this document quotes a range from practice rather than inventing one. A full seismic evaluation under ASCE/SEI 41 - site investigation, material testing, drawing verification, peer review - is a larger activity again, and is not what SeismoForge does.
 
 ## What bottleneck makes it worth solving?

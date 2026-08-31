@@ -88,6 +88,55 @@ Yang menyita bukan menuliskan rumusnya, melainkan **lingkaran komputasinya**: me
 
 SeismoForge tidak mengklaim menggantikan pekerjaan itu. Ia memampatkan **bagian komputasi dan iteratifnya** menjadi hitungan detik, dan menyerahkan sisanya - penilaian teknik, investigasi lokasi, dan tanda tangan - kepada insinyur.
 
+### Lalu kenapa tidak pakai ChatGPT, Gemini, atau Claude saja?
+
+Pertanyaan itu punya tiga lapis, dan lapis ketiga yang menentukan.
+
+**Tanyakan angkanya langsung ke asisten umum.** Ia tidak menghitungnya.
+Percepatan lantai puncak adalah solusi persamaan gerak nonlinear yang
+diintegrasikan atas ribuan langkah; model yang menjawab dalam prosa
+mengembalikan nilai dari jenis yang biasanya muncul untuk bangunan yang
+dideskripsikan begitu. Masuk akal, dan bukan respons bangunan ini.
+
+**Minta ia menulis dan menjalankan analisisnya.** Sekarang ia bisa menghitung -
+asisten yang cakap dengan code interpreter akan menghasilkan model OpenSees dan
+angka yang benar-benar dihitung. **Di sinilah bahayanya**, dan catatan kami
+sendiri adalah buktinya. Loop fisika pertama kami menghasilkan ground motion
+yang tampak benar dan ternyata tidak: energi periode-panjang tanpa filter yang
+tidak bisa dilewati sistem isolasi mana pun. Lima puluh kandidat desain, **nol
+yang lolos**. Desainnya baik-baik saja. **Pemeriksanya yang rusak** - dan tidak
+ada apa pun di keluarannya yang mengatakan begitu. Asisten yang mengoptimasi
+terhadap pemeriksa seperti itu tidak gagal secara terlihat. Ia konvergen,
+dengan efisien dan percaya diri, ke tempat yang salah.
+
+**Minta ia menulis laporannya.** Tidak ada apa pun yang mencegah kesimpulannya
+bertentangan dengan bukti di atasnya. Asisten umum akan menulis "desain
+memenuhi target kinerja" di atas tabel yang menunjukkan 0,518 g terhadap batas
+0,40 g, karena bagi dia prosa dan tabel adalah jenis keluaran yang sama. Di
+SeismoForge laporan itu **tidak bisa ditulis**: `write_report` menyimulasikan
+ulang desain yang diserahkan dan menolak verdict-nya.
+
+Yang ditambahkan proyek ini bukan kecerdasan. Melainkan **batasan**:
+
+| | Asisten umum, di-prompt dengan baik | SeismoForge |
+|---|---|---|
+| Angka respons berasal dari | modelnya, atau kode yang ditulis model saat itu | satu tool simulasi, satu-satunya sumber, setiap kali |
+| Siapa memvalidasi ground motion-nya | tidak ada | dikalibrasi lewat sapuan sebelum satu desain pun dipercaya (Iterasi 1) |
+| Pertanyaan sama ditanyakan dua kali | angkanya berbeda | identik - motion-nya deterministik dari brief |
+| Verdict yang dibantah bukti | bisa ditulis | **tidak bisa ditulis** |
+| Brief yang tidak punya jawaban layak | tetap menghasilkan satu | menolak, dan diskor **benar** karena menolak |
+| Yang diterima peninjau | sebuah percakapan | laporan yang tiap sel tabelnya terlacak ke simulasi, plus riwayat pencarian lengkap termasuk desain yang dicoba dan ditolak |
+
+Baris terakhir itu yang dipedulikan insinyur. Transkrip obrolan bukan rekaman
+teknik. `outputs/agent/*/design_report.md` adalah rekaman teknik: ia memuat
+tabel penerimaan, hasil per-rekaman, seed yang dipakai menyintesis rekaman itu,
+dan setiap kandidat yang ditolak pencarian dalam perjalanan menuju jawabannya.
+
+Tidak ada satu pun dari ini yang menuntut model yang lebih pintar. Yang dituntut
+adalah menempatkan model di tempat penilaiannya membantu, dan memagarinya dari
+tempat bukti yang harus berkuasa - dan itulah temuan yang diukur sisa dokumen
+ini.
+
 > Tentang angkanya: proses desain konsep sudah pernah di-benchmark dalam literatur - studi Gane dan Haymaker atas proses desain konsep gedung tinggi menganalisis ukuran tim, komposisinya, dan investasi waktunya ([CIFE TR174, Stanford, 2008](https://purl.stanford.edu/xm514gk6039); versi peer-review-nya terbit sebagai *Benchmarking Current Conceptual High-Rise Design Processes*, ASCE Journal of Architectural Engineering 16(3)). Tidak ada angka jam kerja yang diterbitkan untuk keputusan spesifik ini, jadi dokumen ini mengutip rentang dari praktik alih-alih mengarang satu. Evaluasi seismik penuh menurut ASCE/SEI 41 - investigasi lokasi, uji material, verifikasi gambar, peer review - adalah aktivitas yang lebih besar lagi, dan bukan itu yang dikerjakan SeismoForge.
 
 ## Kenapa menyelesaikannya bernilai?
