@@ -212,6 +212,13 @@ python3 video/make_stills.py
 About a minute; the two sweeps are 500 nonlinear analyses. `--skip-sweep`
 regenerates everything else in seconds.
 
+Each still is written twice: a `.png` to cut into the video, and the `.txt` or
+`.md` it was rendered from, so a reader can check the content rather than
+squint at a picture of it. The PNGs need Pillow (`pip install pillow`) and a
+DejaVu monospace font; without them the text is still written and the script
+says so. Pillow is not a dependency of SeismoForge itself and is deliberately
+absent from `requirements.txt` - nothing in the product needs it.
+
 | Still | Shows | Reconstructed? |
 |---|---|---|
 | `05a_changelog.md` | The five changelog rows the narration walks | No - quoted from README.md at generation time |
@@ -235,8 +242,9 @@ Two honesty notes, both stated on the stills themselves:
   and points at the changelog for the historical result. Do not put a fabricated
   oscillation trace on screen.
 
-`05c` is an SVG - open it in a browser at full width. The rest are plain text;
-a terminal or an editor at a large font size reads best.
+Sizes: `05c_spectrum.png` is 1780 × 940 and the rest are between 1500 and 1800
+wide, so they drop onto a 1080p timeline without upscaling. `05d` and `05e` are
+tall - scroll or crop rather than shrinking them to fit.
 
 ## Recording notes
 

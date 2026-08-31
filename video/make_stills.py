@@ -52,6 +52,98 @@ from forge.simulate import assess
 STILLS = REPO / "video" / "stills"
 HOSPITAL = REPO / "briefs" / "brief_01_coastal_hospital.md"
 
+# --------------------------------------------------------------------------
+# PNG rendering. The stills are written as text as well, because the text is
+# what a reader can check, but the video needs images it can cut to.
+# --------------------------------------------------------------------------
+
+FONT_MONO = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
+FONT_MONO_BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf"
+FONT_SANS_BOLD = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+
+INK = {
+    "bg": "#0f1115",
+    "text": "#e8ecf4",
+    "dim": "#7d8698",
+    "rule": "#2b3241",
+    "title": "#cfe0ff",
+    "good": "#4ade80",
+    "bad": "#ff6b6b",
+    "warn": "#f5c451",
+    "accent": "#8fa4d0",
+}
+
+FONT_PX = 30
+PAD = 56
+
+
+def _fonts():
+    from PIL import ImageFont
+    return (ImageFont.truetype(FONT_MONO, FONT_PX),
+            ImageFont.truetype(FONT_MONO_BOLD, FONT_PX),
+            ImageFont.truetype(FONT_SANS_BOLD, int(FONT_PX * 1.25)))
+
+
+def _line_ink(line: str) -> tuple[str, bool]:
+    """Colour and weight for one line of a text still."""
+    stripped = line.strip()
+    if not stripped:
+        return INK["text"], False
+    if set(stripped) <= {"-"}:
+        return INK["rule"], False
+    if stripped.startswith("NOTE:"):
+        return INK["warn"], False
+    if stripped.startswith("Reproduce:") or stripped.startswith("Sources"):
+        return INK["dim"], False
+    # " -> " marks a governing-check flip. Guard against source lines: a
+    # return annotation is an arrow too.
+    if "PASS" in line or (" -> " in line and not {"(", ":"} & set(line)):
+        return INK["good"], False
+    if stripped.endswith("fail") or '"error"' in line:
+        return INK["bad"], False
+    if stripped.startswith(("brief ", "grid ", "records ", "design ", "verdict ",
+                            "  brief", "  design", "  verdict")):
+        return INK["accent"], False
+    return INK["text"], False
+
+
+def write_still(stem: str, lines: list[str], title: str | None = None) -> None:
+    """Write one still as text and as a PNG the video can cut to."""
+    (STILLS / f"{stem}.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    try:
+        from PIL import Image, ImageDraw
+    except ImportError:
+        print(f"  {stem}.txt written; install pillow for the PNG")
+        return
+
+    mono, mono_bold, sans = _fonts()
+    head = title if title is not None else lines[0]
+    body = lines[1:] if title is None else lines
+
+    dummy = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    cw = dummy.textlength("M", font=mono)
+    lh = int(FONT_PX * 1.46)
+    head_h = int(FONT_PX * 1.25 * 1.7)
+
+    width = int(max(
+        dummy.textlength(head, font=sans),
+        max((dummy.textlength(line, font=mono) for line in body), default=0),
+    ) + 2 * PAD)
+    height = PAD + head_h + 18 + lh * len(body) + PAD
+
+    image = Image.new("RGB", (width, height), INK["bg"])
+    draw = ImageDraw.Draw(image)
+    draw.text((PAD, PAD), head, font=sans, fill=INK["title"])
+    y = PAD + head_h
+    draw.line([(PAD, y), (width - PAD, y)], fill=INK["rule"], width=2)
+    y += 18
+    for line in body:
+        colour, bold = _line_ink(line)
+        draw.text((PAD, y), line, font=mono_bold if bold else mono, fill=colour)
+        y += lh
+    image.save(STILLS / f"{stem}.png")
+    print(f"  {stem}.png  {width} x {height}")
+
 # The sweep grid. 5 x 5 x 2 = 50 candidates, the "50-point sweep" of the
 # changelog's iteration 1.
 QD_FRACTIONS = (0.04, 0.07, 0.10, 0.13, 0.16)
@@ -170,9 +262,7 @@ def still_verifier_sweep(spec) -> None:
         "forge/motions.py:synthesize with the line 'amplitude *= highpass'",
         "removed.",
     ]
-    (STILLS / "05b_verifier_sweep.txt").write_text("\n".join(lines) + "\n",
-                                                   encoding="utf-8")
-    print("\n".join(lines))
+    write_still("05b_verifier_sweep", lines)
     return before, after
 
 
@@ -273,8 +363,75 @@ def still_spectrum(spec) -> None:
                                              encoding="utf-8")
     band = (periods >= 1.8) & (periods <= 4.5)
     ratio = float(np.max(sd_before[band] / sd_after[band]))
-    print(f"\nspectrum still written; across the 1.8-4.5 s isolation band the "
-          f"unfiltered process demands up to {ratio:.2f}x the displacement")
+    render_spectrum_png(periods, sd_before, sd_after, ratio)
+    print(f"  across the 1.8-4.5 s isolation band the unfiltered process "
+          f"demands up to {ratio:.2f}x the displacement")
+
+
+def render_spectrum_png(periods, sd_before, sd_after, ratio: float) -> None:
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+    except ImportError:
+        print("  05c_spectrum.svg written; install pillow for the PNG")
+        return
+
+    W, H = 1780, 940
+    L, R, T, B = 168, 60, 132, 118
+    top = float(max(sd_before.max(), sd_after.max())) * 1.15
+    px = lambda t: L + (t - periods[0]) / (periods[-1] - periods[0]) * (W - L - R)
+    py = lambda d: H - B - d / top * (H - T - B)
+
+    image = Image.new("RGB", (W, H), INK["bg"])
+    draw = ImageDraw.Draw(image)
+    body = ImageFont.truetype(FONT_MONO, 27)
+    head = ImageFont.truetype(FONT_SANS_BOLD, 38)
+    small = ImageFont.truetype(FONT_MONO, 24)
+
+    draw.rectangle([px(1.8), T, px(4.5), H - B], fill="#232c42")
+    draw.text(((px(1.8) + px(4.5)) / 2, T + 14), "isolation period band",
+              font=small, fill=INK["accent"], anchor="ma")
+
+    step = 10 ** math.floor(math.log10(top))
+    for value in np.arange(step / 2, top, step / 2):
+        draw.line([(L, py(value)), (W - R, py(value))], fill="#1c222c", width=2)
+        draw.text((L - 18, py(value)), f"{value:.2f}", font=small,
+                  fill=INK["dim"], anchor="rm")
+    for tick in (1, 2, 3, 4, 5, 6):
+        draw.line([(px(tick), H - B), (px(tick), H - B + 10)],
+                  fill=INK["rule"], width=2)
+        draw.text((px(tick), H - B + 20), str(tick), font=small,
+                  fill=INK["dim"], anchor="ma")
+    draw.line([(L, H - B), (W - R, H - B)], fill=INK["rule"], width=3)
+    draw.line([(L, T), (L, H - B)], fill=INK["rule"], width=3)
+
+    for values, colour in ((sd_before, INK["bad"]), (sd_after, INK["good"])):
+        draw.line([(px(t), py(d)) for t, d in zip(periods, values)],
+                  fill=colour, width=5, joint="curve")
+
+    draw.text((L, 44), "Displacement response spectrum, 5% damped "
+                       "- one record, same seed", font=head, fill=INK["title"])
+    draw.text((L, 92), f"across the isolation band the unfiltered process "
+                       f"demands up to {ratio:.2f}x the displacement",
+              font=small, fill=INK["dim"])
+    draw.text((W - R, H - 36), "period T (s)", font=small, fill=INK["dim"],
+              anchor="ra")
+    draw.text((L - 18, T - 16), "Sd (m)", font=small, fill=INK["dim"],
+              anchor="rb")
+
+    # Upper left: the only corner both curves stay out of, since displacement
+    # demand is small at short period.
+    lx, ly = L + 34, T + 30
+    draw.rectangle([lx, ly, lx + 500, ly + 108], fill="#161a22",
+                   outline=INK["rule"], width=2)
+    for index, (colour, label) in enumerate((
+            (INK["bad"], "plain Kanai-Tajimi"),
+            (INK["good"], "+ Clough-Penzien high-pass"))):
+        y = ly + 32 + index * 46
+        draw.line([(lx + 26, y), (lx + 82, y)], fill=colour, width=5)
+        draw.text((lx + 100, y), label, font=body, fill=INK["text"], anchor="lm")
+
+    image.save(STILLS / "05c_spectrum.png")
+    print(f"  05c_spectrum.png  {W} x {H}")
 
 
 # --------------------------------------------------------------------------
@@ -348,9 +505,7 @@ def still_refinement(spec) -> None:
         "",
         "Reproduce: video/make_stills.py",
     ]
-    (STILLS / "05d_coupling.txt").write_text("\n".join(lines) + "\n",
-                                             encoding="utf-8")
-    print("\n" + "\n".join(lines))
+    write_still("05d_coupling", lines)
 
 
 # --------------------------------------------------------------------------
@@ -401,9 +556,7 @@ def still_veto(spec) -> None:
         "No report was written. The deliverable cannot disagree with the",
         "physics, because the physics is re-run to render it.",
     ]
-    (STILLS / "05e_report_veto.txt").write_text("\n".join(lines) + "\n",
-                                                encoding="utf-8")
-    print("\n" + "\n".join(lines[-14:]))
+    write_still("05e_report_veto", lines)
 
 
 # --------------------------------------------------------------------------
@@ -456,9 +609,7 @@ def still_agency() -> None:
         "The deterministic column needs no API key. It is the one a judge can",
         "reproduce from a clean checkout.",
     ]
-    (STILLS / "06a_agency.txt").write_text("\n".join(lines) + "\n",
-                                           encoding="utf-8")
-    print("\n" + "\n".join(lines))
+    write_still("06a_agency", lines)
 
 
 CHANGELOG_ROWS = ("Baseline", "Iteration 1", "Iteration 2", "Iteration 4",
@@ -490,7 +641,67 @@ def still_changelog() -> None:
     ]
     (STILLS / "05a_changelog.md").write_text("\n".join(lines) + "\n",
                                              encoding="utf-8")
-    print(f"\nchangelog still written, {len(picked)} rows quoted from README.md")
+
+    # The table is far too wide to read on screen, so the PNG is a card per
+    # row: stage, then the three columns wrapped and labelled.
+    cells = [[c.strip() for c in row.strip("|").split("|")] for row in picked]
+    render_changelog_png(cells)
+
+
+def render_changelog_png(cells: list[list[str]]) -> None:
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+    except ImportError:
+        print("  05a_changelog.md written; install pillow for the PNG")
+        return
+    import re
+    import textwrap
+
+    size = 27
+    mono = ImageFont.truetype(FONT_MONO, size)
+    stage_font = ImageFont.truetype(FONT_SANS_BOLD, int(size * 1.3))
+    head_font = ImageFont.truetype(FONT_SANS_BOLD, int(size * 1.6))
+    label_font = ImageFont.truetype(FONT_MONO_BOLD, size)
+
+    strip = lambda s: re.sub(r"\*\*|`", "", s)
+    wrap = lambda s: textwrap.wrap(strip(s), width=86) or [""]
+    labels = ("tried", "evidence", "learned")
+
+    blocks = []
+    for stage, *rest in cells:
+        blocks.append((strip(stage), [(labels[i], wrap(rest[i]))
+                                      for i in range(3)]))
+
+    lh = int(size * 1.42)
+    width, y = 1780, PAD
+    height = PAD + int(size * 1.6 * 1.8) + 18
+    for _, fields in blocks:
+        height += int(size * 1.3 * 1.6)
+        height += sum(lh * len(text) for _, text in fields) + 26
+    height += PAD
+
+    image = Image.new("RGB", (width, height), INK["bg"])
+    draw = ImageDraw.Draw(image)
+    draw.text((PAD, y), "Improvement Changelog - the entries the video walks",
+              font=head_font, fill=INK["title"])
+    y += int(size * 1.6 * 1.8)
+    draw.line([(PAD, y), (width - PAD, y)], fill=INK["rule"], width=2)
+    y += 18
+
+    for stage, fields in blocks:
+        draw.text((PAD, y), stage, font=stage_font, fill=INK["accent"])
+        y += int(size * 1.3 * 1.6)
+        for label, text in fields:
+            draw.text((PAD + 24, y), f"{label:>8}", font=label_font,
+                      fill=INK["dim"])
+            for index, piece in enumerate(text):
+                draw.text((PAD + 24 + 11 * size * 0.602, y + index * lh), piece,
+                          font=mono,
+                          fill=INK["good"] if "10/10" in piece else INK["text"])
+            y += lh * len(text)
+        y += 26
+    image.save(STILLS / "05a_changelog.png")
+    print(f"  05a_changelog.png  {width} x {height}")
 
 
 def still_tree() -> None:
@@ -514,9 +725,7 @@ def still_tree() -> None:
         "  No API key is needed for forge/, briefs/, evaluation/ or the",
         "  deterministic path. That is the column a judge reproduces.",
     ]
-    (STILLS / "06b_tree.txt").write_text("\n".join(lines) + "\n",
-                                         encoding="utf-8")
-    print("tree still written")
+    write_still("06b_tree", lines)
 
 
 def main() -> int:
