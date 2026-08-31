@@ -2,8 +2,8 @@
 
 Place the submission video here. Up to 5 minutes.
 
-The script below is 631 words. Read at 130 words per minute - an ordinary
-presentation pace - that is 4:51, leaving about nine seconds for the three
+The script below is 615 words. Read at 130 words per minute - an ordinary
+presentation pace - that is 4:44, leaving about sixteen seconds for the three
 marked pauses. The timings in the table are computed at a slower 125 wpm, so
 they are the comfortable upper bound: land inside them and you are under five
 minutes with room to spare.
@@ -19,9 +19,9 @@ listed at the bottom.
 | 2 | The fast route, measured | 76 | 1:29 | **3/10** filling the screen, the ten briefs as a grid with seven going red, brief 10 last and darker |
 | 3 | One execution | 118 | 2:26 | The GUI: paste a prose brief, stage tracker advancing, intake evidence table, candidate table, verdict banner |
 | 4 | The comparison | 32 | 2:41 | `evaluation/results.md`, **3/10 → 10/10** |
-| 5 | Changelog | 127 | 3:42 | The changelog table, a 50-point sweep all failing, the broken motion spectrum beside the fixed one, an oscillation trace, write_report rejecting a verdict |
-| 6 | The agency experiment | 83 | 4:22 | Three mode columns; **8,421** beside **518,386** |
-| 7 | Hot take and close | 84 | 5:02 | The two harness defects, then an engineer signing, then the closing card |
+| 5 | Changelog | 111 | 3:35 | The changelog table, a 50-point sweep all failing, the broken motion spectrum beside the fixed one, an oscillation trace, write_report rejecting a verdict |
+| 6 | The agency experiment | 83 | 4:14 | Three mode columns; **8,421** beside **518,386** |
+| 7 | Hot take and close | 84 | 4:55 | The two harness defects, then an engineer signing, then the closing card |
 
 Record section 3 as one continuous screen capture. It is the only part that
 has to be real time, and it is the part that proves the rest.
@@ -111,11 +111,9 @@ trace → write_report rejecting a verdict]*
 
 > The changelog is not a straight line.
 >
-> So have it run the analysis instead. Right instinct - and where this gets
-> dangerous.
->
-> We did. Our first loop failed everything: fifty candidates, zero passing. The defect was not in the designs - it was in our own ground motions.
-> The computation was correct. The test was wrong, and nothing said so.
+> Our first physics loop failed everything: fifty candidates, zero passing.
+> The defect was not in the designs - it was in our own ground motions. The
+> computation was correct. The test was wrong, and nothing said so.
 >
 > Then we tried pure failure-driven refinement: fix the worst failed check, run
 > again. On the hard hospital brief it oscillated fifteen times and never
@@ -125,7 +123,7 @@ trace → write_report rejecting a verdict]*
 > **The single change that contributed most was giving the report writer a
 > veto.** That is what turned plausible output into defensible output.
 
-### 6 · The agency experiment — 3:42
+### 6 · The agency experiment — 3:35
 
 *[Three mode columns, all reading 10/10 → token counts side by side]*
 
@@ -140,14 +138,13 @@ trace → write_report rejecting a verdict]*
 >
 > Same score. We kept that mode, and did not make it the default.
 
-### 7 · Hot take and close — 4:22
+### 7 · Hot take and close — 4:14
 
 *[The two harness defects → an engineer signing a report → closing card]*
 
 > That happened twice. Simulation-in-the-loop makes the simulator part of your
-> attack surface. An
-> agent optimizing against a broken test does not look broken. It converges
-> confidently to the wrong answer.
+> attack surface. An agent optimizing against a broken test does not look
+> broken. It converges confidently to the wrong answer.
 >
 > So: **don't just verify the agent. Verify the verifier.**  ⏸
 >
@@ -164,12 +161,17 @@ trace → write_report rejecting a verdict]*
 ## Closing card
 
 ```
-                    SEISMOFORGE
-        Evidence-Gated AI for Seismic Design
+                       SEISMOFORGE
+        From Engineering Brief to Simulation-Backed Concept
 
-     3/10 → 10/10          correct outcomes
-     8,421 vs 518,386      input tokens, same score
-     Plausible → Verified
+   3/10  →  10/10            measured correct outcomes
+   6/10                      a capable model, asked directly
+   8,421 vs 518,386          input tokens, same score
+
+        AI for ambiguity
+        Automation for iteration
+        Simulation for evidence
+        Engineer for the final decision
 ```
 
 Do not use an arrow between the token counts. The two figures are two systems
