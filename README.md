@@ -62,16 +62,16 @@ for cannot be built.
 
 Measured on the same fixed 10-building benchmark and judged by independent re-simulation of every submitted design.
 
-| Metric | Unverified baseline | Deterministic Forge (`offline`) | Hybrid Evidence Agent (`assisted`) | Full-Agent Experimental Mode (`agent`) |
-|---|---:|---:|---:|---:|
-| Who reads the brief | — | strict parser | **model** | **model** |
-| Who chooses the next design | — | written policy | written policy | **model** |
-| Input format supported | labeled datasheet | labeled datasheet | **free-form prose** | **free-form prose** |
-| Correctly resolved briefs — primary metric | **3/10** | **10/10** | **10/10** | **10/10** |
-| Correctly identifies infeasible brief | no — says "proceed" | yes | yes | yes |
-| Full-portfolio runtime | 0.4 s | 38.6 s | 71.3 s | 337.8 s |
-| Model tokens, full portfolio | — | — | **8,421 in / 2,081 out** | **518,386 in / 17,272 out** |
-| Human effort per brief | the full study still required | review | review | review |
+| Metric | Unverified baseline | **`gpt-5.5` asked directly** | Deterministic Forge (`offline`) | Hybrid Evidence Agent (`assisted`) | Full-Agent Experimental Mode (`agent`) |
+|---|---:|---:|---:|---:|---:|
+| Who reads the brief | — | the model | strict parser | **model** | **model** |
+| Who chooses the design | rule of thumb | **the model, unaided** | written policy | written policy | **model** |
+| Ran a simulation | no | **no** | yes | yes | yes |
+| Correctly resolved briefs — primary metric | **3/10** | **6/10** | **10/10** | **10/10** | **10/10** |
+| Correctly identifies infeasible brief | no — says "proceed" | yes | yes | yes | yes |
+| Full-portfolio runtime | 0.4 s | ~200 s (API latency) | 38.6 s | 71.3 s | 337.8 s |
+| Model tokens, full portfolio | — | 6,743 in / ~8,800 out | — | **8,421 in / 2,081 out** | **518,386 in / 17,272 out** |
+| Human effort per brief | the full study still required | the full study still required | review | review | review |
 
 Measured on `gpt-5.5` for the model-driven modes.
 
@@ -123,11 +123,28 @@ SeismoForge does not claim to replace that work. It compresses **the computation
 
 That question has three levels, and the third is the one that matters.
 
-**Ask a general assistant directly for the numbers.** It does not compute them.
-Peak floor acceleration is the solution of a nonlinear equation of motion
-integrated over thousands of steps; a model answering in prose returns a value
-of the kind that usually appears for buildings described that way. Plausible,
-and not this building's response.
+**Ask a general assistant directly.** We measured this rather than assuming it.
+`baselines/llm_oneshot.py` gives `gpt-5.5` the brief, the acceptance limits it
+must satisfy, the meaning of every design parameter and its buildable range,
+and asks for a design and a verdict. Nothing a well-prompted assistant would
+have is withheld - except a simulator. Its answer then goes to the same judge
+as everything else.
+
+It scores **6 of 10**: twice what the rule-of-thumb script manages, and it
+correctly refuses the infeasible brief, which the script does not. A capable
+model is genuinely good at this.
+
+It is also wrong four times in ten, and **every one of those four says
+"proceed"** - brief 01 over its moat by 8.6%, brief 04 over its acceleration
+limit by 19.1%, brief 07 by 4.4%. Run three times on identical prompts the
+score held at 6/10, but the *set* of briefs it failed moved: three fail every
+time, the fourth wanders. You cannot even learn which cases to check twice.
+
+The reason is structural rather than a matter of prompting harder. Peak floor
+acceleration is the solution of a nonlinear equation of motion integrated over
+thousands of steps; a model answering in prose returns a value of the kind that
+usually appears for buildings described that way. Plausible, and not this
+building's response.
 
 **Ask it to write and run the analysis instead.** Now it can compute - a
 capable assistant with a code interpreter will produce an OpenSees model and
@@ -152,7 +169,7 @@ What this project adds is not intelligence. It is constraint:
 |---|---|---|
 | Where response numbers come from | the model, or code the model wrote that session | one simulation tool, the only source, every time |
 | Who validated the ground motions | nobody | calibrated by sweep before any design was trusted (Iteration 1) |
-| Same question asked twice | different numbers | identical - motions are deterministic from the brief |
+| Same question asked twice | a different design, and a different set of failures - measured over three runs | identical: motions are deterministic from the brief |
 | A verdict the evidence contradicts | can be written | **cannot be written** |
 | A brief with no feasible answer | produces one anyway | refuses, and is scored correct for refusing |
 | What the reviewer receives | a conversation | a report where every table cell traces to a simulation, plus the full search history including designs tried and rejected |
@@ -709,9 +726,12 @@ agent/               session.py      single execution entry point
                      system_prompt.md
                      intake_prompt.md
 
-baselines/           one-shot unverified baseline
+baselines/           oneshot.py      rule-of-thumb, no simulation
+                     llm_oneshot.py  a capable model asked directly
 
-evaluation/          ground truth, judge harness, committed results
+evaluation/          ground truth, judge harness, committed results, and
+                     verify_ground_truth.py which re-proves the feasibility
+                     map by sweep rather than asking you to trust it
 
 outputs/             per-brief deliverables:
                      design_report.md + design.json
@@ -728,6 +748,7 @@ tools/               development calibration utilities:
 
 video/               <=5-minute solution video slot + outline
 
+requirements.txt     pinned versions the committed results came from
 LICENSE              MIT + concept-stage / not-for-construction notice
 ```
 

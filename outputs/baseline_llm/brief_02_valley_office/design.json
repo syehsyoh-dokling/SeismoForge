@@ -1,0 +1,37 @@
+{
+  "brief": "brief_02_valley_office",
+  "spec": {
+    "name": "brief_02_valley_office",
+    "occupancy": "office",
+    "n_stories": 8,
+    "floor_mass_t": 600.0,
+    "story_stiffness_kn_m": 380000.0,
+    "story_height_m": 3.4,
+    "site": {
+      "pga_g": 0.25,
+      "soil_period_sec": 0.7,
+      "duration_sec": 22.0,
+      "records": 5,
+      "seed_base": 3890
+    },
+    "moat_clearance_m": 0.55,
+    "limits": {
+      "peak_drift_ratio": 0.012,
+      "peak_floor_accel_g": 0.55,
+      "base_shear_coeff": 0.45
+    },
+    "seismic_weight_kn": 47088.0
+  },
+  "design": {
+    "system": "base_isolated",
+    "isolation": {
+      "qd_kn": 2800.0,
+      "kd_kn_m": 15000.0,
+      "dy_m": 0.025
+    }
+  },
+  "verdict": "proceed",
+  "basis": "one-shot answer from gpt-5.5; not simulation-verified",
+  "reasoning": "Use lead-rubber isolation rather than relying on the fixed-base frame: the fixed-base period is likely around 1.3-1.4 s for the eight-storey shear building, close enough to the valley deposit amplification range that floor accelerations are not a comfortable pass against the 0.55 g limit. For the isolated option I would set the rubber stiffness at about 15,000 kN/m, giving an isolation period of about 3.5 s on post-yield stiffness, and use a lead characteristic strength of 2,800 kN, about 6% of seismic weight, with a 25 mm yield displacement. At the 0.55 m moat limit the secant stiffness is about 20,100 kN/m and the base-shear coefficient is about (15,000*0.55+2,800)/47,100 = 0.235, comfortably below 0.45; at more probable peak displacement around 0.35-0.45 m it gives an effective period about 3.0-3.2 s and equivalent viscous damping on the order of 20%, which should keep isolator displacement inside the moat and transmitted floor accelerations well below 0.55 g. The restoring ratio Kd*D/Qd at the displacement limit is about 3, so recentring should satisfy the 0.12 m residual limit.",
+  "simulations": 0
+}

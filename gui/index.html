@@ -218,15 +218,22 @@
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>
   ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-let briefs=[],providers={},envKeys=[];
+let briefs=[],prose=[],providers={},envKeys=[];
 
 fetch("/api/briefs").then(r=>r.json()).then(data=>{
-  briefs=data.briefs;providers=data.providers||{};envKeys=data.env_keys||[];
-  $("examples").innerHTML='<option value="">— choose —</option>'+
-    briefs.map(b=>`<option value="${esc(b.name)}">${esc(b.name.replace(/_/g," "))}</option>`).join("");
+  briefs=data.briefs;prose=data.prose||[];providers=data.providers||{};
+  envKeys=data.env_keys||[];
+  // Both sets share brief names, so the value carries the set as well -
+  // selecting by name alone would always resolve to the first group.
+  const opts=(list,set)=>list.map(x=>
+    `<option value="${set}:${esc(x.name)}">${esc(x.name.replace(/_/g," "))}</option>`).join("");
+  $("examples").innerHTML=
+    '<option value="__new__">— new brief (clear the box) —</option>'+
+    (prose.length?`<optgroup label="Free prose — needs assisted or agent mode">${opts(prose,"prose")}</optgroup>`:"")+
+    `<optgroup label="Strict datasheet — works in offline mode">${opts(briefs,"strict")}</optgroup>`;
   fillModels();
   const first=briefs.find(b=>b.name.includes("coastal"))||briefs[0];
-  if(first){$("brief").value=first.text;$("examples").value=first.name;}
+  if(first){$("brief").value=first.text;$("examples").value="strict:"+first.name;}
 });
 function fillModels(){
   const list=providers[$("provider").value]||[];
@@ -238,13 +245,28 @@ function fillModels(){
 }
 $("provider").onchange=fillModels;
 $("examples").onchange=()=>{
-  const b=briefs.find(x=>x.name===$("examples").value);
+  const pick=$("examples").value;
+  if(pick==="__new__"){$("brief").value="";$("brief").focus();checkModeFitsBrief();return;}
+  const [set,name]=[pick.slice(0,pick.indexOf(":")),pick.slice(pick.indexOf(":")+1)];
+  const b=(set==="prose"?prose:briefs).find(x=>x.name===name);
   if(b)$("brief").value=b.text;
+  checkModeFitsBrief();
 };
 $("mode").onchange=()=>{
   const needsKey=$("mode").value!=="offline";
   $("apikey").disabled=$("provider").disabled=$("model").disabled=!needsKey;
+  checkModeFitsBrief();
 };
+// A prose brief in offline mode is the one combination that cannot work.
+// Say so before the run rather than after it.
+function checkModeFitsBrief(){
+  const looksLabelled=/building use:/i.test($("brief").value);
+  const offline=$("mode").value==="offline";
+  $("err").textContent=(offline&&$("brief").value.trim()&&!looksLabelled)
+    ? "This brief is not in the labelled datasheet form, so Offline mode cannot read it. Switch Run mode to Assisted or Agent."
+    : "";
+}
+$("brief").addEventListener("input",checkModeFitsBrief);
 $("mode").onchange();
 function fmt(x,d=4){return typeof x==="number"?Number(x.toPrecision(d)).toString():x;}
 

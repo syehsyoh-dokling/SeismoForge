@@ -1,0 +1,33 @@
+{
+  "brief": "brief_03_hillside_warehouse",
+  "spec": {
+    "name": "brief_03_hillside_warehouse",
+    "occupancy": "warehouse",
+    "n_stories": 2,
+    "floor_mass_t": 400.0,
+    "story_stiffness_kn_m": 150000.0,
+    "story_height_m": 4.5,
+    "site": {
+      "pga_g": 0.15,
+      "soil_period_sec": 0.5,
+      "duration_sec": 20.0,
+      "records": 5,
+      "seed_base": 9117
+    },
+    "moat_clearance_m": 0.35,
+    "limits": {
+      "peak_drift_ratio": 0.015,
+      "peak_floor_accel_g": 0.7,
+      "base_shear_coeff": 0.55
+    },
+    "seismic_weight_kn": 7848.0
+  },
+  "design": {
+    "system": "fixed_base",
+    "isolation": null
+  },
+  "verdict": "proceed",
+  "basis": "one-shot answer from gpt-5.5; not simulation-verified",
+  "reasoning": "Use the conventional fixed-base two-storey frame; isolation is not justified for this mild hazard and non-sensitive warehouse contents. With 400 t per floor and 150,000 kN/m storey stiffness, the fundamental fixed-base period is about 0.52 s, close to the site predominant period but still a very stiff/low-drift structure. A concept-stage 5%-damped demand of roughly 0.35\u20130.45 g at this period gives base shear coefficient of the same order, below the 0.55 limit, and modal displacement demands give peak interstorey drift ratios well below 0.015, on the order of 0.004\u20130.006 even allowing for record variability. Peak floor accelerations are expected to remain below the 0.7 g limit for the stated 0.15 g PGA hazard. Since the building is fixed-base, isolator displacement and residual displacement checks are not applicable; if isolation were added it would consume moat clearance and add recentering checks without a performance need.",
+  "simulations": 0
+}

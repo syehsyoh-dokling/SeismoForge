@@ -16,11 +16,11 @@ listed at the bottom.
 | # | Section | Words | Ends at | On screen |
 |---|---|---:|---:|---|
 | 1 | The wrong report | 111 | 0:53 | The failing baseline report itself, held on **PROCEED**, then the acceptance row that contradicts it |
-| 2 | The fast route, measured | 58 | 1:21 | **3/10** filling the screen, the ten briefs as a grid with seven going red, brief 10 last and darker |
-| 3 | One execution | 118 | 2:17 | The GUI: paste a prose brief, stage tracker advancing, intake evidence table, candidate table, verdict banner |
-| 4 | The comparison | 37 | 2:35 | `evaluation/results.md`, **3/10 → 10/10** |
-| 5 | Changelog | 137 | 3:41 | The changelog table, a 50-point sweep all failing, the broken motion spectrum beside the fixed one, an oscillation trace, write_report rejecting a verdict |
-| 6 | The agency experiment | 86 | 4:22 | Three mode columns; **8,421** beside **518,386** |
+| 2 | The fast route, measured | 76 | 1:29 | **3/10** filling the screen, the ten briefs as a grid with seven going red, brief 10 last and darker |
+| 3 | One execution | 118 | 2:26 | The GUI: paste a prose brief, stage tracker advancing, intake evidence table, candidate table, verdict banner |
+| 4 | The comparison | 32 | 2:41 | `evaluation/results.md`, **3/10 → 10/10** |
+| 5 | Changelog | 127 | 3:42 | The changelog table, a 50-point sweep all failing, the broken motion spectrum beside the fixed one, an oscillation trace, write_report rejecting a verdict |
+| 6 | The agency experiment | 83 | 4:22 | Three mode columns; **8,421** beside **518,386** |
 | 7 | Hot take and close | 84 | 5:02 | The two harness defects, then an engineer signing, then the closing card |
 
 Record section 3 as one continuous screen capture. It is the only part that
@@ -58,18 +58,18 @@ Then the acceptance table, and the failing row lit red. Title last.]*
 *[3/10 fills the screen → the ten briefs as a grid, seven going red → brief 10
 last, and darker than the rest]*
 
-> That report is what we measured: rule-of-thumb sizing without simulation -
-> and also what a general assistant returns.
->
-> Ten building briefs, judged by independently re-simulating every design.
->
-> Three correct out of ten. On one brief that is genuinely impossible, it said:
+> That report is what we measured. Rule-of-thumb sizing, no simulation: three
+> correct out of ten, and on the brief that is genuinely impossible, it said
 > proceed.
 >
-> Four of its seven failures missed by under ten percent. The closest, by half
-> a percent.
+> Then we asked a capable model the same ten questions directly - given the
+> limits, the buildable ranges, everything except a simulator.
+>
+> Six out of ten. Twice as good, and it correctly refused the impossible one.
+>
+> It was also wrong four times, and every one of those four said proceed.
 
-### 3 · One execution — 1:21
+### 3 · One execution — 1:29
 
 *[GUI, one continuous take. Paste the prose brief → stage tracker → intake
 evidence table → candidate table filling → conclusion]*
@@ -95,27 +95,26 @@ evidence table → candidate table filling → conclusion]*
 >
 > Every limit met. The tightest sits at ninety-three percent.
 
-### 4 · The comparison — 2:17
+### 4 · The comparison — 2:26
 
 *[`evaluation/results.md` → 3/10 becomes 10/10]*
 
-> Same ten briefs, same judge. Baseline, three out of ten. The deterministic
-> path, ten out of ten, including the impossible brief, correctly refused.
+> Same ten briefs, same judge. The deterministic path: ten out of ten,
+> including the impossible brief, correctly refused.
 >
-> That result needs no API key. A judge reproduces it from a clean checkout.
+> And it needs no API key. A judge reproduces it from a clean checkout.
 
-### 5 · Changelog, the biggest change, the removed experiment — 2:35
+### 5 · Changelog, the biggest change, the removed experiment — 2:41
 
 *[Changelog table → sweep of 50 candidates all failing → oscillating utilization
 trace → write_report rejecting a verdict]*
 
 > The changelog is not a straight line.
 >
-> You might say: don't ask a model for numbers, ask it to run the analysis.
-> Right instinct - and where this gets dangerous.
+> So have it run the analysis instead. Right instinct - and where this gets
+> dangerous.
 >
-> We did exactly that. Our first loop failed everything: fifty candidates, zero
-> passing. The defect was not in the designs - it was in our own ground motions.
+> We did. Our first loop failed everything: fifty candidates, zero passing. The defect was not in the designs - it was in our own ground motions.
 > The computation was correct. The test was wrong, and nothing said so.
 >
 > Then we tried pure failure-driven refinement: fix the worst failed check, run
@@ -126,7 +125,7 @@ trace → write_report rejecting a verdict]*
 > **The single change that contributed most was giving the report writer a
 > veto.** That is what turned plausible output into defensible output.
 
-### 6 · The agency experiment — 3:41
+### 6 · The agency experiment — 3:42
 
 *[Three mode columns, all reading 10/10 → token counts side by side]*
 
@@ -134,8 +133,7 @@ trace → write_report rejecting a verdict]*
 > so what does a model add that a policy cannot?
 >
 > Let the model read the brief: ten out of ten, on prose the strict parser
-> fails on all nine fields. And its designs matched the deterministic path on
-> all ten briefs.
+> cannot read at all. Its designs matched the deterministic path on all ten.
 >
 > Give the model the design search as well: also ten out of ten, for sixty-two
 > times the input tokens.

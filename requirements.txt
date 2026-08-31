@@ -1,0 +1,20 @@
+# Versions the committed results under evaluation/ were produced with.
+#
+#   Python 3.12.3, Linux (WSL2, Ubuntu 24.04)
+#
+# The physics and the evaluation need only the first two. Install those alone
+# and the baseline, the offline mode and the full 10-brief comparison run with
+# no API key and no network.
+
+numpy==2.5.2
+openseespy==3.8.0.0
+
+# openseespy is a thin wrapper; this is the compiled engine it loads, and pip
+# pulls it in automatically. Pinned here because it is what actually runs.
+openseespylinux==3.8.0.0 ; sys_platform == "linux"
+
+# Only for the modes that put a model in the loop - assisted and agent - and
+# only the provider you actually use. The committed model-driven results were
+# produced with openai.
+openai==3.6.0
+anthropic

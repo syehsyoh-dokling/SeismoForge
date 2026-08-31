@@ -116,6 +116,123 @@
     "total": 10,
     "wall_time_sec": 0.4
   },
+  "llm_direct": {
+    "rows": [
+      {
+        "brief": "brief_01_coastal_hospital",
+        "correct": false,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": false,
+        "governing_check": "peak_isolator_disp_m",
+        "governing_utilization": 1.0860832104571312,
+        "simulations_claimed": 0,
+        "outcome": "claimed proceed but fails ['peak_isolator_disp_m']"
+      },
+      {
+        "brief": "brief_02_valley_office",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 0.6902500006995054,
+        "simulations_claimed": 0,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_03_hillside_warehouse",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "fixed_base",
+        "design_passes": true,
+        "governing_check": "base_shear_coeff",
+        "governing_utilization": 0.8814411402274767,
+        "simulations_claimed": 0,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_04_metro_datacenter",
+        "correct": false,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": false,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 1.1912528265049982,
+        "simulations_claimed": 0,
+        "outcome": "claimed proceed but fails ['peak_floor_accel_g']"
+      },
+      {
+        "brief": "brief_05_riverside_school",
+        "correct": false,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": false,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 1.159014056111197,
+        "simulations_claimed": 0,
+        "outcome": "claimed proceed but fails ['peak_floor_accel_g']"
+      },
+      {
+        "brief": "brief_06_downtown_residential",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 0.7861457103441416,
+        "simulations_claimed": 0,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_07_plains_office",
+        "correct": false,
+        "verdict": "proceed",
+        "system": "fixed_base",
+        "design_passes": false,
+        "governing_check": "peak_floor_accel_g",
+        "governing_utilization": 1.0443127567155899,
+        "simulations_claimed": 0,
+        "outcome": "claimed proceed but fails ['peak_floor_accel_g']"
+      },
+      {
+        "brief": "brief_08_lakeside_hospital",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_isolator_disp_m",
+        "governing_utilization": 0.9017389555666083,
+        "simulations_claimed": 0,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_09_port_warehouse",
+        "correct": true,
+        "verdict": "proceed",
+        "system": "base_isolated",
+        "design_passes": true,
+        "governing_check": "peak_isolator_disp_m",
+        "governing_utilization": 0.8799284007581882,
+        "simulations_claimed": 0,
+        "outcome": "verified design"
+      },
+      {
+        "brief": "brief_10_cliffside_clinic",
+        "correct": true,
+        "verdict": "not_buildable_within_brief",
+        "system": "base_isolated",
+        "design_passes": false,
+        "governing_check": "peak_isolator_disp_m",
+        "governing_utilization": 3.4615474079033897,
+        "simulations_claimed": 0,
+        "outcome": "correctly flagged infeasible brief"
+      }
+    ],
+    "correct": 6,
+    "total": 10,
+    "wall_time_sec": null
+  },
   "offline": {
     "rows": [
       {

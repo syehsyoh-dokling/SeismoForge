@@ -1,0 +1,33 @@
+{
+  "brief": "brief_07_plains_office",
+  "spec": {
+    "name": "brief_07_plains_office",
+    "occupancy": "office",
+    "n_stories": 6,
+    "floor_mass_t": 580.0,
+    "story_stiffness_kn_m": 320000.0,
+    "story_height_m": 3.5,
+    "site": {
+      "pga_g": 0.18,
+      "soil_period_sec": 0.6,
+      "duration_sec": 20.0,
+      "records": 5,
+      "seed_base": 3036
+    },
+    "moat_clearance_m": 0.45,
+    "limits": {
+      "peak_drift_ratio": 0.012,
+      "peak_floor_accel_g": 0.55,
+      "base_shear_coeff": 0.45
+    },
+    "seismic_weight_kn": 34138.8
+  },
+  "design": {
+    "system": "fixed_base",
+    "isolation": null
+  },
+  "verdict": "proceed",
+  "basis": "one-shot answer from gpt-5.5; not simulation-verified",
+  "reasoning": "Use the conventional fixed-base frame; isolation is not warranted for this low-to-moderate plains site. The six-storey shear building has a first-mode period of roughly 1.1 s from the given 320,000 kN/m storey stiffness and 580 t/floor mass, already away from the 0.6 s predominant site period. With PGA 0.18 g on firm soil, expected elastic/inelastic response is modest: base shear coefficient should remain well below the 0.45 cap, interstorey drift should be comfortably below 1.2% for the stated stiffness, and peak floor accelerations are unlikely to exceed 0.55 g. Since no isolation plane is used, isolator displacement and residual displacement demands are zero/not applicable and within the stated clearance and recentring limits.",
+  "simulations": 0
+}

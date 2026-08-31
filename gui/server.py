@@ -426,13 +426,17 @@ class Handler(BaseHTTPRequestHandler):
             body = (GUI_DIR / "index.html").read_bytes()
             self._send(200, body, "text/html; charset=utf-8")
         elif parsed.path == "/api/briefs":
-            briefs = [
-                {"name": path.stem,
-                 "text": path.read_text(encoding="utf-8")}
-                for path in list_briefs(REPO / "briefs")
-            ]
+            def load(folder):
+                return [{"name": path.stem,
+                         "text": path.read_text(encoding="utf-8")}
+                        for path in list_briefs(REPO / folder)]
+
+            briefs = load("briefs")
             self._json({
                 "briefs": briefs,
+                # The same ten projects as free prose. Offered separately so a
+                # reviewer can see what the strict parser cannot read.
+                "prose": load("briefs_prose"),
                 "providers": {name: list(models)
                               for name, models in PROVIDER_MODELS.items()},
                 # So the page can say which providers need no key pasted in.
@@ -474,7 +478,14 @@ class Handler(BaseHTTPRequestHandler):
                 # The other modes accept free prose and are checked in-session.
                 parse_brief_text("user_brief", brief_text)
             except ValueError as error:
-                self._json({"error": str(error)}, 400)
+                # Say what to do about it. A brief written as prose is not
+                # malformed - it is being read by the wrong intake.
+                hint = (
+                    "Offline mode reads only the labelled datasheet form. "
+                    "If this brief is written as ordinary prose, switch Run "
+                    "mode to Assisted or Agent and run it again."
+                )
+                self._json({"error": f"{error}\n\n{hint}"}, 400)
                 return
         self._json(start_job(
             brief_text,

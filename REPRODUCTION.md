@@ -13,8 +13,13 @@ python3 -m venv ~/venvs/seismoforge
 ```
 
 ```bash
-~/venvs/seismoforge/bin/pip install numpy openseespy anthropic openai
+~/venvs/seismoforge/bin/pip install -r requirements.txt
 ```
+
+`requirements.txt` pins the versions the committed results were produced with:
+numpy 2.5.2, openseespy 3.8.0.0 on Python 3.12.3. Install `numpy` and
+`openseespy` alone and the baseline, the offline mode and the full comparison
+run with no key and no network.
 
 The two SDKs are only needed for the modes that put a model in the loop, and
 only the one you actually use. The baseline, the offline mode, and the
@@ -153,7 +158,38 @@ banner, the acceptance table, and the combined engineering conclusion. GUI runs 
 trajectory under `trajectories/gui/<run-id>.{jsonl,md}` - the same record the
 CLI leaves.
 
-## 8. Self-tests
+## 8. Checking the feasibility ground truth
+
+`evaluation/ground_truth.json` decides whether a brief has any buildable
+answer, and the judge reads it as an oracle - so it is the one hand-maintained
+input the comparison rests on. Re-prove it rather than trusting it:
+
+```bash
+$PY evaluation/verify_ground_truth.py --points 75
+```
+
+It sweeps the buildable space for every brief and reports agreement or
+disagreement. The committed run is in `evaluation/ground_truth_sweep.json`:
+all ten agree, and the infeasible brief has no feasible candidate in 65, its
+closest missing by 101%. About a minute for the portfolio.
+
+## 9. A direct-model baseline, for comparison
+
+The rule-of-thumb baseline is one way people answer this quickly. Asking a
+capable model is the other:
+
+```bash
+$PY baselines/llm_oneshot.py --model gpt-5.5 --out outputs/baseline_llm
+```
+
+```bash
+$PY evaluation/run_matrix.py --skip-run --label llm_direct --agent-out outputs/baseline_llm
+```
+
+The model is given the brief, the acceptance limits, and the buildable range of
+every parameter - everything but a simulator. It scores 6/10. Needs an API key.
+
+## 10. Self-tests
 
 ```bash
 $PY tests/selftest.py

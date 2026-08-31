@@ -1,0 +1,37 @@
+{
+  "brief": "brief_04_metro_datacenter",
+  "spec": {
+    "name": "brief_04_metro_datacenter",
+    "occupancy": "data_center",
+    "n_stories": 3,
+    "floor_mass_t": 800.0,
+    "story_stiffness_kn_m": 500000.0,
+    "story_height_m": 4.0,
+    "site": {
+      "pga_g": 0.28,
+      "soil_period_sec": 0.9,
+      "duration_sec": 24.0,
+      "records": 5,
+      "seed_base": 1496
+    },
+    "moat_clearance_m": 0.6,
+    "limits": {
+      "peak_drift_ratio": 0.008,
+      "peak_floor_accel_g": 0.3,
+      "base_shear_coeff": 0.35
+    },
+    "seismic_weight_kn": 23544.0
+  },
+  "design": {
+    "system": "base_isolated",
+    "isolation": {
+      "qd_kn": 1413.0,
+      "kd_kn_m": 9000.0,
+      "dy_m": 0.015
+    }
+  },
+  "verdict": "proceed",
+  "basis": "one-shot answer from gpt-5.5; not simulation-verified",
+  "reasoning": "Use lead-rubber base isolation because the fixed-base frame is very stiff and would transmit near-short-period ground acceleration into the data floors, making the 0.3 g equipment acceleration limit the controlling criterion. Total seismic weight is 23,544 kN; the selected lead strength is about 6.0%W and the rubber stiffness gives an isolated elastic period about 3.2 s on the post-yield branch, well away from the 0.9 s site period. At an expected design displacement of roughly 0.35-0.40 m, the secant stiffness is about 12,500-13,000 kN/m, giving an effective period about 2.7-2.8 s and an equivalent viscous damping near 18-20%, so displacement should remain below the 0.6 m moat. The corresponding base shear coefficient is approximately (1413+9000D)/23544 = 0.19-0.21, comfortably below 0.35 and consistent with floor accelerations below 0.3 g; the very stiff superstructure should then keep interstorey drift far under 0.008. The 15 mm yield displacement and moderate lead strength provide stable hysteretic damping while keeping the expected residual displacement within the 0.12 m recentering limit.",
+  "simulations": 0
+}

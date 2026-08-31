@@ -1,0 +1,149 @@
+{
+  "brief_01_coastal_hospital": {
+    "feasible": true,
+    "checked": 30,
+    "total": 65,
+    "witness": {
+      "system": "base_isolated",
+      "isolation": {
+        "qd_kn": 1618.6499999999999,
+        "kd_kn_m": 5361.266588246069,
+        "dy_m": 0.008
+      }
+    },
+    "seconds": 7.2,
+    "claimed": true
+  },
+  "brief_02_valley_office": {
+    "feasible": true,
+    "checked": 2,
+    "total": 65,
+    "witness": {
+      "system": "base_isolated",
+      "isolation": {
+        "qd_kn": 941.76,
+        "kd_kn_m": 58486.54459904805,
+        "dy_m": 0.008
+      }
+    },
+    "seconds": 0.6,
+    "claimed": true
+  },
+  "brief_03_hillside_warehouse": {
+    "feasible": true,
+    "checked": 1,
+    "total": 65,
+    "witness": {
+      "system": "fixed_base",
+      "isolation": null
+    },
+    "seconds": 0.1,
+    "claimed": true
+  },
+  "brief_04_metro_datacenter": {
+    "feasible": true,
+    "checked": 27,
+    "total": 65,
+    "witness": {
+      "system": "base_isolated",
+      "isolation": {
+        "qd_kn": 1412.6399999999999,
+        "kd_kn_m": 7310.818074881006,
+        "dy_m": 0.022
+      }
+    },
+    "seconds": 4.7,
+    "claimed": true
+  },
+  "brief_05_riverside_school": {
+    "feasible": true,
+    "checked": 26,
+    "total": 65,
+    "witness": {
+      "system": "base_isolated",
+      "isolation": {
+        "qd_kn": 1130.112,
+        "kd_kn_m": 5848.654459904805,
+        "dy_m": 0.008
+      }
+    },
+    "seconds": 5.3,
+    "claimed": true
+  },
+  "brief_06_downtown_residential": {
+    "feasible": true,
+    "checked": 24,
+    "total": 65,
+    "witness": {
+      "system": "base_isolated",
+      "isolation": {
+        "qd_kn": 4591.08,
+        "kd_kn_m": 42240.28221042359,
+        "dy_m": 0.036000000000000004
+      }
+    },
+    "seconds": 10.0,
+    "claimed": true
+  },
+  "brief_07_plains_office": {
+    "feasible": true,
+    "checked": 2,
+    "total": 65,
+    "witness": {
+      "system": "base_isolated",
+      "isolation": {
+        "qd_kn": 682.7760000000001,
+        "kd_kn_m": 42402.74483430984,
+        "dy_m": 0.008
+      }
+    },
+    "seconds": 0.4,
+    "claimed": true
+  },
+  "brief_08_lakeside_hospital": {
+    "feasible": true,
+    "checked": 22,
+    "total": 65,
+    "witness": {
+      "system": "base_isolated",
+      "isolation": {
+        "qd_kn": 882.9,
+        "kd_kn_m": 8123.131194312228,
+        "dy_m": 0.008
+      }
+    },
+    "seconds": 3.5,
+    "claimed": true
+  },
+  "brief_09_port_warehouse": {
+    "feasible": true,
+    "checked": 2,
+    "total": 65,
+    "witness": {
+      "system": "base_isolated",
+      "isolation": {
+        "qd_kn": 264.87,
+        "kd_kn_m": 16449.340668482266,
+        "dy_m": 0.008
+      }
+    },
+    "seconds": 0.3,
+    "claimed": true
+  },
+  "brief_10_cliffside_clinic": {
+    "feasible": false,
+    "checked": 65,
+    "total": 65,
+    "closest_utilization": 2.0136,
+    "closest_design": {
+      "system": "base_isolated",
+      "isolation": {
+        "qd_kn": 5768.280000000001,
+        "kd_kn_m": 12793.931631041762,
+        "dy_m": 0.008
+      }
+    },
+    "seconds": 19.7,
+    "claimed": false
+  }
+}
