@@ -297,5 +297,9 @@ tall - scroll or crop rather than shrinking them to fit.
 | The evidence gate was the change that mattered most | Changelog iteration 4; the veto firing is `stills/05e_report_veto.txt` |
 | Sixty-two times | 518,386 ÷ 8,421 = 61.6, from the `usage` events at `trajectories/trajectory_agent.jsonl:343` and `trajectories/trajectory_assisted.jsonl:401` |
 
-The one figure not drawn from the repository is "days or even weeks". That is a
-statement about practice, and the README says so plainly in the note under it.
+The one figure not drawn from the repository is "days or even weeks". The
+literature supports the shape of it - Leblouba (2022) describes isolation
+design as "a long path to be followed", checked afterwards by nonlinear time
+history analysis - but not the duration, and we found no study that measures
+the engineer-hours. It is practitioner experience, labelled as such in the
+README, and nothing in the comparison rests on it.

@@ -84,6 +84,10 @@ Yang mereka semua hadapi sama: sebuah keputusan yang harus diambil **sebelum** a
 
 Mencapai konsep seismik yang bisa dipertanggungjawabkan bukan perhitungan satu-tembakan. Bergantung pada bangunannya dan kelengkapan datanya, pekerjaan strukturnya bisa menghabiskan **beberapa hari hingga beberapa minggu** waktu insinyur sebelum masuk review.
 
+> **Tentang angka itu.** *Bentuk* klaimnya ada dukungannya di literatur: meninjau praktik desain isolasi, Leblouba (2022) menulis bahwa prosedur yang ada "require many parameters to be calculated and a long path to be followed," dan menempatkan tujuannya sebagai membantu insinyur mencapai parameter isolator near-optimal "that can later be checked using nonlinear time history analysis" — persis loop dua tahap yang diotomasi SeismoForge. *Durasinya* tidak: kami tidak menemukan studi yang mengukur jam-insinyurnya, jadi "beberapa hari hingga beberapa minggu" adalah pengalaman praktik, bukan hasil pengukuran yang disitasi, dan tidak ada satu pun hasil di repositori ini yang bergantung padanya. Semua angka di perbandingan di bawah diukur di sini dan bisa direproduksi.
+>
+> Leblouba, M. (2022). *Selection of seismic isolation system parameters for the near-optimal design of structures.* Scientific Reports 12, 14734. https://doi.org/10.1038/s41598-022-19114-7
+
 Yang menyita bukan menuliskan rumusnya, melainkan **lingkaran komputasinya**: menyusun model, memilih rekaman gempa, menjalankan analisis riwayat-respons nonlinear, membaca hasilnya, merevisi desain, lalu mengulang.
 
 SeismoForge tidak mengklaim menggantikan pekerjaan itu. Ia memampatkan **bagian komputasi dan iteratifnya** menjadi hitungan detik, dan menyerahkan sisanya - penilaian teknik, investigasi lokasi, dan tanda tangan - kepada insinyur.

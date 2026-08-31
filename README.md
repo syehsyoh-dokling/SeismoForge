@@ -111,6 +111,10 @@ At concept stage, an engineer may need to answer:
 
 Reaching a defensible seismic concept is not a one-shot calculation. Depending on the building and the information available, the structural work can take **days to weeks of engineering time** before review.
 
+> **On that figure.** The *shape* of the claim is documented in the literature: reviewing isolation design practice, Leblouba (2022) writes that existing procedures "require many parameters to be calculated and a long path to be followed," and frames the goal as helping engineers reach near-optimal isolator parameters "that can later be checked using nonlinear time history analysis" — the same two-stage loop SeismoForge automates. The *duration* is not: we found no study that measures the engineer-hours, so "days to weeks" is practitioner experience, not a cited measurement, and no result in this repository depends on it. Every number in the comparison below is measured here and reproducible.
+>
+> Leblouba, M. (2022). *Selection of seismic isolation system parameters for the near-optimal design of structures.* Scientific Reports 12, 14734. https://doi.org/10.1038/s41598-022-19114-7
+
 What consumes it is not writing formulas. It is the computational loop: build the model, select ground motions, run nonlinear response-history analyses, read the results, revise the design, repeat.
 
 That loop is not overhead. It is where the trust comes from - which is why
