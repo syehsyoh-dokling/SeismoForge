@@ -2,11 +2,11 @@
 
 Place the submission video here. Up to 5 minutes.
 
-The script below is 625 words. Read at 130 words per minute - an ordinary
-presentation pace - that is 4:48, leaving about twelve seconds for the three
-marked pauses. The section timings in the table below assume 125 wpm, so they
-are the slow bound: if you land inside them you are comfortably under five
-minutes.
+The script below is 631 words. Read at 130 words per minute - an ordinary
+presentation pace - that is 4:51, leaving about nine seconds for the three
+marked pauses. The timings in the table are computed at a slower 125 wpm, so
+they are the comfortable upper bound: land inside them and you are under five
+minutes with room to spare.
 
 Every number in it is checked against the repository; the source for each is
 listed at the bottom.
@@ -15,13 +15,13 @@ listed at the bottom.
 
 | # | Section | Words | Ends at | On screen |
 |---|---|---:|---:|---|
-| 1 | The problem | 80 | 0:38 | Building model shaking, then an engineer at a drawing |
-| 2 | The baseline | 83 | 1:18 | A tidy baseline report, then **3/10**, then one brief marked red |
-| 3 | One execution | 118 | 2:14 | The GUI: paste a prose brief, stage tracker advancing, intake evidence table, candidate table, verdict banner |
-| 4 | The comparison | 37 | 2:32 | `evaluation/results.md`, **3/10 → 10/10** |
-| 5 | Changelog | 137 | 3:38 | The changelog table, a 50-point sweep all failing, an oscillation trace, the evidence lock |
-| 6 | The agency experiment | 86 | 4:19 | Three mode columns; **8,421** beside **518,386** |
-| 7 | Hot take and close | 84 | 4:59 | The two harness defects, then an engineer signing, then the closing card |
+| 1 | The wrong report | 111 | 0:53 | The failing baseline report itself, held on **PROCEED**, then the acceptance row that contradicts it |
+| 2 | The fast route, measured | 58 | 1:21 | **3/10** filling the screen, the ten briefs as a grid with seven going red, brief 10 last and darker |
+| 3 | One execution | 118 | 2:17 | The GUI: paste a prose brief, stage tracker advancing, intake evidence table, candidate table, verdict banner |
+| 4 | The comparison | 37 | 2:35 | `evaluation/results.md`, **3/10 → 10/10** |
+| 5 | Changelog | 137 | 3:41 | The changelog table, a 50-point sweep all failing, the broken motion spectrum beside the fixed one, an oscillation trace, write_report rejecting a verdict |
+| 6 | The agency experiment | 86 | 4:22 | Three mode columns; **8,421** beside **518,386** |
+| 7 | Hot take and close | 84 | 5:02 | The two harness defects, then an engineer signing, then the closing card |
 
 Record section 3 as one continuous screen capture. It is the only part that
 has to be real time, and it is the part that proves the rest.
@@ -30,41 +30,46 @@ has to be real time, and it is the part that proves the rest.
 
 ## Voice-over
 
-### 1 · The problem — 0:00
+### 1 · The wrong report — 0:00
 
-*[Building model shaking → engineer reviewing a drawing → title]*
+*[Open on the report itself, scrolling slowly. Hold on "Verdict: PROCEED".
+Then the acceptance table, and the failing row lit red. Title last.]*
 
-> What if an AI gives you an engineering answer that sounds completely
-> reasonable, and is physically wrong?
+> This is a design report for a hospital. A building that has to keep working
+> the day after a major earthquake.
 >
-> Early-stage structural work takes days to weeks of engineering time, and
-> most of it is the computational loop: model, ground motions, nonlinear
-> analysis, revise, repeat.
+> Correct units. Plausible numbers. Confident prose. It recommends proceeding.
 >
-> That loop is not overhead - it is where the trust comes from. An AI that
-> only speeds up the guess skips the part that mattered.
+> The design in it fails. Base shear runs thirty-two percent over its limit.
 >
-> **The hard part is knowing when an answer should not be trusted.**  ⏸
+> Nothing on the page says so. Nobody finds out until the earthquake.
+>
+> An answer you can defend takes days to weeks, almost all of it one loop:
+> model, ground motions, nonlinear analysis, revise, repeat.
+>
+> That loop is not overhead. It is what separates a number that looks right
+> from one that is.
+>
+> **The hard part was never speed. It is knowing when an answer should not be
+> trusted.**  ⏸
 
-### 2 · The fast route, measured — 0:41
+### 2 · The fast route, measured — 0:53
 
-*[A confident-looking report with no simulation behind it → 3/10 → brief 10 in red]*
+*[3/10 fills the screen → the ten briefs as a grid, seven going red → brief 10
+last, and darker than the rest]*
 
-> So we measured the fast route: rule-of-thumb sizing, submitted without
-> simulation. It is also what a general assistant gives you - correct units,
-> plausible magnitudes, nothing computed behind them.
+> That report is what we measured: rule-of-thumb sizing without simulation -
+> and also what a general assistant returns.
 >
 > Ten building briefs, judged by independently re-simulating every design.
 >
-> Three correct out of ten.
+> Three correct out of ten. On one brief that is genuinely impossible, it said:
+> proceed.
 >
-> On one brief that is genuinely impossible, it said: proceed.
->
-> And it was not wildly wrong. Four of its seven failures missed by under ten
-> percent, the closest by half a percent. A wrong number here does not look
-> wrong.
+> Four of its seven failures missed by under ten percent. The closest, by half
+> a percent.
 
-### 3 · One execution — 1:18
+### 3 · One execution — 1:21
 
 *[GUI, one continuous take. Paste the prose brief → stage tracker → intake
 evidence table → candidate table filling → conclusion]*
@@ -90,7 +95,7 @@ evidence table → candidate table filling → conclusion]*
 >
 > Every limit met. The tightest sits at ninety-three percent.
 
-### 4 · The comparison — 2:14
+### 4 · The comparison — 2:17
 
 *[`evaluation/results.md` → 3/10 becomes 10/10]*
 
@@ -99,7 +104,7 @@ evidence table → candidate table filling → conclusion]*
 >
 > That result needs no API key. A judge reproduces it from a clean checkout.
 
-### 5 · Changelog, the biggest change, the removed experiment — 2:32
+### 5 · Changelog, the biggest change, the removed experiment — 2:35
 
 *[Changelog table → sweep of 50 candidates all failing → oscillating utilization
 trace → write_report rejecting a verdict]*
@@ -121,7 +126,7 @@ trace → write_report rejecting a verdict]*
 > **The single change that contributed most was giving the report writer a
 > veto.** That is what turned plausible output into defensible output.
 
-### 6 · The agency experiment — 3:38
+### 6 · The agency experiment — 3:41
 
 *[Three mode columns, all reading 10/10 → token counts side by side]*
 
@@ -137,7 +142,7 @@ trace → write_report rejecting a verdict]*
 >
 > Same score. We kept that mode, and did not make it the default.
 
-### 7 · Hot take and close — 4:19
+### 7 · Hot take and close — 4:22
 
 *[The two harness defects → an engineer signing a report → closing card]*
 
@@ -176,7 +181,8 @@ measured on the same cases, not a before and an after.
 
 Read the rest at an even pace and let these land:
 
-> **The hard part is knowing when an answer should not be trusted.**
+> **The hard part was never speed. It is knowing when an answer should not
+> be trusted.**
 
 > **Don't just verify the agent. Verify the verifier.**
 
