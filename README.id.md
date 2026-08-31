@@ -37,7 +37,7 @@ SeismoForge adalah **prototipe tahap konsep, bukan sistem desain konstruksi.** S
 - **Kasus uji:** `briefs/` (format ketat) dan `briefs_prose/` (sepuluh proyek yang sama sebagai prosa bebas)
 - **Cakupan dan keselamatan:** lihat [Cakupan, Review, dan Keselamatan](#cakupan-review-dan-keselamatan)
 - **Keterbatasan pemodelan:** lihat [Keterbatasan Pemodelan yang Diketahui](#keterbatasan-pemodelan-yang-diketahui)
-- **Video solusi, naskah dan rencana adegan:** [video/README.md](video/README.md)
+- **Video solusi (5 menit):** https://youtu.be/mXBNPWSFccY — naskah, rencana adegan dan still di [video/README.md](video/README.md)
 
 ---
 
@@ -686,7 +686,7 @@ tests/               selftest.py:
 tools/               utilitas kalibrasi pengembangan:
                      sapuan, smoke test
 
-video/               slot video solusi <=5 menit + outline
+video/               video solusi: naskah, rencana adegan, dan still yang dipakai
 
 LICENSE              MIT + notice tahap-konsep / bukan-untuk-konstruksi
 ```
@@ -695,17 +695,21 @@ LICENSE              MIT + notice tahap-konsep / bukan-untuk-konstruksi
 
 # Alur Cerita Video Solusi
 
-Cerita <=5 menit yang disarankan sengaja dibuat sederhana:
+**Tonton: https://youtu.be/mXBNPWSFccY**
 
-1. **Masalahnya:** konsep seismik yang terdengar masuk akal bisa salah tanpa verifikasi nonlinear.
-2. **Baseline-nya:** 3/10, dan "lanjutkan" yang keliru pada brief yang mustahil.
-3. **Satu run penuh:** rumah sakit pesisir, dari brief manusia → kandidat → OpenSees → iterasi → laporan bergerbang bukti.
-4. **Hasilnya:** 3/10 → 10/10.
-5. **Eksperimen yang dibuang:** penghalusan lokal murni yang berosilasi 15 iterasi.
-6. **Temuan yang mengejutkan:** menyerahkan pencarian desain kepada model memberi 10/10 yang sama, dengan 518.386 token input berbanding 8.421.
-7. **Hot take-nya:** agent teknik yang andal butuh verifier yang terkalibrasi, dan batas yang jelas tentang di mana agensi benar-benar menambah nilai.
+Naskah, rencana adegan dan still yang dipakai ada di
+[video/README.md](video/README.md). Tujuh bagiannya:
 
-Outline lengkap ada di `video/README.md`.
+1. **Masalahnya:** yang memakan waktu berhari-hari sampai berminggu-minggu adalah loop verifikasinya, bukan penentuan ukurannya.
+2. **Baseline-nya:** penentuan ukuran rule-of-thumb dapat 3/10; model yang mumpuni ditanya langsung dapat 6/10, dan keempat kesalahannya sama-sama bilang "lanjutkan".
+3. **Satu run penuh:** rumah sakit pesisir sebagai prosa biasa → intake terkunci-sumber → OpenSees → 19 desain, 95 analisis nonlinear → laporan bergerbang bukti.
+4. **Perbandingannya:** 3/10 → 10/10, bisa direproduksi tanpa API key.
+5. **Changelog-nya:** verifier yang salah kalibrasi, strategi penghalusan yang **dibuang** (penghalusan lokal murni — kendalanya terkopel), dan perubahan yang paling menentukan (hak veto penulis laporan).
+6. **Eksperimen agensi:** mode full-agent dapat 10/10 yang sama dengan 62× token input. **Dipertahankan sebagai eksperimen berlabel, tidak dijadikan default.**
+7. **Penutup:** ke mana waktu insinyur berpindah, dan siapa yang menandatangani laporannya.
+
+Hot take adalah deliverable README, bukan video, dan ada di atas pada bagian
+[Apa yang gagal — dan kenapa itu penting](#apa-yang-gagal--dan-kenapa-itu-penting).
 
 ---
 

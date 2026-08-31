@@ -1,6 +1,9 @@
 # Solution video
 
-Place the submission video here. Up to 5 minutes.
+**The submitted video: https://youtu.be/mXBNPWSFccY**
+
+Up to 5 minutes. Everything on screen is generated from this repository, and
+the source of each number is listed at the bottom.
 
 The script below is the submitted narration, kept as written except where a
 sentence repeated something the video already shows, or covered something the

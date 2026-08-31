@@ -52,7 +52,7 @@ for cannot be built.
 - **Evaluation cases:** `briefs/` (strict format) and `briefs_prose/` (the same ten as free-form prose)
 - **Scope and safety:** see [Scope, Review, and Safety](#scope-review-and-safety)
 - **Known modeling limitations:** see [Known Modeling Limitations](#known-modeling-limitations)
-- **Solution video, script and scene plan:** [video/README.md](video/README.md)
+- **Solution video (5 min):** https://youtu.be/mXBNPWSFccY — script, scene plan and stills in [video/README.md](video/README.md)
 
 ---
 
@@ -747,7 +747,7 @@ tests/               selftest.py:
 tools/               development calibration utilities:
                      sweeps, smoke tests
 
-video/               <=5-minute solution video slot + outline
+video/               solution video: script, scene plan, and the stills it cuts to
 
 requirements.txt     pinned versions the committed results came from
 LICENSE              MIT + concept-stage / not-for-construction notice
@@ -757,8 +757,10 @@ LICENSE              MIT + concept-stage / not-for-construction notice
 
 # Solution Video Story
 
-The submitted <=5-minute narration, its scene plan and the stills it cuts to
-are in [video/README.md](video/README.md). Its seven sections:
+**Watch it: https://youtu.be/mXBNPWSFccY**
+
+The narration, its scene plan and the stills it cuts to are in
+[video/README.md](video/README.md). Its seven sections:
 
 1. **The problem:** the verification loop, not the sizing, is what takes days or weeks.
 2. **The baseline:** rule-of-thumb sizing scores 3/10; a capable model asked directly scores 6/10, and all four of its errors say "proceed".
