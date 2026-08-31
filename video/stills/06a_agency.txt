@@ -1,0 +1,20 @@
+THE AGENCY EXPERIMENT  -  same ten briefs, same judge
+
+                     correct   wall time    input tokens   output
+--------------------------------------------------------------------------
+  deterministic      10/10       38.6 s       no model        -
+  assisted           10/10       71.3 s          8,421    2,081
+  full agent         10/10      337.8 s        518,386   17,272
+--------------------------------------------------------------------------
+
+  518,386 / 8,421 = 61.6x the input, for the same score.
+
+Sources, verbatim:
+  evaluation/results.json          correct, total, wall_time_sec
+  trajectories/trajectory_assisted.jsonl:401
+    {"t_sec": 70.6, "kind": "usage", "input_tokens": 8421, "output_tokens": 2081, "model": "gpt-5.5", "estimated_cost_usd": null}
+  trajectories/trajectory_agent.jsonl:343
+    {"t_sec": 337.14, "kind": "usage", "input_tokens": 518386, "output_tokens": 17272, "model": "gpt-5.5", "estimated_cost_usd": null}
+
+The deterministic column needs no API key. It is the one a judge can
+reproduce from a clean checkout.

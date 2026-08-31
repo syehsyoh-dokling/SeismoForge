@@ -1,0 +1,53 @@
+ITERATION 4  -  the change that contributed most
+
+The report writer re-simulates the design it was asked to recommend,
+and refuses the verdict if the physics disagrees.
+
+agent/tools.py
+------------------------------------------------------------------------------
+   170 |     def write_report(
+   171 |         self,
+   172 |         brief: str,
+   173 |         design: dict[str, Any],
+   174 |         verdict: str,
+   175 |         engineer_notes: str = "",
+   176 |     ) -> dict[str, Any]:
+   177 |         if verdict not in VERDICTS:
+   178 |             return {"error": f"verdict must be one of {VERDICTS}"}
+   179 |         spec = self.spec(brief)
+   180 |         parsed = clamp(design_from_dict(design), spec)
+   181 |         # Evidence lock: the report is rendered from a fresh simulation of
+   182 |         # exactly the submitted design, never from conversational numbers.
+   183 |         assessment = assess(spec, parsed)
+   184 |         acceptance = acceptance_report(spec, parsed, assessment)
+   185 |         if verdict == "proceed" and not acceptance["passed"]:
+   186 |             return {
+   187 |                 "error": (
+   188 |                     "verdict 'proceed' rejected: the submitted design fails "
+   189 |                     f"{acceptance['failed_checks']} on re-simulation"
+   190 |                 ),
+   191 |             }
+   192 |         if verdict == "not_buildable_within_brief" and acceptance["passed"]:
+   193 |             return {
+   194 |                 "error": (
+   195 |                     "verdict 'not_buildable_within_brief' rejected: the "
+   196 |                     "submitted design passes every acceptance check"
+   197 |                 ),
+   198 |             }
+------------------------------------------------------------------------------
+
+
+THE VETO FIRING
+
+  brief    brief_01_coastal_hospital
+  design   {"qd_kn": 1618.6499999999999, "kd_kn_m": 13847.659236222313, "dy_m": 0.02}
+  verdict  proceed
+
+  write_report returns:
+
+    {
+      "error": "verdict 'proceed' rejected: the submitted design fails ['peak_floor_accel_g', 'base_shear_coeff'] on re-simulation"
+    }
+
+No report was written. The deliverable cannot disagree with the
+physics, because the physics is re-run to render it.

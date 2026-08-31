@@ -24,8 +24,8 @@ Ends-at is measured at 140 wpm and excludes the pauses.
 | 2 | The baseline | 101 | 1:23 | **3/10** filling the screen, the ten briefs as a grid with seven going red, then **6/10** beside it |
 | 3 | One complete run | 150 | 2:27 | The GUI: paste a prose brief, stage tracker advancing, intake evidence table, candidate table, verdict banner |
 | 4 | The comparison | 59 | 2:52 | `evaluation/results.md`, **3/10 → 10/10** |
-| 5 | The changelog | 119 | 3:43 | The changelog table, a 50-point sweep all failing, the broken motion spectrum beside the fixed one, an oscillation trace, write_report rejecting a verdict |
-| 6 | The agency experiment | 77 | 4:16 | Three mode columns, all 10/10; **8,421** beside **518,386** |
+| 5 | The changelog | 119 | 3:43 | `stills/05a` changelog, `05b` the 50-point sweep under both verifiers, `05c` the two spectra, `05d` the governing check moving, `05e` the veto firing |
+| 6 | The agency experiment | 77 | 4:16 | `stills/06a` three modes with token counts; `06b` where the evidence lives |
 | 7 | Close | 73 | 4:48 | An engineer signing a report, then the closing card |
 
 Record section 3 as one continuous screen capture. It is the only part that
@@ -114,9 +114,9 @@ evidence table → candidate table filling → verdict banner]*
 
 ### 5 · The changelog
 
-*[Changelog table → sweep of 50 candidates all failing → the broken motion
-spectrum beside the fixed one → oscillating utilization trace → write_report
-rejecting a verdict]*
+*[`stills/05a_changelog.md` → `05b_verifier_sweep.txt`, hold on the 0 / 50 row →
+`05c_spectrum.svg` → `05d_coupling.txt`, hold on the list of governing checks →
+`05e_report_veto.txt`, hold on the returned error]*
 
 > Getting there was not a straight line.
 >
@@ -136,7 +136,8 @@ rejecting a verdict]*
 
 ### 6 · The agency experiment
 
-*[Three mode columns, all reading 10/10 → token counts side by side]*
+*[`stills/06a_agency.txt`, hold on the three 10/10 rows, then on 8,421 beside
+518,386 → `06b_tree.txt` under the last line]*
 
 > One last question: if some AI is useful, does more agency make the system
 > better?
@@ -197,6 +198,46 @@ Read the rest at an even pace and let these land:
 
 > **Keep the engineer in control of the final decision.**
 
+## Stills for sections 5 and 6
+
+Sections 1 to 4 have something to point a camera at: the report, the results
+table, the GUI. Sections 5 and 6 are about experiments, and one of those
+experiments was removed. These stills are generated from the code rather than
+drawn, so what is on screen is what the repository does.
+
+```bash
+python3 video/make_stills.py
+```
+
+About a minute; the two sweeps are 500 nonlinear analyses. `--skip-sweep`
+regenerates everything else in seconds.
+
+| Still | Shows | Reconstructed? |
+|---|---|---|
+| `05a_changelog.md` | The five changelog rows the narration walks | No - quoted from README.md at generation time |
+| `05b_verifier_sweep.txt` | The same 50 candidates swept under both motion generators: **0 / 50** passing, then **1 / 50**, closest miss 1.18 → 0.93 | Yes - the iteration-1 generator is the shipped one with the Clough-Penzien stage removed |
+| `05c_spectrum.svg` | Displacement spectra of one record under both generators. Across the 1.8-4.5 s isolation band the unfiltered process demands up to **2.50×** the displacement | Yes - same reconstruction |
+| `05d_coupling.txt` | The governing check moving between four different limits and back | No - the shipped refinement loop, run now |
+| `05e_report_veto.txt` | `write_report` as code, then the veto firing on a real submission | No - live call |
+| `06a_agency.txt` | Three modes at 10/10 with wall times and token counts, each traced to its file and line | No - read from the committed files |
+| `06b_tree.txt` | Where the evidence lives, and which parts need no API key | No |
+
+Two honesty notes, both stated on the stills themselves:
+
+- **The 0 / 50 sweep is a reconstruction.** The generator that produced it was
+  replaced, so the still runs the shipped generator against a copy of itself
+  with one line removed. The narration's claim is that the verifier was wrong,
+  and that is what the two rows show.
+- **The fifteen non-converging iterations are not reproduced.** Those belong to
+  refinement moves that were retuned when the strategy was replaced. Attempting
+  to recover them from the current code produces a converging run, not an
+  oscillating one, so `05d` shows the coupling that caused the problem instead
+  and points at the changelog for the historical result. Do not put a fabricated
+  oscillation trace on screen.
+
+`05c` is an SVG - open it in a browser at full width. The rest are plain text;
+a terminal or an editor at a large font size reads best.
+
 ## Recording notes
 
 - Start the GUI with the key already in the environment, so section 3 never
@@ -240,9 +281,10 @@ Read the rest at an even pace and let these land:
 | Five ground motions per candidate | `RECORDS_PER_SUITE` in `forge/brief_parser.py` |
 | First candidate fails on acceleration and base shear | 0.6166 against 0.40, and 0.3728 against 0.30 |
 | 19 designs, 95 nonlinear analyses | A GUI run of brief 01 in assisted mode, recorded in `trajectories/gui/` |
-| 50 candidates zero passing; 15 iterations without converging | Changelog, iterations 1 and 2 |
-| The evidence gate was the change that mattered most | Changelog, iteration 4 |
-| Sixty-two times | 518,386 ÷ 8,421 = 61.6 |
+| 50 candidates, zero passing | Changelog iteration 1, and reproduced on screen by `video/make_stills.py` → `stills/05b_verifier_sweep.txt` |
+| 15 iterations without converging | Changelog iteration 2 only. Not reproducible against current code - see the honesty note above |
+| The evidence gate was the change that mattered most | Changelog iteration 4; the veto firing is `stills/05e_report_veto.txt` |
+| Sixty-two times | 518,386 ÷ 8,421 = 61.6, from the `usage` events at `trajectories/trajectory_agent.jsonl:343` and `trajectories/trajectory_assisted.jsonl:401` |
 
 The one figure not drawn from the repository is "days or even weeks". That is a
 statement about practice, and the README says so plainly in the note under it.

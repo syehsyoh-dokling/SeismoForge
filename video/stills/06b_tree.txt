@@ -1,0 +1,17 @@
+WHERE THE EVIDENCE LIVES
+
+  forge/            the physics. simulate.py drives OpenSees;
+                    motions.py synthesizes the record suite
+  agent/            the tool surface and the model layer.
+                    tools.py holds the write_report veto
+  briefs/           the ten benchmark briefs, strict format
+  briefs_prose/     the same ten as ordinary prose
+  baselines/        rule-of-thumb sizing, and the model asked directly
+  evaluation/       results.json, results.md, and the ground-truth
+                    sweep that re-derives the feasibility map
+  trajectories/     one full trajectory per mode, jsonl and markdown
+  outputs/          every deliverable, one directory per mode
+  video/            this script, and the stills it generates
+
+  No API key is needed for forge/, briefs/, evaluation/ or the
+  deterministic path. That is the column a judge reproduces.

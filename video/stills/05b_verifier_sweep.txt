@@ -1,0 +1,21 @@
+ITERATION 1  -  the verifier was wrong, not the design space
+
+brief    brief_01_coastal_hospital
+grid     5 x 5 x 2 = 50 candidates
+         Qd/W 0.04-0.16   T_iso 2.0-4.0 s   Dy 0.015-0.030 m
+records  5 per candidate, 250 nonlinear analyses per column
+
+                                    passing    closest miss
+--------------------------------------------------------------------
+  plain Kanai-Tajimi synthesis        0 / 50      peak_isolator_disp_m at 1.18
+  + Clough-Penzien high-pass          1 / 50      base_shear_coeff at 0.93
+--------------------------------------------------------------------
+
+The design space did not change between these two rows. Only the test
+did. Every candidate failed because the ground motions carried
+displacement energy at periods no real record has - exactly the band a
+base-isolated building lives in.
+
+Reproduce: video/make_stills.py, synthesize_unfiltered() is
+forge/motions.py:synthesize with the line 'amplitude *= highpass'
+removed.

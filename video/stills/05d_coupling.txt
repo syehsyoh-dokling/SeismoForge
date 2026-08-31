@@ -1,0 +1,39 @@
+ITERATION 2  -  why the local refinement strategy was removed
+
+brief    brief_01_coastal_hospital
+         refinement alone, from the rule-of-thumb start, without the
+         coarse screening stage that precedes it in the shipped policy
+
+  it    design                                     governing check
+--------------------------------------------------------------------------------------------
+   0   Qd    1619 kN   Kd   13848 kN/m   Dy 0.020 m   base_shear_coeff     1.32   fail
+   1   Qd    1619 kN   Kd   11771 kN/m   Dy 0.024 m   base_shear_coeff     1.24   fail
+   2   Qd    1619 kN   Kd   10005 kN/m   Dy 0.029 m   base_shear_coeff     1.17   fail
+   3   Qd    1619 kN   Kd    8504 kN/m   Dy 0.035 m   base_shear_coeff     1.11   fail
+   4   Qd    1619 kN   Kd    7229 kN/m   Dy 0.041 m   peak_isolator_disp_m 1.04   fail
+   5   Qd    1781 kN   Kd    6144 kN/m   Dy 0.050 m   peak_isolator_disp_m 1.07   fail
+   6   Qd    2226 kN   Kd    6144 kN/m   Dy 0.050 m   residual_disp_m      1.16   fail
+   7   Qd    2226 kN   Kd    7988 kN/m   Dy 0.037 m   peak_floor_accel_g   1.04   fail
+   8   Qd    2226 kN   Kd    6789 kN/m   Dy 0.045 m   base_shear_coeff     0.92   PASS
+       converged after 8 refinement steps
+--------------------------------------------------------------------------------------------
+
+The governing check moves:
+    base_shear_coeff -> peak_isolator_disp_m
+    peak_isolator_disp_m -> residual_disp_m
+    residual_disp_m -> peak_floor_accel_g
+    peak_floor_accel_g -> base_shear_coeff
+
+That is the coupling. Lowering transmitted force wants a softer
+rubber; holding travel inside the moat and recentring want a stiffer
+one. A strategy that fixes only the worst failed check chases the
+constraints around instead of reconciling them, which is why it was
+removed in favour of coarse screening followed by refinement.
+
+NOTE: the fifteen non-converging iterations recorded in the changelog
+belong to the refinement moves as they were at that time. Those moves
+were retuned when the strategy was replaced, so that run is not
+reproducible against this code and is not reproduced here. The
+changelog entry is the record of it.
+
+Reproduce: video/make_stills.py

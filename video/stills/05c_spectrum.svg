@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" font-family="ui-sans-serif,Segoe UI,Helvetica,sans-serif">
+<rect width="900" height="470" fill="#0f1115"/>
+<rect x="298" y="54" width="371" height="360" fill="#2b3550" opacity="0.55"/>
+<text x="483" y="74" fill="#8fa4d0" font-size="13" text-anchor="middle">isolation period band</text>
+<line x1="78" y1="414" x2="874" y2="414" stroke="#4a5163"/>
+<line x1="78" y1="54" x2="78" y2="414" stroke="#4a5163"/>
+<line x1="188" y1="414" x2="188" y2="419" stroke="#4a5163"/>
+<text x="188" y="436" fill="#9aa3b5" font-size="13" text-anchor="middle">1</text>
+<line x1="325" y1="414" x2="325" y2="419" stroke="#4a5163"/>
+<text x="325" y="436" fill="#9aa3b5" font-size="13" text-anchor="middle">2</text>
+<line x1="462" y1="414" x2="462" y2="419" stroke="#4a5163"/>
+<text x="462" y="436" fill="#9aa3b5" font-size="13" text-anchor="middle">3</text>
+<line x1="600" y1="414" x2="600" y2="419" stroke="#4a5163"/>
+<text x="600" y="436" fill="#9aa3b5" font-size="13" text-anchor="middle">4</text>
+<line x1="737" y1="414" x2="737" y2="419" stroke="#4a5163"/>
+<text x="737" y="436" fill="#9aa3b5" font-size="13" text-anchor="middle">5</text>
+<line x1="874" y1="414" x2="874" y2="419" stroke="#4a5163"/>
+<text x="874" y="436" fill="#9aa3b5" font-size="13" text-anchor="middle">6</text>
+<line x1="73" y1="328" x2="874" y2="328" stroke="#242a35"/>
+<text x="68" y="332" fill="#9aa3b5" font-size="12" text-anchor="end">0.50</text>
+<line x1="73" y1="242" x2="874" y2="242" stroke="#242a35"/>
+<text x="68" y="246" fill="#9aa3b5" font-size="12" text-anchor="end">1.00</text>
+<line x1="73" y1="156" x2="874" y2="156" stroke="#242a35"/>
+<text x="68" y="160" fill="#9aa3b5" font-size="12" text-anchor="end">1.50</text>
+<line x1="73" y1="70" x2="874" y2="70" stroke="#242a35"/>
+<text x="68" y="74" fill="#9aa3b5" font-size="12" text-anchor="end">2.00</text>
+<polyline fill="none" stroke="#ff6b6b" stroke-width="2.6" points="78.0,413.1 91.5,411.3 105.0,407.4 118.5,401.8 132.0,390.5 145.5,387.1 158.9,376.2 172.4,375.2 185.9,373.1 199.4,339.1 212.9,364.6 226.4,332.2 239.9,350.4 253.4,339.2 266.9,317.9 280.4,305.4 293.9,309.6 307.4,299.5 320.8,290.7 334.3,296.3 347.8,309.3 361.3,325.1 374.8,326.9 388.3,309.9 401.8,284.6 415.3,260.5 428.8,243.1 442.3,234.4 455.8,233.6 469.3,239.4 482.7,249.9 496.2,262.8 509.7,275.5 523.2,284.8 536.7,287.4 550.2,282.0 563.7,269.3 577.2,251.7 590.7,231.4 604.2,210.4 617.7,190.1 631.2,171.8 644.6,155.8 658.1,139.9 671.6,125.0 685.1,111.8 698.6,101.2 712.1,92.7 725.6,86.6 739.1,82.8 752.6,81.1 766.1,80.7 779.6,81.2 793.1,83.6 806.5,87.5 820.0,93.0 833.5,99.9 847.0,107.6 860.5,115.4 874.0,122.5"/>
+<polyline fill="none" stroke="#4ade80" stroke-width="2.6" points="78.0,413.1 91.5,411.5 105.0,407.3 118.5,402.4 132.0,390.5 145.5,387.7 158.9,377.8 172.4,375.7 185.9,374.2 199.4,340.8 212.9,366.2 226.4,331.8 239.9,353.1 253.4,340.8 266.9,320.2 280.4,309.4 293.9,317.4 307.4,310.3 320.8,301.5 334.3,306.3 347.8,316.5 361.3,332.2 374.8,343.8 388.3,337.1 401.8,319.8 415.3,301.1 428.8,285.4 442.3,277.2 455.8,275.3 469.3,278.7 482.7,285.4 496.2,295.0 509.7,306.5 523.2,318.8 536.7,330.4 550.2,339.4 563.7,344.1 577.2,344.0 590.7,339.7 604.2,332.6 617.7,324.1 631.2,315.6 644.6,307.9 658.1,301.4 671.6,295.8 685.1,289.1 698.6,283.4 712.1,278.7 725.6,274.9 739.1,272.2 752.6,270.6 766.1,270.3 779.6,269.4 793.1,269.4 806.5,270.4 820.0,272.2 833.5,274.8 847.0,277.9 860.5,280.8 874.0,284.1"/>
+<text x="78" y="30" fill="#e8ecf4" font-size="17" font-weight="600">Displacement response spectrum, 5% damped - one record, same seed</text>
+<text x="874" y="456" fill="#9aa3b5" font-size="12" text-anchor="end">period T (s)</text>
+<text x="78" y="456" fill="#9aa3b5" font-size="12">Sd (m)</text>
+<rect x="606" y="68" width="256" height="52" fill="#161a22" stroke="#2b3241" rx="6"/>
+<line x1="620" y1="86" x2="648" y2="86" stroke="#ff6b6b" stroke-width="2.6"/>
+<text x="656" y="91" fill="#e8ecf4" font-size="13">plain Kanai-Tajimi</text>
+<line x1="620" y1="106" x2="648" y2="106" stroke="#4ade80" stroke-width="2.6"/>
+<text x="656" y="111" fill="#e8ecf4" font-size="13">+ Clough-Penzien high-pass</text>
+</svg>
